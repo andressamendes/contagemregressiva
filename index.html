@@ -2,324 +2,361 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <!-- Viewport otimizado para mobile: impede zoom acidental e ajusta largura -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Para Milena ❤️</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500&family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&display=block" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@900&family=Courier+Prime:wght@400;700&display=block" rel="stylesheet">
     <style>
-        /* --- ESTILOS GERAIS E MOBILE --- */
+        :root {
+            --st-red: #ff1e1e;
+            --st-glow: 0 0 10px rgba(255, 30, 30, 0.8), 0 0 20px rgba(255, 30, 30, 0.4);
+            --bg-dark: #080808;
+        }
+
         body {
-            font-family: 'Montserrat', sans-serif;
-            overflow: hidden; /* Evita scroll na página principal */
-            background: linear-gradient(-45deg, #fff0f5, #ffe4e6, #fce7f3, #fdf2f8);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            height: 100dvh; /* Altura dinâmica para lidar com barras de navegador mobile */
+            font-family: 'Courier Prime', monospace;
+            overflow: hidden;
+            background-color: var(--bg-dark);
+            height: 100dvh;
             width: 100vw;
-            -webkit-tap-highlight-color: transparent; /* Remove flash azul ao tocar */
-            user-select: none; /* Impede seleção de texto acidental */
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            color: #d1d5db;
         }
 
-        /* Classes auxiliares para carregamento de fonte */
-        .loading-fonts { opacity: 0; transition: opacity 0.8s ease-in-out; }
-        .fonts-loaded-active { opacity: 1; }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* --- EFEITOS CRT / TV ANTIGA --- */
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.3));
+            background-size: 100% 4px;
+            z-index: 50; pointer-events: none; opacity: 0.6;
+        }
+        .vignette {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(0,0,0,0.9) 100%);
+            z-index: 51; pointer-events: none;
         }
 
-        .romantic-font { font-family: 'Great Vibes', cursive; }
-        .elegant-font { font-family: 'Cormorant Garamond', serif; }
+        /* --- EFEITO GLITCH (INTERFERÊNCIA) --- */
+        @keyframes glitch-anim-1 {
+            0% { clip-path: inset(20% 0 80% 0); transform: translate(-2px, 1px); }
+            20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); }
+            40% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, 2px); }
+            60% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -2px); }
+            80% { clip-path: inset(10% 0 70% 0); transform: translate(-1px, 1px); }
+            100% { clip-path: inset(30% 0 20% 0); transform: translate(1px, -1px); }
+        }
+        
+        .glitch-active {
+            animation: glitch-anim-1 0.2s infinite linear alternate-reverse;
+            filter: hue-rotate(90deg) contrast(1.2);
+        }
 
-        /* Painel de Vidro - Ajustado para legibilidade */
+        /* --- BACKGROUND MUNDO INVERTIDO --- */
+        .upside-down-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, #1a0b0b 0%, #000000 100%);
+            z-index: -2;
+        }
+        
+        .lightning-flash {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(255, 0, 0, 0.15);
+            opacity: 0;
+            z-index: -1;
+            animation: flash 10s infinite random;
+        }
+        
+        @keyframes flash {
+            0%, 90%, 100% { opacity: 0; }
+            92% { opacity: 0.6; }
+            93% { opacity: 0; }
+            94% { opacity: 0.4; }
+            96% { opacity: 0; }
+        }
+
+        /* --- TIPOGRAFIA STRANGER THINGS --- */
+        .st-title-container {
+            position: relative;
+            transform: scale(0.9);
+            animation: zoomSlow 20s infinite alternate;
+            cursor: pointer;
+        }
+        @keyframes zoomSlow { from { transform: scale(0.9); } to { transform: scale(1.0); } }
+
+        .st-font { 
+            font-family: 'Merriweather', serif; 
+            font-weight: 900;
+            text-transform: uppercase;
+            -webkit-text-stroke: 1.5px var(--st-red); 
+            color: transparent;
+            text-shadow: 0 0 8px rgba(255, 30, 30, 0.6);
+            letter-spacing: -2px;
+            line-height: 0.9;
+            transition: all 0.3s;
+        }
+        
+        .st-title-container:active .st-font {
+            text-shadow: 0 0 20px rgba(255, 30, 30, 1);
+            filter: brightness(1.5);
+        }
+        
+        .st-bar {
+            height: 3px; background-color: var(--st-red);
+            box-shadow: 0 0 10px var(--st-red);
+            margin: 10px auto;
+            width: 0;
+            animation: expandBar 3s ease-out forwards 0.5s;
+        }
+        @keyframes expandBar { to { width: 60%; } }
+
+        /* --- LUZES DE NATAL (PISCANDO) --- */
+        .lights-container {
+            position: absolute; top: -15px; width: 100%; display: flex; justify-content: space-around; z-index: 5;
+        }
+        .light-bulb {
+            width: 12px; height: 20px; border-radius: 50%;
+            animation: glow 1.5s infinite alternate;
+            opacity: 0.3;
+            transition: all 0.1s;
+        }
+        .l-red { background: #ff0000; box-shadow: 0 0 10px #ff0000; animation-delay: 0s; }
+        .l-green { background: #00ff00; box-shadow: 0 0 10px #00ff00; animation-delay: 0.5s; }
+        .l-yellow { background: #ffff00; box-shadow: 0 0 10px #ffff00; animation-delay: 1s; }
+        .l-blue { background: #0000ff; box-shadow: 0 0 10px #0000ff; animation-delay: 1.5s; }
+        
+        @keyframes glow { 100% { opacity: 1; box-shadow: 0 0 20px currentColor; } }
+
+        /* Estado frenético das luzes */
+        .frenetic-lights .light-bulb {
+            animation-duration: 0.1s !important;
+            opacity: 1 !important;
+        }
+
+        /* --- SPORES (CINZAS) --- */
+        .spore {
+            position: absolute; width: 3px; height: 3px;
+            background: rgba(200, 200, 200, 0.5);
+            border-radius: 50%; pointer-events: none;
+            box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+            animation: floatSpore 12s infinite linear;
+        }
+        @keyframes floatSpore {
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translate(var(--mx), var(--my)); opacity: 0; }
+        }
+
+        /* --- CARD --- */
         .glass-panel {
-            background: rgba(255, 255, 255, 0.45);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 10px 30px rgba(225, 29, 72, 0.1);
+            background: rgba(10, 10, 10, 0.7);
+            border: 1px solid rgba(255, 30, 30, 0.4);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.15), inset 0 0 50px rgba(0,0,0,0.8);
+            border-radius: 8px;
+            backdrop-filter: blur(4px);
         }
 
-        /* Scrollbar fina e elegante */
-        .custom-scrollbar::-webkit-scrollbar { width: 3px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(244, 63, 94, 0.3); border-radius: 10px; }
+        .timer-val { font-weight: 700; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.7); font-family: 'Merriweather', serif; }
+        .timer-label { color: var(--st-red); font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; }
+        
+        .typing-effect { border-right: 3px solid var(--st-red); padding-right: 2px; animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { border-color: transparent; } }
 
-        /* Animações de Entrada */
-        .zoom-in-enter { animation: zoomIn 1s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-        @keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-        /* Partículas otimizadas */
-        .firefly {
-            position: absolute; width: 3px; height: 3px; background-color: #fda4af;
-            border-radius: 50%; opacity: 0; pointer-events: none; z-index: 0;
-            box-shadow: 0 0 8px 1px rgba(251, 113, 133, 0.5);
-            animation: fly 15s infinite ease-in-out;
-        }
-        @keyframes fly {
-            0% { transform: translate(0, 0) scale(0); opacity: 0; }
-            10% { opacity: 0.8; }
-            50% { transform: translate(40px, -40px) scale(1.2); opacity: 0.5; }
-            100% { transform: translate(-20px, -80px) scale(0); opacity: 0; }
-        }
-
-        .element-float {
-            position: absolute; animation: floatUp linear forwards;
-            opacity: 0; pointer-events: none; z-index: 20;
-        }
-        @keyframes floatUp {
-            0% { transform: translateY(0) scale(0.5); opacity: 1; }
-            100% { transform: translateY(-100px) scale(1.2); opacity: 0; }
-        }
-
-        .heart-style { color: rgba(244, 63, 94, 0.6); text-shadow: 0 0 5px rgba(255,255,255,0.6); }
-        .lyric-style {
-            position: absolute; bottom: -10vh; z-index: 1;
-            color: rgba(157, 23, 77, 0.7); font-family: 'Great Vibes', cursive;
-            white-space: nowrap; font-size: 1.4rem;
-            text-shadow: 0 2px 8px rgba(255,255,255,0.8);
-            animation: floatLyric 18s linear forwards;
-        }
-        @keyframes floatLyric {
-            0% { transform: translateY(0); opacity: 0; }
-            10% { opacity: 0.8; }
-            100% { transform: translateY(-110vh); opacity: 0; }
-        }
-
-        /* Overlay de início */
+        /* OVERLAY INICIAL */
         #start-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 241, 242, 0.98); z-index: 999;
+            background: #000; z-index: 999;
             display: flex; align-items: center; justify-content: center;
-            transition: opacity 0.8s ease;
+            transition: opacity 1s ease;
         }
         .overlay-disabled { pointer-events: none; opacity: 0.8; }
 
-        .typing-effect { border-right: 2px solid rgba(225, 29, 72, 0.6); padding-right: 2px; }
-
-        /* Botão Flutuante (Carta - Direita) */
-        .envelope-btn {
-            position: absolute; bottom: 1.5rem; right: 1.5rem;
-            background: white; color: #e11d48;
-            border-radius: 50%; width: 3.5rem; height: 3.5rem;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 20px rgba(225, 29, 72, 0.25);
-            transition: transform 0.2s; z-index: 50;
-            animation: floatIcon 3s ease-in-out infinite;
-        }
-        .envelope-btn:active { transform: scale(0.9); }
-
-        /* Botão Flutuante (Quiz - Esquerda) */
-        .quiz-btn {
-            position: absolute; bottom: 1.5rem; left: 1.5rem;
-            background: white; color: #e11d48;
-            border-radius: 50%; width: 3.5rem; height: 3.5rem;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 20px rgba(225, 29, 72, 0.25);
-            transition: transform 0.2s; z-index: 50;
-            animation: floatIcon 3s ease-in-out infinite;
-            animation-delay: 1.5s; /* Delay para não subir junto com o envelope */
-        }
-        .quiz-btn:active { transform: scale(0.9); }
-
-        @keyframes floatIcon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-
-        /* Modais */
+        /* MODAL CARTA */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 241, 242, 0.7);
-            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.9);
             z-index: 1000; display: flex; align-items: center; justify-content: center;
             opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
         }
         .modal-active { opacity: 1; pointer-events: auto; }
         
         .letter-paper {
-            background: #fff; width: 90%; max-width: 480px; padding: 2rem 1.5rem;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1); border-radius: 12px;
-            transform: translateY(30px) scale(0.95);
-            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-            position: relative;
-            background-image: linear-gradient(#e5e7eb 1px, transparent 1px);
-            background-size: 100% 1.8rem;
-            line-height: 1.8rem;
+            background: #e3e3dc; width: 90%; max-width: 480px; padding: 2rem;
+            box-shadow: 0 0 30px rgba(200, 200, 200, 0.1); 
+            transform: translateY(20px) scale(0.95);
+            transition: transform 0.5s;
+            color: #111; font-weight: bold;
+            border: 2px solid #333;
+            background-image: repeating-linear-gradient(#e3e3dc 0px, #e3e3dc 24px, #ccc 25px);
+            line-height: 25px;
         }
         .modal-active .letter-paper { transform: translateY(0) scale(1); }
-        .letter-content { margin-top: 0.3rem; }
 
-        /* Quiz de Amor */
-        .quiz-modal {
-            background: rgba(255, 255, 255, 0.98);
-            padding: 2rem; border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(225, 29, 72, 0.25);
-            text-align: center;
-            max-width: 320px; width: 85%;
-            transform: scale(0.9); opacity: 0;
-            transition: all 0.4s ease;
+        /* Botões */
+        .btn-interact {
+            background: rgba(50, 0, 0, 0.5); border: 1px solid var(--st-red); color: var(--st-red);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+            transition: all 0.3s;
         }
-        .modal-active .quiz-modal { transform: scale(1); opacity: 1; }
-        
-        .btn-yes { background: #e11d48; color: white; touch-action: manipulation; }
-        /* Botão Não: absolute para poder se mover livremente dentro da modal */
-        .btn-no { background: #cbd5e1; color: #64748b; position: absolute; transition: all 0.15s ease-out; touch-action: manipulation; }
+        .btn-interact:active { background: var(--st-red); color: black; box-shadow: 0 0 20px var(--st-red); }
 
-        /* Ajustes específicos para telas muito pequenas (iPhone SE, Galaxy Fold) */
-        @media (max-width: 360px) {
-            .timer-number { font-size: 2rem !important; }
-            .timer-label { font-size: 0.5rem !important; }
-            .timer-separator { font-size: 1.5rem !important; margin-top: 0.2rem !important; }
-            .romantic-title { font-size: 2rem !important; }
-            .glass-panel { padding: 1rem !important; }
+        .envelope-btn {
+            position: absolute; bottom: 1.5rem; right: 1.5rem;
+            background: #000; border: 1px solid var(--st-red); color: var(--st-red);
+            border-radius: 50%; width: 3.5rem; height: 3.5rem;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 15px rgba(255, 30, 30, 0.4);
+            z-index: 60; transition: transform 0.2s;
+        }
+        .envelope-btn:active { transform: scale(0.9); background: var(--st-red); color: #000; }
+
+        @media (max-width: 380px) {
+            .st-font { font-size: 2.5rem; }
+            .timer-val { font-size: 2rem !important; }
         }
         
-        #youtube-player { position: fixed; top: 0; left: 0; width: 1px; height: 1px; opacity: 0.01; pointer-events: none; z-index: -1; }
+        #youtube-player { position: fixed; opacity: 0; pointer-events: none; }
+        
+        /* Elementos Flutuantes */
+        .element-float {
+            position: absolute; color: var(--st-red); text-shadow: 0 0 10px var(--st-red);
+            animation: floatUp 2s linear forwards; pointer-events: none; z-index: 100;
+        }
+        @keyframes floatUp { 0% { opacity: 1; transform: translateY(0) scale(0.5); } 100% { opacity: 0; transform: translateY(-100px) scale(1.2); } }
+
+        /* Estilos para Capítulos Animados */
+        #chapter-text {
+            transition: opacity 0.5s ease;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Player YouTube -->
+    <!-- Efeitos Visuais -->
+    <div class="scanlines"></div>
+    <div class="vignette"></div>
+    <div class="upside-down-bg"></div>
+    <div class="lightning-flash"></div>
+    
+    <!-- Luzes de Natal -->
+    <div class="lights-container" id="lights-container">
+        <div class="light-bulb l-red"></div>
+        <div class="light-bulb l-green"></div>
+        <div class="light-bulb l-yellow"></div>
+        <div class="light-bulb l-blue"></div>
+        <div class="light-bulb l-red"></div>
+        <div class="light-bulb l-green"></div>
+    </div>
+
+    <div id="spores-container" class="absolute inset-0 overflow-hidden pointer-events-none z-0"></div>
     <div id="youtube-player"></div>
 
-    <!-- Partículas de Fundo -->
-    <div id="particles-container" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
-
-    <!-- TELA INICIAL (Loading + Gatilho) -->
+    <!-- TELA INICIAL -->
     <div id="start-overlay" class="overlay-disabled">
-        <div class="text-center relative z-10 p-6 w-full cursor-pointer loading-fonts flex flex-col items-center justify-center h-full" id="start-content" onclick="startExperience()">
-            <div class="mb-8 relative inline-block">
-                <div class="absolute inset-0 bg-rose-200 blur-3xl opacity-40 rounded-full animate-pulse"></div>
-                <h1 class="romantic-font text-6xl md:text-7xl text-rose-500 relative drop-shadow-sm">Para Milena...</h1>
+        <div class="flex flex-col items-center justify-center h-full w-full cursor-pointer z-50 p-6" onclick="startExperience()">
+            
+            <div class="st-title-container mb-12 text-center" onclick="triggerWaffles(event)">
+                <h1 class="st-font text-6xl md:text-8xl leading-none">PARA<br>MILENA</h1>
+                <div class="st-bar"></div>
+                <!-- Capítulo Animado -->
+                <p id="chapter-text" class="text-white font-bold tracking-[0.5em] text-xs uppercase mt-2 opacity-80 h-4">Capítulo Um: O Início</p>
             </div>
-            <div class="flex flex-col items-center gap-4">
-                <p id="start-text" class="text-rose-400 font-medium tracking-[0.2em] text-xs uppercase animate-pulse">Carregando surpresa...</p>
-                <div id="start-icon" class="w-10 h-10 rounded-full border-2 border-rose-300 flex items-center justify-center animate-spin text-rose-400 opacity-80">
-                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
-                </div>
+
+            <div class="flex flex-col items-center gap-4 mt-8">
+                <p id="start-text" class="text-red-600 font-bold tracking-[0.2em] text-xs uppercase animate-pulse">Carregando...</p>
+                <div id="start-icon" class="w-8 h-8 border-2 border-red-900 border-t-red-500 rounded-full animate-spin"></div>
             </div>
         </div>
     </div>
 
-    <!-- CONTEÚDO PRINCIPAL -->
+    <!-- CONTEÚDO PRINCIPAL (Adicionado ID para Glitch) -->
     <div id="main-content" class="relative z-10 w-full h-full flex flex-col items-center justify-center p-4 opacity-0 transition-opacity duration-1000 hidden">
         
-        <div class="glass-panel w-full max-w-md rounded-[2rem] p-5 text-center relative flex flex-col items-center max-h-[92dvh] overflow-y-auto custom-scrollbar zoom-in-enter">
+        <div class="glass-panel w-full max-w-md p-6 text-center relative flex flex-col items-center max-h-[92dvh] overflow-y-auto custom-scrollbar">
             
-            <!-- Saudação -->
-            <h3 id="greeting-text" class="romantic-font text-4xl text-rose-500 mb-1 mt-2 romantic-title">Olá, amor</h3>
-            <p class="text-[10px] tracking-[0.25em] uppercase text-rose-400 mb-6 font-semibold opacity-80">Contagem para nosso encontro</p>
+            <h3 id="greeting-text" class="text-2xl text-white font-bold mb-4 mt-2 tracking-widest uppercase" style="text-shadow: 0 0 10px rgba(255,255,255,0.5);">Olá, Amor</h3>
             
-            <!-- TIMER PRINCIPAL (Tamanhos ajustados para mobile) -->
-            <div class="flex justify-center items-start gap-2 w-full text-rose-600 mb-6">
-                <!-- Dias -->
-                <div class="flex flex-col items-center w-1/4">
-                    <span id="days" class="timer-number text-3xl sm:text-4xl md:text-6xl font-extralight tracking-tighter leading-none">00</span>
-                    <span class="timer-label text-[9px] uppercase tracking-widest mt-1 opacity-70 font-semibold">Dias</span>
-                </div>
-                <span class="timer-separator text-xl sm:text-2xl font-light text-rose-400 mt-1">:</span>
-                <!-- Horas -->
-                <div class="flex flex-col items-center w-1/4">
-                    <span id="hours" class="timer-number text-3xl sm:text-4xl md:text-6xl font-extralight tracking-tighter leading-none">00</span>
-                    <span class="timer-label text-[9px] uppercase tracking-widest mt-1 opacity-70 font-semibold">Horas</span>
-                </div>
-                <span class="timer-separator text-xl sm:text-2xl font-light text-rose-400 mt-1">:</span>
-                <!-- Min -->
-                <div class="flex flex-col items-center w-1/4">
-                    <span id="minutes" class="timer-number text-3xl sm:text-4xl md:text-6xl font-extralight tracking-tighter leading-none">00</span>
-                    <span class="timer-label text-[9px] uppercase tracking-widest mt-1 opacity-70 font-semibold">Min</span>
-                </div>
-                <span class="timer-separator text-xl sm:text-2xl font-light text-rose-400 mt-1">:</span>
-                <!-- Seg -->
-                <div class="flex flex-col items-center w-1/4">
-                    <span id="seconds" class="timer-number text-3xl sm:text-4xl md:text-6xl font-extralight tracking-tighter leading-none w-[1.8em] text-center">00</span>
-                    <span class="timer-label text-[9px] uppercase tracking-widest mt-1 opacity-70 font-semibold">Seg</span>
+            <!-- Adicionei ID para poder trocar o texto dinamicamente -->
+            <p id="timer-label" class="text-[10px] tracking-[0.25em] uppercase text-gray-400 mb-8 font-bold">Contagem para nosso encontro</p>
+            
+            <!-- TIMER -->
+            <div class="w-full mb-8 border-b border-red-900/50 pb-6">
+                <div class="flex justify-center items-start gap-2 w-full text-white">
+                    <div class="flex flex-col items-center w-1/4">
+                        <span id="days" class="timer-val text-4xl md:text-5xl">00</span>
+                        <span class="timer-label">Dias</span>
+                    </div>
+                    <span class="text-2xl text-red-600 mt-1">:</span>
+                    <div class="flex flex-col items-center w-1/4">
+                        <span id="hours" class="timer-val text-4xl md:text-5xl">00</span>
+                        <span class="timer-label">Horas</span>
+                    </div>
+                    <span class="text-2xl text-red-600 mt-1">:</span>
+                    <div class="flex flex-col items-center w-1/4">
+                        <span id="minutes" class="timer-val text-4xl md:text-5xl">00</span>
+                        <span class="timer-label">Min</span>
+                    </div>
+                    <span class="text-2xl text-red-600 mt-1">:</span>
+                    <div class="flex flex-col items-center w-1/4">
+                        <span id="seconds" class="timer-val text-4xl md:text-5xl w-[1.5em]">00</span>
+                        <span class="timer-label">Seg</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Divisor -->
-            <div class="w-3/4 h-px bg-gradient-to-r from-transparent via-rose-300 to-transparent mb-5 opacity-40"></div>
-
-            <!-- Timer Passado (Destaque) -->
-            <div class="mb-6 w-full bg-white/30 rounded-xl p-3 shadow-sm border border-rose-100/40">
-                <p class="text-[10px] tracking-[0.2em] uppercase text-rose-500 mb-2 font-bold">Desde nosso primeiro beijo</p>
+            <!-- Timer Passado (Caixa pequena) -->
+            <div id="small-timer-box" class="mb-8 w-full bg-black/50 rounded p-4 border-l-4 border-red-600">
+                <p class="text-[9px] tracking-[0.2em] uppercase text-red-500 mb-2 font-bold">TEMPO DECORRIDO</p>
                 <div class="flex items-center justify-center gap-2">
-                    <span class="text-lg">✨</span>
-                    <p id="past-time" class="elegant-font text-rose-600 text-lg sm:text-xl italic leading-tight font-semibold">Carregando...</p>
-                    <span class="text-lg">✨</span>
+                    <p id="past-time" class="text-white text-md sm:text-lg font-bold font-mono">Calculando...</p>
                 </div>
             </div>
 
-            <!-- Frase Animada -->
-            <div class="min-h-[3rem] flex items-center justify-center mb-4 px-1">
-                <h2 id="typewriter-text" class="romantic-font text-2xl sm:text-3xl text-rose-600 drop-shadow-sm leading-tight transition-all text-center"></h2>
+            <!-- Frase -->
+            <div class="min-h-[3rem] flex items-center justify-center mb-6 px-1">
+                <h2 id="typewriter-text" class="text-xl text-red-100 font-bold text-center tracking-wider" style="text-shadow: 0 0 5px red;"></h2>
             </div>
 
-            <!-- Botão Interativo Principal -->
-            <div class="flex flex-col gap-3 w-full items-center pb-4">
-                <button onclick="showLoveReason(event)" class="group relative px-6 py-2.5 rounded-full bg-white/80 border border-rose-200 text-rose-500 shadow-sm hover:shadow-md transition-all duration-300 flex items-center gap-2 active:scale-95 w-fit touch-manipulation">
-                    <span class="text-base">❤️</span>
-                    <span id="reason-btn-text" class="text-xs sm:text-sm font-medium tracking-wide">Clique para um segredo</span>
+            <!-- Botão -->
+            <div class="flex flex-col gap-3 w-full items-center pb-2">
+                <button onclick="showLoveReason(event)" class="btn-interact px-6 py-3 rounded text-xs font-bold tracking-[0.2em] uppercase w-full max-w-xs">
+                    Revelar Segredo
                 </button>
             </div>
             
-            <p id="love-reason" class="min-h-[1.5rem] mt-1 text-rose-600 italic elegant-font text-base transition-all duration-500 opacity-0 transform translate-y-2 px-2"></p>
+            <p id="love-reason" class="min-h-[1.5rem] mt-3 text-white font-bold text-sm transition-all duration-500 opacity-0 transform translate-y-2 px-2"></p>
 
-            <!-- Espaço extra para scroll seguro -->
-            <div class="h-10"></div>
+            <div class="h-8"></div>
         </div>
     </div>
 
-    <!-- Botão Carta (Fixo - Direita) -->
+    <!-- Botão Carta -->
     <button onclick="toggleLetter()" class="envelope-btn hidden" id="envelope-trigger" aria-label="Abrir carta">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-    </button>
-
-    <!-- Botão Quiz (Fixo - Esquerda) -->
-    <button onclick="toggleQuiz()" class="quiz-btn hidden" id="quiz-trigger" aria-label="Uma pergunta">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
     </button>
 
     <!-- Modal da Carta -->
     <div id="letter-modal" class="modal-overlay" onclick="toggleLetter()">
         <div class="letter-paper" onclick="event.stopPropagation()">
-            <div class="absolute top-2 right-2 p-2 opacity-50 cursor-pointer" onclick="toggleLetter()">
+            <div class="absolute top-2 right-2 p-2 opacity-50 cursor-pointer text-black" onclick="toggleLetter()">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </div>
-            <h3 class="romantic-font text-3xl text-rose-600 mb-1 mt-1 ml-2">Amor...</h3>
-            <div class="letter-content elegant-font text-lg text-gray-700">
-                <p>Escrevo isso enquanto conto os segundos para te ver. Cada momento longe parece uma eternidade, mas saber que logo estarei com você faz tudo valer a pena.</p>
-                <p class="mt-4">Mal posso esperar pelo nosso dia 26.</p>
+            <h3 class="text-xl mb-4 text-center font-bold underline decoration-red-900 underline-offset-4">CONFIDENCIAL - HAWKINS LAB</h3>
+            <div class="letter-content text-sm md:text-base">
+                <p>Escrevo isso enquanto conto os segundos para te ver. Cada momento longe parece o Mundo Invertido, frio e escuro. Mas saber que logo estarei com você é como ver as luzes acendendo na parede.</p>
+                <p class="mt-4">Mal posso esperar pelo nosso dia 26. Amigos não mentem, e meu amor por você também não.</p>
             </div>
-            <div class="flex justify-end items-end mt-6">
-                <p class="text-right text-rose-500 romantic-font text-2xl mr-2 mb-0">- Com amor, Andressa</p>
+            <div class="flex justify-end items-end mt-8 border-t border-gray-500 pt-2">
+                <p class="text-right font-bold text-lg mr-2 mb-0">- Andressa (011)</p>
             </div>
-        </div>
-    </div>
-
-    <!-- Modal do Quiz -->
-    <div id="quiz-modal-container" class="modal-overlay">
-        <div class="quiz-modal relative">
-            <h3 class="romantic-font text-4xl text-rose-600 mb-6">Você me ama?</h3>
-            <div class="flex justify-center gap-4 h-16 relative">
-                <button onclick="quizSuccess()" class="btn-yes px-8 py-2 rounded-full font-bold shadow-lg active:scale-95 transition z-10">
-                    Sim!
-                </button>
-                <!-- Botão Não com lógica de toque -->
-                <button id="btn-no" onmouseover="moveButton()" onclick="moveButton()" class="btn-no px-8 py-2 rounded-full font-bold">
-                    Não
-                </button>
-            </div>
-            <p id="quiz-result" class="mt-4 text-rose-500 font-bold hidden opacity-0 transition-opacity duration-500">Eu já sabia! Te amo tanto! ❤️</p>
-            <div onclick="toggleQuiz()" class="absolute top-2 right-3 text-gray-400 cursor-pointer text-2xl p-2">&times;</div>
         </div>
     </div>
 
     <script src="https://www.youtube.com/iframe_api"></script>
 
     <script>
-        // --- CONFIGURAÇÕES ---
+        // CONFIGURAÇÕES
         const targetDate = new Date("2026-01-26T20:00:00").getTime();
         const firstKissDate = new Date("2025-09-07T23:00:00").getTime();
         const mainPhrase = "A gente se escolhe todo dia";
@@ -331,18 +368,13 @@
             "Você é minha melhor escolha.", "Nossos planos são meus sonhos."
         ];
 
-        const lyrics = [
-            "Pra você eu me desmonto", "Minha voz no teu ouvido",
-            "Não há nenhum perigo", "Agora eu durmo bem",
-            "Milhões de vidas", "Uma só é pouco",
-            "Tudo que eu puder viver", "A gente se escolhe",
-            "Nós dois", "Explodir de amor", "Andressa & Milena"
-        ];
-
         let player;
-        let timerInterval;
-        let typeIdx = 0;
         let isPlayerReady = false;
+
+        document.fonts.ready.then(() => {
+            const startContent = document.getElementById('start-content');
+            if(startContent) { startContent.classList.add('fonts-loaded-active'); }
+        });
 
         // --- YOUTUBE API ---
         function onYouTubeIframeAPIReady() {
@@ -353,78 +385,106 @@
             });
         }
 
-        function onPlayerReady(event) {
-            isPlayerReady = true;
-            updateStartScreenReady();
-        }
-        
-        function onPlayerError(event) {
-            console.log("Erro player (segurança mobile), liberando entrada.");
-            isPlayerReady = true;
-            updateStartScreenReady();
-        }
+        function onPlayerReady() { isPlayerReady = true; updateStartScreenReady(); }
+        function onPlayerError() { isPlayerReady = true; updateStartScreenReady(); }
         
         function updateStartScreenReady() {
             const textEl = document.getElementById('start-text');
             const iconEl = document.getElementById('start-icon');
             const overlay = document.getElementById('start-overlay');
             if(textEl) { 
-                textEl.innerText = "Toque para ouvir nossa música"; 
-                textEl.classList.remove('animate-pulse'); 
-                textEl.classList.add('animate-bounce'); 
+                textEl.innerText = "TOQUE"; 
+                textEl.classList.remove('animate-pulse'); textEl.classList.add('animate-bounce'); 
             }
             if(iconEl) { 
                 iconEl.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>'; 
                 iconEl.classList.remove('animate-spin'); 
-                iconEl.classList.add('animate-ping'); 
+                iconEl.className = "w-12 h-12 rounded-full bg-red-900/40 text-red-500 flex items-center justify-center border border-red-500 shadow-[0_0_15px_red]";
             }
             if(overlay) { overlay.classList.remove('overlay-disabled'); }
         }
         
-        // Timeout de segurança (4s)
         setTimeout(() => { if(!isPlayerReady) { isPlayerReady = true; updateStartScreenReady(); } }, 4000);
 
-        // --- EFEITO DE CORAÇÃO NO TOQUE ---
+        // --- EASTER EGG: CHUVA DE WAFFLES ---
+        function triggerWaffles(e) {
+            e.stopPropagation();
+            for(let i=0; i<15; i++) {
+                setTimeout(() => {
+                    const x = Math.random() * window.innerWidth;
+                    createWaffleAt(x, -50);
+                }, i * 150);
+            }
+        }
+
+        function createWaffleAt(x, y) {
+            const el = document.createElement('div');
+            el.innerHTML = '🧇';
+            el.style.position = 'fixed';
+            el.style.left = x + 'px'; el.style.top = y + 'px';
+            el.style.fontSize = (Math.random() * 1.5 + 1.5) + 'rem';
+            el.style.pointerEvents = 'none'; el.style.zIndex = '100';
+            el.style.animation = `fall ${Math.random() * 2 + 2}s linear forwards`;
+            
+            if (!document.getElementById('fall-style')) {
+                const style = document.createElement('style');
+                style.id = 'fall-style';
+                style.innerHTML = `@keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }`;
+                document.head.appendChild(style);
+            }
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 4000);
+        }
+
+        // --- SISTEMA DE CAPÍTULOS ---
+        const chapters = ["Capítulo Um: O Início", "Capítulo Dois: A Saudade", "Capítulo Três: O Reencontro"];
+        let currentChapter = 0;
+        
+        function rotateChapters() {
+            const el = document.getElementById('chapter-text');
+            if(!el) return;
+            
+            setInterval(() => {
+                el.style.opacity = '0';
+                setTimeout(() => {
+                    currentChapter = (currentChapter + 1) % chapters.length;
+                    el.innerText = chapters[currentChapter];
+                    el.style.opacity = '0.8';
+                }, 500);
+            }, 4000);
+        }
+        rotateChapters();
+
+        // Interação de Toque (Corações Neon)
         document.addEventListener('click', (e) => {
-            // Evita criar coração se clicar em botões interativos
-            if(e.target.closest('button') || e.target.closest('.quiz-modal')) return;
-            createHeartAt(e.clientX, e.clientY);
+            if(e.target.closest('button')) return;
+            if(!e.target.closest('.st-title-container')) {
+                createHeartAt(e.clientX, e.clientY);
+            }
         });
 
         function createHeartAt(x, y) {
             const el = document.createElement('div');
             el.innerHTML = '❤️';
-            el.style.position = 'absolute'; el.style.left = x + 'px'; el.style.top = y + 'px';
-            el.style.fontSize = (Math.random() * 1 + 1) + 'rem';
-            el.style.pointerEvents = 'none'; el.style.zIndex = '100';
-            el.style.transform = 'translate(-50%, -50%)'; 
-            el.style.animation = 'floatClick 1.5s ease-out forwards';
-            const style = document.createElement('style');
-            style.innerHTML = `@keyframes floatClick { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; } 100% { transform: translate(-50%, -150px) scale(1.5); opacity: 0; } }`;
-            document.head.appendChild(style);
+            el.className = 'element-float';
+            el.style.left = x + 'px'; el.style.top = y + 'px';
+            el.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
+            el.style.filter = "drop-shadow(0 0 5px red)";
             document.body.appendChild(el);
-            setTimeout(() => { el.remove(); style.remove(); }, 1500);
+            setTimeout(() => el.remove(), 1500);
         }
 
-        // --- CARREGAMENTO DE FONTES ---
-        document.fonts.ready.then(function() {
-            const startContent = document.getElementById('start-content');
-            if(startContent) { startContent.classList.add('fonts-loaded-active'); }
-        });
-
-        // --- INICIAR EXPERIÊNCIA ---
         function startExperience() {
             if(!isPlayerReady) return;
             try { 
                 if (player && player.playVideo) { 
                     player.unMute(); 
-                    player.seekTo(10); // Começa aos 10s
+                    player.seekTo(30); 
                     player.setVolume(0); 
                     player.playVideo(); 
-                    // Fade In do Volume
                     let vol = 0;
-                    const fadeInterval = setInterval(() => {
-                        if (vol < 100) { vol += 5; player.setVolume(vol); } else { clearInterval(fadeInterval); }
+                    const fade = setInterval(() => {
+                        if (vol < 100) { vol += 5; player.setVolume(vol); } else { clearInterval(fade); }
                     }, 100);
                 } 
             } catch(e) {}
@@ -432,146 +492,147 @@
             setGreeting();
             const overlay = document.getElementById('start-overlay');
             const content = document.getElementById('main-content');
-            const envelope = document.getElementById('envelope-trigger');
-            const quizBtn = document.getElementById('quiz-trigger');
+            const fab = document.getElementById('envelope-trigger');
             
-            overlay.style.opacity = '0'; overlay.style.pointerEvents = 'none';
+            overlay.style.opacity = '0';
             setTimeout(() => {
                 overlay.style.display = 'none';
-                content.classList.remove('hidden'); 
-                envelope.classList.remove('hidden');
-                quizBtn.classList.remove('hidden');
-                requestAnimationFrame(() => content.classList.remove('opacity-0'));
+                content.classList.remove('hidden');
+                fab.classList.remove('hidden');
+                void content.offsetWidth;
+                content.classList.remove('opacity-0');
             }, 600);
-            updateTimers(); timerInterval = setInterval(updateTimers, 1000);
-            initParticles(); startFloatingElements(); setTimeout(typeWriter, 1200);
+
+            setInterval(updateTimers, 1000);
+            updateTimers();
+            startSpores();
+            setTimeout(typeWriter, 1000);
         }
 
         function setGreeting() {
-            const hour = new Date().getHours();
+            const h = new Date().getHours();
             const el = document.getElementById('greeting-text');
-            let greeting = "Olá";
-            if (hour >= 5 && hour < 12) greeting = "Bom dia";
-            else if (hour >= 12 && hour < 18) greeting = "Boa tarde";
-            else greeting = "Boa noite";
-            el.innerText = `${greeting}, amor`;
+            const greet = h < 12 ? "BOM DIA" : h < 18 ? "BOA TARDE" : "BOA NOITE";
+            if(el) el.innerText = `${greet}, AMOR`;
         }
 
         function updateTimers() {
             const now = new Date().getTime();
             const distance = targetDate - now;
+            const pastDiff = now - firstKissDate;
+
+            // --- LÓGICA DO CRONÔMETRO PEQUENO (EM BAIXO) ---
+            // Sempre mostra detalhes completos
+            if (pastDiff > 0) {
+                const pd = Math.floor(pastDiff / (1000 * 60 * 60 * 24));
+                const ph = Math.floor((pastDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const pm = Math.floor((pastDiff % (1000 * 60 * 60)) / (1000 * 60));
+                const ps = Math.floor((pastDiff % (1000 * 60)) / 1000);
+                
+                // Se o timer principal ainda for contagem regressiva, atualiza o pequeno
+                if (distance >= 0) {
+                    document.getElementById('past-time').innerText = `${pd}d ${ph}h ${pm}m ${ps}s`;
+                }
+            }
+
+            // --- LÓGICA DO CRONÔMETRO PRINCIPAL ---
             if (distance < 0) {
-                ['days', 'hours', 'minutes', 'seconds'].forEach(id => document.getElementById(id).innerText = "00");
+                // SE O ENCONTRO JÁ PASSOU: O PRINCIPAL VIRA O TEMPO CORRIDO
+                
+                // Calcula detalhes completos do tempo corrido para o principal
+                const pd = Math.floor(pastDiff / (1000 * 60 * 60 * 24));
+                const ph = Math.floor((pastDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const pm = Math.floor((pastDiff % (1000 * 60 * 60)) / (1000 * 60));
+                const ps = Math.floor((pastDiff % (1000 * 60)) / 1000);
+
+                document.getElementById('days').innerText = String(pd).padStart(2, '0');
+                document.getElementById('hours').innerText = String(ph).padStart(2, '0');
+                document.getElementById('minutes').innerText = String(pm).padStart(2, '0');
+                document.getElementById('seconds').innerText = String(ps).padStart(2, '0');
+                
+                // Atualiza o título do timer
+                document.getElementById('timer-label').innerText = "NOSSA HISTÓRIA CONTINUA...";
+                
+                // Esconde ou altera a caixa pequena para não ficar duplicado
+                document.getElementById('past-time').innerText = "Desde o início...";
+
             } else {
+                // SE AINDA NÃO CHEGOU: MOSTRA CONTAGEM REGRESSIVA
                 const d = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const s = Math.floor((distance % (1000 * 60)) / 1000);
+                
                 document.getElementById('days').innerText = String(d).padStart(2, '0');
                 document.getElementById('hours').innerText = String(h).padStart(2, '0');
                 document.getElementById('minutes').innerText = String(m).padStart(2, '0');
                 document.getElementById('seconds').innerText = String(s).padStart(2, '0');
             }
-            const pastDiff = now - firstKissDate;
-            if (pastDiff > 0) {
-                const pd = Math.floor(pastDiff / (1000 * 60 * 60 * 24));
-                const ph = Math.floor((pastDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                document.getElementById('past-time').innerText = `${pd} dias e ${ph} horas de nós`;
-            }
         }
 
+        let typeIdx = 0;
         function typeWriter() {
             if (typeIdx < mainPhrase.length) {
-                const el = document.getElementById("typewriter-text");
-                el.innerHTML += mainPhrase.charAt(typeIdx);
-                el.classList.add("typing-effect"); typeIdx++; setTimeout(typeWriter, 100);
+                document.getElementById("typewriter-text").innerHTML += mainPhrase.charAt(typeIdx);
+                typeIdx++; setTimeout(typeWriter, 100);
             } else {
-                setTimeout(() => {
-                    const el = document.getElementById("typewriter-text");
-                    el.classList.remove("typing-effect"); el.style.borderRight = "none";
-                }, 1500);
+                document.getElementById("typewriter-text").classList.remove("typing-effect");
             }
         }
 
-        function toggleLetter() { document.getElementById('letter-modal').classList.toggle('modal-active'); }
+        function toggleLetter() { 
+            document.getElementById('letter-modal').classList.toggle('modal-active'); 
+        }
 
         function showLoveReason(e) {
             e.stopPropagation();
             const el = document.getElementById('love-reason');
-            const btnText = document.getElementById('reason-btn-text');
-            el.classList.remove('opacity-100', 'translate-y-0'); el.classList.add('opacity-0', 'translate-y-2');
+            el.classList.remove('opacity-100', 'translate-y-0');
+            el.classList.add('opacity-0', 'translate-y-2');
+            
+            // Ativa efeito GLITCH e LUZES FRENÉTICAS
+            const mainContent = document.getElementById('main-content');
+            const lights = document.getElementById('lights-container');
+            
+            mainContent.classList.add('glitch-active');
+            lights.classList.add('frenetic-lights');
+            
+            // Remove efeitos após curto período
             setTimeout(() => {
-                const randomReason = reasons[Math.floor(Math.random() * reasons.length)];
-                el.innerText = `"${randomReason}"`; btnText.innerText = "Ver outro segredo...";
-                el.classList.remove('opacity-0', 'translate-y-2'); el.classList.add('opacity-100', 'translate-y-0');
+                mainContent.classList.remove('glitch-active');
+                lights.classList.remove('frenetic-lights');
+            }, 800);
+            
+            setTimeout(() => {
+                el.innerText = reasons[Math.floor(Math.random() * reasons.length)];
+                el.classList.remove('opacity-0', 'translate-y-2');
+                el.classList.add('opacity-100', 'translate-y-0');
+                
+                const burst = document.createElement('div');
+                burst.style.position = 'fixed';
+                burst.style.top = '0'; burst.style.left = '0'; burst.style.width = '100%'; burst.style.height = '100%';
+                burst.style.background = 'rgba(255,0,0,0.1)';
+                burst.style.pointerEvents = 'none';
+                burst.style.transition = 'opacity 0.5s';
+                document.body.appendChild(burst);
+                setTimeout(() => burst.style.opacity = '0', 100);
+                setTimeout(() => burst.remove(), 600);
             }, 300);
         }
 
-        function initParticles() {
-            const container = document.getElementById('particles-container');
-            for(let i=0; i<30; i++) {
+        function startSpores() {
+            const container = document.getElementById('spores-container');
+            for(let i=0; i<40; i++) {
                 const p = document.createElement('div');
-                p.classList.add('firefly');
-                p.style.left = Math.random() * 100 + 'vw'; p.style.top = Math.random() * 100 + 'vh';
-                p.style.animationDelay = Math.random() * 5 + 's';
-                p.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                p.classList.add('spore');
+                p.style.left = Math.random() * 100 + '%';
+                p.style.top = Math.random() * 100 + '%';
+                const mx = (Math.random() * 40 - 20) + 'px';
+                const my = (Math.random() * 40 - 20) + 'px';
+                p.style.setProperty('--mx', mx); p.style.setProperty('--my', my);
+                p.style.animationDelay = (Math.random() * 5) + 's';
+                p.style.animationDuration = (Math.random() * 10 + 8) + 's';
                 container.appendChild(p);
-            }
-        }
-
-        function createFloater(isLyric = false) {
-            const container = document.getElementById('particles-container');
-            const el = document.createElement('div');
-            el.classList.add('element-float');
-            if (isLyric) {
-                const text = lyrics[Math.floor(Math.random() * lyrics.length)];
-                el.innerText = text; el.classList.add('lyric-style');
-                el.style.left = (Math.random() * 80 + 10) + 'vw'; el.style.animationDuration = (Math.random() * 8 + 12) + 's'; 
-            } else {
-                el.innerText = '❤️'; el.classList.add('heart-style');
-                el.style.fontSize = (Math.random() * 1.5 + 0.8) + 'rem';
-                el.style.left = Math.random() * 100 + 'vw'; el.style.animationDuration = (Math.random() * 5 + 6) + 's';
-            }
-            container.appendChild(el); setTimeout(() => el.remove(), 20000);
-        }
-
-        function startFloatingElements() { setInterval(() => createFloater(false), 1200); setInterval(() => createFloater(true), 4000); }
-
-        /* QUIZ */
-        function toggleQuiz() {
-            const modal = document.getElementById('quiz-modal-container');
-            modal.classList.toggle('modal-active');
-            if(!modal.classList.contains('modal-active')) {
-                document.getElementById('quiz-result').classList.add('hidden');
-                document.getElementById('quiz-result').classList.remove('opacity-100');
-                const btnNo = document.getElementById('btn-no');
-                btnNo.style.position = 'static';
-            }
-        }
-
-        function moveButton() {
-            const btn = document.getElementById('btn-no');
-            const container = document.querySelector('.quiz-modal');
-            const maxX = container.clientWidth - btn.clientWidth - 20;
-            const maxY = container.clientHeight - btn.clientHeight - 20;
-            const randomX = Math.random() * maxX;
-            const randomY = Math.random() * maxY;
-            btn.style.position = 'absolute';
-            btn.style.left = randomX + 'px';
-            btn.style.top = randomY + 'px';
-        }
-
-        function quizSuccess() {
-            const result = document.getElementById('quiz-result');
-            result.classList.remove('hidden');
-            void result.offsetWidth; 
-            result.classList.add('opacity-100');
-            for(let i=0; i<30; i++) {
-                setTimeout(() => {
-                    const x = window.innerWidth / 2 + (Math.random() * 200 - 100);
-                    const y = window.innerHeight / 2 + (Math.random() * 200 - 100);
-                    createHeartAt(x, y);
-                }, i * 50);
             }
         }
     </script>
