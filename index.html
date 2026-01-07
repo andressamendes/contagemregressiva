@@ -28,6 +28,7 @@
             -webkit-tap-highlight-color: transparent;
             user-select: none;
             color: var(--st-text);
+            transition: color 1s ease;
         }
 
         /* --- BACKGROUNDS DINÂMICOS --- */
@@ -590,18 +591,18 @@
         function startExperience() {
             if(!isPlayerReady) return;
             
-            // Audio Play Logic
+            // Audio Play Logic (Corrigido para evitar erro de volume > 1)
             audio.volume = 0;
             audio.play().then(() => {
                 // Fade In
                 let vol = 0;
                 const fade = setInterval(() => {
-                    if (vol < 1) { 
-                        vol += 0.05; 
-                        audio.volume = vol; 
-                    } else { 
-                        clearInterval(fade); 
+                    vol += 0.05;
+                    if (vol >= 1) { 
+                        vol = 1;
+                        clearInterval(fade);
                     }
+                    audio.volume = vol; 
                 }, 200);
             }).catch(e => console.log("Audio play failed", e));
 
