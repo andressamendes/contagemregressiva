@@ -3,61 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Para Milena ❤️</title>
+    <title>Stranger Things: Milena ❤️</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@900&family=Courier+Prime:wght@400;700&display=block" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@900&family=Courier+Prime:wght@400;700&family=Yellowtail&display=block" rel="stylesheet">
     <style>
         :root {
-            --st-red: #ff1e1e;
-            --st-glow: 0 0 10px rgba(255, 30, 30, 0.8), 0 0 20px rgba(255, 30, 30, 0.4);
-            --bg-dark: #080808;
+            /* TEMA PADRÃO: MUNDO INVERTIDO (UPSIDE DOWN) */
+            --st-primary: #ff1e1e; /* Vermelho */
+            --st-secondary: #8b0000;
+            --st-text: #d1d5db;
+            --st-bg-dark: #050505;
+            --st-panel: rgba(10, 10, 10, 0.7);
+            --st-panel-border: rgba(255, 30, 30, 0.4);
+            --st-glow: 0 0 10px rgba(255, 30, 30, 0.8);
+            --font-display: 'Merriweather', serif;
         }
 
         body {
             font-family: 'Courier Prime', monospace;
             overflow: hidden;
-            background-color: var(--bg-dark);
+            background-color: var(--st-bg-dark);
             height: 100dvh;
             width: 100vw;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
-            color: #d1d5db;
+            color: var(--st-text);
         }
 
-        /* --- EFEITOS CRT / TV ANTIGA --- */
-        .scanlines {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.3));
-            background-size: 100% 4px;
-            z-index: 50; pointer-events: none; opacity: 0.6;
-        }
-        .vignette {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(0,0,0,0.9) 100%);
-            z-index: 51; pointer-events: none;
-        }
-
-        /* --- EFEITO GLITCH (INTERFERÊNCIA) --- */
-        @keyframes glitch-anim-1 {
-            0% { clip-path: inset(20% 0 80% 0); transform: translate(-2px, 1px); }
-            20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); }
-            40% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, 2px); }
-            60% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -2px); }
-            80% { clip-path: inset(10% 0 70% 0); transform: translate(-1px, 1px); }
-            100% { clip-path: inset(30% 0 20% 0); transform: translate(1px, -1px); }
-        }
-        
-        .glitch-active {
-            animation: glitch-anim-1 0.2s infinite linear alternate-reverse;
-            filter: hue-rotate(90deg) contrast(1.2);
-        }
-
-        /* --- BACKGROUND MUNDO INVERTIDO --- */
+        /* --- BACKGROUNDS DINÂMICOS --- */
         .upside-down-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, #1a0b0b 0%, #000000 100%);
+            background: radial-gradient(circle at 50% 50%, #1a0b0b 0%, #080000 60%, #000000 100%);
+            background-size: 150% 150%;
             z-index: -2;
+            transition: opacity 1s ease;
         }
+        
+        .fog-layer {
+            position: absolute; top: 0; left: 0; width: 200%; height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(20, 0, 0, 0.2) 25%, transparent 50%, rgba(30, 0, 0, 0.2) 75%, transparent 100%);
+            z-index: -1;
+            opacity: 0.6;
+            animation: driftFog 40s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes driftFog { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         
         .lightning-flash {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -75,65 +66,20 @@
             96% { opacity: 0; }
         }
 
-        /* --- TIPOGRAFIA STRANGER THINGS --- */
-        .st-title-container {
-            position: relative;
-            transform: scale(0.9);
-            animation: zoomSlow 20s infinite alternate;
-            cursor: pointer;
+        /* --- ELEMENTOS VISUAIS --- */
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.3));
+            background-size: 100% 4px;
+            z-index: 50; pointer-events: none; opacity: 0.6;
         }
-        @keyframes zoomSlow { from { transform: scale(0.9); } to { transform: scale(1.0); } }
-
-        .st-font { 
-            font-family: 'Merriweather', serif; 
-            font-weight: 900;
-            text-transform: uppercase;
-            -webkit-text-stroke: 1.5px var(--st-red); 
-            color: transparent;
-            text-shadow: 0 0 8px rgba(255, 30, 30, 0.6);
-            letter-spacing: -2px;
-            line-height: 0.9;
-            transition: all 0.3s;
-        }
-        
-        .st-title-container:active .st-font {
-            text-shadow: 0 0 20px rgba(255, 30, 30, 1);
-            filter: brightness(1.5);
-        }
-        
-        .st-bar {
-            height: 3px; background-color: var(--st-red);
-            box-shadow: 0 0 10px var(--st-red);
-            margin: 10px auto;
-            width: 0;
-            animation: expandBar 3s ease-out forwards 0.5s;
-        }
-        @keyframes expandBar { to { width: 60%; } }
-
-        /* --- LUZES DE NATAL (PISCANDO) --- */
-        .lights-container {
-            position: absolute; top: -15px; width: 100%; display: flex; justify-content: space-around; z-index: 5;
-        }
-        .light-bulb {
-            width: 12px; height: 20px; border-radius: 50%;
-            animation: glow 1.5s infinite alternate;
-            opacity: 0.3;
-            transition: all 0.1s;
-        }
-        .l-red { background: #ff0000; box-shadow: 0 0 10px #ff0000; animation-delay: 0s; }
-        .l-green { background: #00ff00; box-shadow: 0 0 10px #00ff00; animation-delay: 0.5s; }
-        .l-yellow { background: #ffff00; box-shadow: 0 0 10px #ffff00; animation-delay: 1s; }
-        .l-blue { background: #0000ff; box-shadow: 0 0 10px #0000ff; animation-delay: 1.5s; }
-        
-        @keyframes glow { 100% { opacity: 1; box-shadow: 0 0 20px currentColor; } }
-
-        /* Estado frenético das luzes */
-        .frenetic-lights .light-bulb {
-            animation-duration: 0.1s !important;
-            opacity: 1 !important;
+        .vignette {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(0,0,0,0.9) 100%);
+            z-index: 51; pointer-events: none;
         }
 
-        /* --- SPORES (CINZAS) --- */
+        /* Spores (Cinzas) */
         .spore {
             position: absolute; width: 3px; height: 3px;
             background: rgba(200, 200, 200, 0.5);
@@ -143,27 +89,103 @@
         }
         @keyframes floatSpore {
             0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.8; }
-            90% { opacity: 0.8; }
             100% { transform: translate(var(--mx), var(--my)); opacity: 0; }
         }
 
+        /* --- TIPOGRAFIA TEMÁTICA --- */
+        .st-title-container {
+            position: relative;
+            transform: scale(0.9);
+            animation: zoomSlow 20s infinite alternate;
+            cursor: pointer;
+        }
+        @keyframes zoomSlow { from { transform: scale(0.9); } to { transform: scale(1.0); } }
+
+        .st-font { 
+            font-family: var(--font-display); 
+            font-weight: 900;
+            text-transform: uppercase;
+            -webkit-text-stroke: 1.5px var(--st-primary); 
+            color: transparent;
+            text-shadow: 0 0 8px rgba(255, 30, 30, 0.6);
+            letter-spacing: -2px;
+            line-height: 0.9;
+            transition: all 0.5s;
+        }
+        
+        .st-font-filled {
+            font-family: var(--font-display); 
+            font-weight: 900;
+            color: var(--st-primary);
+            text-transform: uppercase;
+            text-shadow: 0 0 15px var(--st-primary);
+            letter-spacing: -1px;
+            transition: all 0.5s;
+        }
+        
+        .st-title-container:active .st-font {
+            text-shadow: 0 0 20px rgba(255, 30, 30, 1);
+            filter: brightness(1.5);
+        }
+        
+        .st-bar {
+            height: 3px; background-color: var(--st-primary);
+            box-shadow: 0 0 10px var(--st-primary);
+            margin: 10px auto;
+            width: 0;
+            animation: expandBar 3s ease-out forwards 0.5s;
+        }
+        @keyframes expandBar { to { width: 60%; } }
+
         /* --- CARD --- */
         .glass-panel {
-            background: rgba(10, 10, 10, 0.7);
-            border: 1px solid rgba(255, 30, 30, 0.4);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.15), inset 0 0 50px rgba(0,0,0,0.8);
-            border-radius: 8px;
-            backdrop-filter: blur(4px);
+            background: var(--st-panel);
+            border: 1px solid var(--st-panel-border);
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            border-radius: 16px;
+            backdrop-filter: blur(8px);
+            transition: all 0.5s ease;
         }
 
-        .timer-val { font-weight: 700; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.7); font-family: 'Merriweather', serif; }
-        .timer-label { color: var(--st-red); font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; }
+        .timer-val { font-weight: 700; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); font-family: var(--font-display); transition: color 0.5s; }
         
-        .typing-effect { border-right: 3px solid var(--st-red); padding-right: 2px; animation: blink 1s step-end infinite; }
-        @keyframes blink { 50% { border-color: transparent; } }
+        .timer-label { color: var(--st-primary); font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; transition: color 0.5s; }
 
-        /* OVERLAY INICIAL */
+        /* --- LUZES DE NATAL (JOYCE) --- */
+        .lights-container {
+            position: absolute; top: -10px; width: 100%; display: flex; justify-content: space-around; z-index: 5;
+            pointer-events: none;
+        }
+        .light-bulb {
+            width: 14px; height: 22px; border-radius: 50%;
+            opacity: 0.3; transition: opacity 0.1s, box-shadow 0.1s;
+            position: relative;
+        }
+        .light-bulb::before { /* Fio */
+            content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+            width: 2px; height: 10px; background: #222;
+        }
+        
+        .l-active { opacity: 1 !important; box-shadow: 0 0 20px currentColor; transform: scale(1.2); }
+        
+        /* Cores das luzes */
+        .l-0 { background: #ef4444; color: #ef4444; }
+        .l-1 { background: #3b82f6; color: #3b82f6; }
+        .l-2 { background: #eab308; color: #eab308; }
+        .l-3 { background: #22c55e; color: #22c55e; }
+        .l-4 { background: #a855f7; color: #a855f7; }
+        .l-5 { background: #f97316; color: #f97316; }
+
+        /* --- EASTER EGG DEMOGORGON --- */
+        #demogorgon-egg {
+            position: fixed; bottom: -150px; right: -50px;
+            width: 120px; height: 120px;
+            z-index: 90; pointer-events: none;
+            transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .demo-peek { bottom: 0 !important; }
+
+        /* --- INTERFACE GERAL --- */
         #start-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 999;
@@ -172,7 +194,21 @@
         }
         .overlay-disabled { pointer-events: none; opacity: 0.8; }
 
-        /* MODAL CARTA */
+        .btn-interact {
+            background: rgba(0,0,0,0.3); border: 1px solid var(--st-primary); color: var(--st-primary);
+            transition: all 0.3s;
+        }
+
+        .envelope-btn {
+            position: absolute; bottom: 1.5rem; right: 1.5rem;
+            background: var(--st-bg-dark); border: 1px solid var(--st-primary); color: var(--st-primary);
+            border-radius: 50%; width: 3.5rem; height: 3.5rem;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+            z-index: 60; transition: all 0.3s;
+        }
+
+        /* Modal Carta */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.9);
@@ -183,33 +219,40 @@
         
         .letter-paper {
             background: #e3e3dc; width: 90%; max-width: 480px; padding: 2rem;
-            box-shadow: 0 0 30px rgba(200, 200, 200, 0.1); 
-            transform: translateY(20px) scale(0.95);
-            transition: transform 0.5s;
-            color: #111; font-weight: bold;
-            border: 2px solid #333;
+            transform: translateY(20px) scale(0.95); transition: transform 0.5s;
+            color: #111; font-weight: bold; border: 2px solid #333;
             background-image: repeating-linear-gradient(#e3e3dc 0px, #e3e3dc 24px, #ccc 25px);
             line-height: 25px;
         }
         .modal-active .letter-paper { transform: translateY(0) scale(1); }
-
-        /* Botões */
-        .btn-interact {
-            background: rgba(50, 0, 0, 0.5); border: 1px solid var(--st-red); color: var(--st-red);
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
-            transition: all 0.3s;
+        
+        /* Letra soletando */
+        #spell-text {
+            position: absolute; top: 30px; width: 100%; text-align: center;
+            font-family: 'Courier Prime', monospace; font-weight: bold; 
+            font-size: 1.5rem; color: #fff; text-shadow: 0 0 10px #fff;
+            opacity: 0; transition: opacity 0.2s;
         }
-        .btn-interact:active { background: var(--st-red); color: black; box-shadow: 0 0 20px var(--st-red); }
 
-        .envelope-btn {
-            position: absolute; bottom: 1.5rem; right: 1.5rem;
-            background: #000; border: 1px solid var(--st-red); color: var(--st-red);
-            border-radius: 50%; width: 3.5rem; height: 3.5rem;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 0 15px rgba(255, 30, 30, 0.4);
-            z-index: 60; transition: transform 0.2s;
+        /* --- EFEITO GLITCH --- */
+        @keyframes glitch-anim-1 {
+            0% { clip-path: inset(20% 0 80% 0); transform: translate(-2px, 1px); }
+            20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); }
+            40% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, 2px); }
+            60% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -2px); }
+            80% { clip-path: inset(10% 0 70% 0); transform: translate(-1px, 1px); }
+            100% { clip-path: inset(30% 0 20% 0); transform: translate(1px, -1px); }
         }
-        .envelope-btn:active { transform: scale(0.9); background: var(--st-red); color: #000; }
+        
+        .glitch-active {
+            animation: glitch-anim-1 0.2s infinite linear alternate-reverse;
+            filter: hue-rotate(90deg) contrast(1.2);
+        }
+
+        .frenetic-lights .light-bulb {
+            animation-duration: 0.1s !important;
+            opacity: 1 !important;
+        }
 
         @media (max-width: 380px) {
             .st-font { font-size: 2.5rem; }
@@ -220,7 +263,7 @@
         
         /* Elementos Flutuantes */
         .element-float {
-            position: absolute; color: var(--st-red); text-shadow: 0 0 10px var(--st-red);
+            position: absolute; color: var(--st-primary); text-shadow: 0 0 10px var(--st-primary);
             animation: floatUp 2s linear forwards; pointer-events: none; z-index: 100;
         }
         @keyframes floatUp { 0% { opacity: 1; transform: translateY(0) scale(0.5); } 100% { opacity: 0; transform: translateY(-100px) scale(1.2); } }
@@ -233,24 +276,56 @@
 </head>
 <body>
 
-    <!-- Efeitos Visuais -->
+    <!-- EFEITOS VISUAIS -->
     <div class="scanlines"></div>
     <div class="vignette"></div>
+    
+    <!-- BACKGROUNDS -->
     <div class="upside-down-bg"></div>
+    <div class="fog-layer"></div>
     <div class="lightning-flash"></div>
     
-    <!-- Luzes de Natal -->
+    <!-- LUZES DA JOYCE -->
     <div class="lights-container" id="lights-container">
-        <div class="light-bulb l-red"></div>
-        <div class="light-bulb l-green"></div>
-        <div class="light-bulb l-yellow"></div>
-        <div class="light-bulb l-blue"></div>
-        <div class="light-bulb l-red"></div>
-        <div class="light-bulb l-green"></div>
+        <div class="light-bulb l-0"></div>
+        <div class="light-bulb l-1"></div>
+        <div class="light-bulb l-2"></div>
+        <div class="light-bulb l-3"></div>
+        <div class="light-bulb l-4"></div>
+        <div class="light-bulb l-5"></div>
     </div>
+    <div id="spell-text"></div> <!-- Mostra a letra sendo soletrada -->
 
     <div id="spores-container" class="absolute inset-0 overflow-hidden pointer-events-none z-0"></div>
-    <div id="youtube-player"></div>
+    
+    <!-- Rádio Online (Synthwave/80s) -->
+    <!-- Opção Nightride FM (Synthwave puro) ou uma rádio 80s genérica -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="https://stream.nightride.fm/nightride.m4a" type="audio/mp4">
+        <!-- Fallback se o primeiro não funcionar -->
+        <source src="https://ice6.securenetsystems.net/RO80S" type="audio/mpeg">
+    </audio>
+
+    <!-- EASTER EGG DEMOGORGON (SVG Simples e Fofo) -->
+    <div id="demogorgon-egg">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g class="demo-head animate-bounce">
+                <!-- Pétalas da cabeça -->
+                <path d="M50 20 L60 5 L70 20 Z" fill="#881337" />
+                <path d="M75 35 L95 30 L80 45 Z" fill="#881337" />
+                <path d="M75 65 L95 70 L80 55 Z" fill="#881337" />
+                <path d="M50 80 L60 95 L70 80 Z" fill="#881337" />
+                <path d="M25 65 L5 70 L20 55 Z" fill="#881337" />
+                <path d="M25 35 L5 30 L20 45 Z" fill="#881337" />
+                <!-- Centro do rosto -->
+                <circle cx="50" cy="50" r="25" fill="#4c0519" />
+                <!-- Dentes (pontinhos) -->
+                <circle cx="40" cy="45" r="2" fill="white" />
+                <circle cx="60" cy="45" r="2" fill="white" />
+                <path d="M40 60 Q50 70 60 60" stroke="white" stroke-width="2" stroke-linecap="round" />
+            </g>
+        </svg>
+    </div>
 
     <!-- TELA INICIAL -->
     <div id="start-overlay" class="overlay-disabled">
@@ -264,7 +339,7 @@
             </div>
 
             <div class="flex flex-col items-center gap-4 mt-8">
-                <p id="start-text" class="text-red-600 font-bold tracking-[0.2em] text-xs uppercase animate-pulse">Carregando...</p>
+                <p id="start-text" class="text-red-600 font-bold tracking-[0.2em] text-xs uppercase animate-pulse">Sintonizando Rádio...</p>
                 <div id="start-icon" class="w-8 h-8 border-2 border-red-900 border-t-red-500 rounded-full animate-spin"></div>
             </div>
         </div>
@@ -275,29 +350,28 @@
         
         <div class="glass-panel w-full max-w-md p-6 text-center relative flex flex-col items-center max-h-[92dvh] overflow-y-auto custom-scrollbar">
             
-            <h3 id="greeting-text" class="text-2xl text-white font-bold mb-4 mt-2 tracking-widest uppercase" style="text-shadow: 0 0 10px rgba(255,255,255,0.5);">Olá, Amor</h3>
+            <h3 id="greeting-text" class="st-font-filled text-2xl mb-4 mt-2">Transmissão Recebida</h3>
             
-            <!-- Adicionei ID para poder trocar o texto dinamicamente -->
-            <p id="timer-label" class="text-[10px] tracking-[0.25em] uppercase text-gray-400 mb-8 font-bold">Contagem para nosso encontro</p>
+            <p id="timer-label" class="text-[10px] tracking-[0.25em] uppercase text-gray-400 mb-8 font-bold">Tempo para abertura do portal</p>
             
             <!-- TIMER -->
-            <div class="w-full mb-8 border-b border-red-900/50 pb-6">
+            <div class="w-full mb-8 border-b border-gray-500/30 pb-6">
                 <div class="flex justify-center items-start gap-2 w-full text-white">
                     <div class="flex flex-col items-center w-1/4">
                         <span id="days" class="timer-val text-4xl md:text-5xl">00</span>
                         <span class="timer-label">Dias</span>
                     </div>
-                    <span class="text-2xl text-red-600 mt-1">:</span>
+                    <span class="text-2xl text-red-600 mt-1 timer-sep">:</span>
                     <div class="flex flex-col items-center w-1/4">
                         <span id="hours" class="timer-val text-4xl md:text-5xl">00</span>
                         <span class="timer-label">Horas</span>
                     </div>
-                    <span class="text-2xl text-red-600 mt-1">:</span>
+                    <span class="text-2xl text-red-600 mt-1 timer-sep">:</span>
                     <div class="flex flex-col items-center w-1/4">
                         <span id="minutes" class="timer-val text-4xl md:text-5xl">00</span>
                         <span class="timer-label">Min</span>
                     </div>
-                    <span class="text-2xl text-red-600 mt-1">:</span>
+                    <span class="text-2xl text-red-600 mt-1 timer-sep">:</span>
                     <div class="flex flex-col items-center w-1/4">
                         <span id="seconds" class="timer-val text-4xl md:text-5xl w-[1.5em]">00</span>
                         <span class="timer-label">Seg</span>
@@ -305,9 +379,9 @@
                 </div>
             </div>
 
-            <!-- Timer Passado (Caixa pequena) -->
-            <div id="small-timer-box" class="mb-8 w-full bg-black/50 rounded p-4 border-l-4 border-red-600">
-                <p class="text-[9px] tracking-[0.2em] uppercase text-red-500 mb-2 font-bold">TEMPO DECORRIDO</p>
+            <!-- Timer Passado -->
+            <div id="small-timer-box" class="mb-8 w-full bg-black/40 rounded p-4 border-l-4 border-red-600 transition-colors">
+                <p class="text-[9px] tracking-[0.2em] uppercase text-gray-400 mb-2 font-bold">TEMPO DESDE O PRIMEIRO CONTATO</p>
                 <div class="flex items-center justify-center gap-2">
                     <p id="past-time" class="text-white text-md sm:text-lg font-bold font-mono">Calculando...</p>
                 </div>
@@ -315,13 +389,13 @@
 
             <!-- Frase -->
             <div class="min-h-[3rem] flex items-center justify-center mb-6 px-1">
-                <h2 id="typewriter-text" class="text-xl text-red-100 font-bold text-center tracking-wider" style="text-shadow: 0 0 5px red;"></h2>
+                <h2 id="typewriter-text" class="text-xl font-bold text-center tracking-wider text-white"></h2>
             </div>
 
             <!-- Botão -->
             <div class="flex flex-col gap-3 w-full items-center pb-2">
                 <button onclick="showLoveReason(event)" class="btn-interact px-6 py-3 rounded text-xs font-bold tracking-[0.2em] uppercase w-full max-w-xs">
-                    Revelar Segredo
+                    Decodificar Mensagem
                 </button>
             </div>
             
@@ -342,30 +416,33 @@
             <div class="absolute top-2 right-2 p-2 opacity-50 cursor-pointer text-black" onclick="toggleLetter()">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </div>
-            <h3 class="text-xl mb-4 text-center font-bold underline decoration-red-900 underline-offset-4">CONFIDENCIAL - HAWKINS LAB</h3>
+            <h3 class="st-font-filled text-xl mb-4 text-center">CONFIDENCIAL - PARA MILENA</h3>
             <div class="letter-content text-sm md:text-base">
-                <p>Escrevo isso enquanto conto os segundos para te ver. Cada momento longe parece o Mundo Invertido, frio e escuro. Mas saber que logo estarei com você é como ver as luzes acendendo na parede.</p>
-                <p class="mt-4">Mal posso esperar pelo nosso dia 26. Amigos não mentem, e meu amor por você também não.</p>
+                <p>Escrevo isso enquanto conto os segundos para te ver. Cada momento longe parece uma eternidade, mas saber que logo estarei com você faz tudo valer a pena.</p>
+                <p class="mt-4">Mal posso esperar pelo nosso dia 26. Meu coração é todo seu e a ansiedade só aumenta para o nosso reencontro. Te amo!</p>
             </div>
             <div class="flex justify-end items-end mt-8 border-t border-gray-500 pt-2">
-                <p class="text-right font-bold text-lg mr-2 mb-0">- Andressa (011)</p>
+                <p class="text-right font-bold text-lg mr-2 mb-0" style="font-family: 'Courier Prime', monospace;">- Com amor, Andressa</p>
             </div>
         </div>
     </div>
-
-    <script src="https://www.youtube.com/iframe_api"></script>
 
     <script>
         // CONFIGURAÇÕES
         const targetDate = new Date("2026-01-26T20:00:00").getTime();
         const firstKissDate = new Date("2025-09-07T23:00:00").getTime();
-        const mainPhrase = "A gente se escolhe todo dia";
+        const mainPhrase = "Eu iria até o Mundo Invertido por você";
         
+        // Segredos Temáticos Stranger Things
         const reasons = [
-            "Amo o jeito que você sorri.", "Você me faz sentir em casa.",
-            "Adoro nossas conversas infinitas.", "Seu abraço é meu lugar favorito.",
-            "Com você, o mundo fica mais leve.", "Amo cada detalhe seu.",
-            "Você é minha melhor escolha.", "Nossos planos são meus sonhos."
+            "Amigos não mentem, e meu amor também não.",
+            "Você é meu 11 em uma escala de 10.",
+            "Por você, eu enfrentaria o Vecna.",
+            "Promessa é algo que não se pode quebrar.",
+            "Você faz minha vida virar de cabeça para baixo (do jeito bom).",
+            "Juntas, somos mais fortes que qualquer monstro.",
+            "Você é a luz na minha parede.",
+            "A vida sem você é como um waffle sem maple syrup."
         ];
 
         let player;
@@ -376,18 +453,20 @@
             if(startContent) { startContent.classList.add('fonts-loaded-active'); }
         });
 
-        // --- YOUTUBE API ---
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('youtube-player', {
-                height: '1', width: '1', videoId: 'nbZTVUduKBY',
-                playerVars: { 'playsinline': 1, 'controls': 0, 'loop': 1, 'autoplay': 0 },
-                events: { 'onReady': onPlayerReady, 'onError': onPlayerError }
-            });
-        }
-
-        function onPlayerReady() { isPlayerReady = true; updateStartScreenReady(); }
-        function onPlayerError() { isPlayerReady = true; updateStartScreenReady(); }
+        // Configuração do Áudio (Rádio)
+        const audio = document.getElementById('bg-music');
         
+        // Verificação básica se o áudio está pronto
+        audio.oncanplay = function() {
+            if(!isPlayerReady) {
+                isPlayerReady = true;
+                updateStartScreenReady();
+            }
+        };
+        
+        // Timeout de segurança
+        setTimeout(() => { if(!isPlayerReady) { isPlayerReady = true; updateStartScreenReady(); } }, 3000);
+
         function updateStartScreenReady() {
             const textEl = document.getElementById('start-text');
             const iconEl = document.getElementById('start-icon');
@@ -403,8 +482,6 @@
             }
             if(overlay) { overlay.classList.remove('overlay-disabled'); }
         }
-        
-        setTimeout(() => { if(!isPlayerReady) { isPlayerReady = true; updateStartScreenReady(); } }, 4000);
 
         // --- EASTER EGG: CHUVA DE WAFFLES ---
         function triggerWaffles(e) {
@@ -474,20 +551,59 @@
             setTimeout(() => el.remove(), 1500);
         }
 
+        // --- LUZES COMUNICANTES ---
+        const lights = document.querySelectorAll('.light-bulb');
+        const milenaSeq = [0, 1, 2, 4, 3, 5];
+        const letters = ['M', 'I', 'L', 'E', 'N', 'A'];
+        let spelling = false;
+
+        function startSpellingSequence() {
+            if(spelling) return;
+            spelling = true;
+            let i = 0;
+            lights.forEach(l => l.style.animation = 'none');
+            const interval = setInterval(() => {
+                lights.forEach(l => l.classList.remove('l-active'));
+                if(i < milenaSeq.length) {
+                    const idx = milenaSeq[i];
+                    lights[idx].classList.add('l-active');
+                    const textDisplay = document.getElementById('spell-text');
+                    textDisplay.innerText = letters[i];
+                    textDisplay.style.opacity = 1;
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    document.getElementById('spell-text').style.opacity = 0;
+                    setTimeout(() => {
+                        lights.forEach(l => {
+                            l.classList.remove('l-active');
+                            l.style.animation = 'glow 1.5s infinite alternate';
+                        });
+                        spelling = false;
+                    }, 1000);
+                }
+            }, 800);
+        }
+        setInterval(startSpellingSequence, 15000);
+
+        // --- INICIALIZAÇÃO ---
         function startExperience() {
             if(!isPlayerReady) return;
-            try { 
-                if (player && player.playVideo) { 
-                    player.unMute(); 
-                    player.seekTo(30); 
-                    player.setVolume(0); 
-                    player.playVideo(); 
-                    let vol = 0;
-                    const fade = setInterval(() => {
-                        if (vol < 100) { vol += 5; player.setVolume(vol); } else { clearInterval(fade); }
-                    }, 100);
-                } 
-            } catch(e) {}
+            
+            // Audio Play Logic
+            audio.volume = 0;
+            audio.play().then(() => {
+                // Fade In
+                let vol = 0;
+                const fade = setInterval(() => {
+                    if (vol < 1) { 
+                        vol += 0.05; 
+                        audio.volume = vol; 
+                    } else { 
+                        clearInterval(fade); 
+                    }
+                }, 200);
+            }).catch(e => console.log("Audio play failed", e));
 
             setGreeting();
             const overlay = document.getElementById('start-overlay');
@@ -512,8 +628,8 @@
         function setGreeting() {
             const h = new Date().getHours();
             const el = document.getElementById('greeting-text');
-            const greet = h < 12 ? "BOM DIA" : h < 18 ? "BOA TARDE" : "BOA NOITE";
-            if(el) el.innerText = `${greet}, AMOR`;
+            const greet = h < 12 ? "OLÁ" : h < 18 ? "OLÁ" : "OLÁ";
+            el.innerText = `${greet}, AMOR`;
         }
 
         function updateTimers() {
@@ -521,25 +637,18 @@
             const distance = targetDate - now;
             const pastDiff = now - firstKissDate;
 
-            // --- LÓGICA DO CRONÔMETRO PEQUENO (EM BAIXO) ---
-            // Sempre mostra detalhes completos
             if (pastDiff > 0) {
                 const pd = Math.floor(pastDiff / (1000 * 60 * 60 * 24));
                 const ph = Math.floor((pastDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const pm = Math.floor((pastDiff % (1000 * 60 * 60)) / (1000 * 60));
                 const ps = Math.floor((pastDiff % (1000 * 60)) / 1000);
                 
-                // Se o timer principal ainda for contagem regressiva, atualiza o pequeno
                 if (distance >= 0) {
                     document.getElementById('past-time').innerText = `${pd}d ${ph}h ${pm}m ${ps}s`;
                 }
             }
 
-            // --- LÓGICA DO CRONÔMETRO PRINCIPAL ---
             if (distance < 0) {
-                // SE O ENCONTRO JÁ PASSOU: O PRINCIPAL VIRA O TEMPO CORRIDO
-                
-                // Calcula detalhes completos do tempo corrido para o principal
                 const pd = Math.floor(pastDiff / (1000 * 60 * 60 * 24));
                 const ph = Math.floor((pastDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const pm = Math.floor((pastDiff % (1000 * 60 * 60)) / (1000 * 60));
@@ -549,15 +658,9 @@
                 document.getElementById('hours').innerText = String(ph).padStart(2, '0');
                 document.getElementById('minutes').innerText = String(pm).padStart(2, '0');
                 document.getElementById('seconds').innerText = String(ps).padStart(2, '0');
-                
-                // Atualiza o título do timer
                 document.getElementById('timer-label').innerText = "NOSSA HISTÓRIA CONTINUA...";
-                
-                // Esconde ou altera a caixa pequena para não ficar duplicado
                 document.getElementById('past-time').innerText = "Desde o início...";
-
             } else {
-                // SE AINDA NÃO CHEGOU: MOSTRA CONTAGEM REGRESSIVA
                 const d = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -597,7 +700,6 @@
             mainContent.classList.add('glitch-active');
             lights.classList.add('frenetic-lights');
             
-            // Remove efeitos após curto período
             setTimeout(() => {
                 mainContent.classList.remove('glitch-active');
                 lights.classList.remove('frenetic-lights');
@@ -625,10 +727,8 @@
             for(let i=0; i<40; i++) {
                 const p = document.createElement('div');
                 p.classList.add('spore');
-                p.style.left = Math.random() * 100 + '%';
-                p.style.top = Math.random() * 100 + '%';
-                const mx = (Math.random() * 40 - 20) + 'px';
-                const my = (Math.random() * 40 - 20) + 'px';
+                p.style.left = Math.random() * 100 + '%'; p.style.top = Math.random() * 100 + '%';
+                const mx = (Math.random() * 40 - 20) + 'px'; const my = (Math.random() * 40 - 20) + 'px';
                 p.style.setProperty('--mx', mx); p.style.setProperty('--my', my);
                 p.style.animationDelay = (Math.random() * 5) + 's';
                 p.style.animationDuration = (Math.random() * 10 + 8) + 's';
