@@ -8,8 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@900&family=Courier+Prime:wght@400;700&family=Yellowtail&display=block" rel="stylesheet">
     <style>
         :root {
-            /* TEMA PADRÃO: MUNDO INVERTIDO (UPSIDE DOWN) */
-            --st-primary: #ff1e1e; /* Vermelho */
+            --st-primary: #ff1e1e;
             --st-secondary: #8b0000;
             --st-text: #d1d5db;
             --st-bg-dark: #050505;
@@ -31,7 +30,6 @@
             transition: color 1s ease;
         }
 
-        /* --- BACKGROUNDS DINÂMICOS --- */
         .upside-down-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 50% 50%, #1a0b0b 0%, #080000 60%, #000000 100%);
@@ -67,7 +65,6 @@
             96% { opacity: 0; }
         }
 
-        /* --- ELEMENTOS VISUAIS --- */
         .scanlines {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.3));
@@ -80,7 +77,6 @@
             z-index: 51; pointer-events: none;
         }
 
-        /* Spores (Cinzas) */
         .spore {
             position: absolute; width: 3px; height: 3px;
             background: rgba(200, 200, 200, 0.5);
@@ -93,7 +89,6 @@
             100% { transform: translate(var(--mx), var(--my)); opacity: 0; }
         }
 
-        /* --- TIPOGRAFIA TEMÁTICA --- */
         .st-title-container {
             position: relative;
             transform: scale(0.9);
@@ -138,7 +133,6 @@
         }
         @keyframes expandBar { to { width: 60%; } }
 
-        /* --- CARD --- */
         .glass-panel {
             background: var(--st-panel);
             border: 1px solid var(--st-panel-border);
@@ -152,7 +146,6 @@
         
         .timer-label { color: var(--st-primary); font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; transition: color 0.5s; }
 
-        /* --- LUZES DE NATAL (JOYCE) --- */
         .lights-container {
             position: absolute; top: -10px; width: 100%; display: flex; justify-content: space-around; z-index: 5;
             pointer-events: none;
@@ -162,14 +155,13 @@
             opacity: 0.3; transition: opacity 0.1s, box-shadow 0.1s;
             position: relative;
         }
-        .light-bulb::before { /* Fio */
+        .light-bulb::before {
             content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
             width: 2px; height: 10px; background: #222;
         }
         
         .l-active { opacity: 1 !important; box-shadow: 0 0 20px currentColor; transform: scale(1.2); }
         
-        /* Cores das luzes */
         .l-0 { background: #ef4444; color: #ef4444; }
         .l-1 { background: #3b82f6; color: #3b82f6; }
         .l-2 { background: #eab308; color: #eab308; }
@@ -177,7 +169,6 @@
         .l-4 { background: #a855f7; color: #a855f7; }
         .l-5 { background: #f97316; color: #f97316; }
 
-        /* --- EASTER EGG DEMOGORGON --- */
         #demogorgon-egg {
             position: fixed; bottom: -150px; right: -50px;
             width: 120px; height: 120px;
@@ -186,7 +177,6 @@
         }
         .demo-peek { bottom: 0 !important; }
 
-        /* --- INTERFACE GERAL --- */
         #start-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 999;
@@ -200,19 +190,32 @@
             transition: all 0.3s;
         }
 
-        .envelope-btn {
-            position: absolute; bottom: 1.5rem; right: 1.5rem;
+        .envelope-btn, .quiz-btn {
+            position: absolute; bottom: 1.5rem;
             background: var(--st-bg-dark); border: 1px solid var(--st-primary); color: var(--st-primary);
             border-radius: 50%; width: 3.5rem; height: 3.5rem;
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
             z-index: 60; transition: all 0.3s;
+            text-decoration: none;
         }
 
-        /* Modal Carta */
+        .envelope-btn {
+            right: 1.5rem;
+        }
+
+        .quiz-btn {
+            left: 1.5rem;
+        }
+
+        .envelope-btn:hover, .quiz-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.6);
+        }
+
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             z-index: 1000; display: flex; align-items: center; justify-content: center;
             opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
         }
@@ -227,7 +230,6 @@
         }
         .modal-active .letter-paper { transform: translateY(0) scale(1); }
         
-        /* Letra soletando */
         #spell-text {
             position: absolute; top: 30px; width: 100%; text-align: center;
             font-family: 'Courier Prime', monospace; font-weight: bold; 
@@ -235,7 +237,6 @@
             opacity: 0; transition: opacity 0.2s;
         }
 
-        /* --- EFEITO GLITCH --- */
         @keyframes glitch-anim-1 {
             0% { clip-path: inset(20% 0 80% 0); transform: translate(-2px, 1px); }
             20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); }
@@ -262,14 +263,12 @@
         
         #youtube-player { position: fixed; opacity: 0; pointer-events: none; }
         
-        /* Elementos Flutuantes */
         .element-float {
             position: absolute; color: var(--st-primary); text-shadow: 0 0 10px var(--st-primary);
             animation: floatUp 2s linear forwards; pointer-events: none; z-index: 100;
         }
         @keyframes floatUp { 0% { opacity: 1; transform: translateY(0) scale(0.5); } 100% { opacity: 0; transform: translateY(-100px) scale(1.2); } }
 
-        /* Estilos para Capítulos Animados */
         #chapter-text {
             transition: opacity 0.5s ease;
         }
@@ -277,16 +276,13 @@
 </head>
 <body>
 
-    <!-- EFEITOS VISUAIS -->
     <div class="scanlines"></div>
     <div class="vignette"></div>
     
-    <!-- BACKGROUNDS -->
     <div class="upside-down-bg"></div>
     <div class="fog-layer"></div>
     <div class="lightning-flash"></div>
     
-    <!-- LUZES DA JOYCE -->
     <div class="lights-container" id="lights-container">
         <div class="light-bulb l-0"></div>
         <div class="light-bulb l-1"></div>
@@ -295,32 +291,25 @@
         <div class="light-bulb l-4"></div>
         <div class="light-bulb l-5"></div>
     </div>
-    <div id="spell-text"></div> <!-- Mostra a letra sendo soletrada -->
+    <div id="spell-text"></div>
 
     <div id="spores-container" class="absolute inset-0 overflow-hidden pointer-events-none z-0"></div>
     
-    <!-- Rádio Online (Synthwave/80s) -->
-    <!-- Opção Nightride FM (Synthwave puro) ou uma rádio 80s genérica -->
     <audio id="bg-music" loop preload="auto">
         <source src="https://stream.nightride.fm/nightride.m4a" type="audio/mp4">
-        <!-- Fallback se o primeiro não funcionar -->
         <source src="https://ice6.securenetsystems.net/RO80S" type="audio/mpeg">
     </audio>
 
-    <!-- EASTER EGG DEMOGORGON (SVG Simples e Fofo) -->
     <div id="demogorgon-egg">
         <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g class="demo-head animate-bounce">
-                <!-- Pétalas da cabeça -->
                 <path d="M50 20 L60 5 L70 20 Z" fill="#881337" />
                 <path d="M75 35 L95 30 L80 45 Z" fill="#881337" />
                 <path d="M75 65 L95 70 L80 55 Z" fill="#881337" />
                 <path d="M50 80 L60 95 L70 80 Z" fill="#881337" />
                 <path d="M25 65 L5 70 L20 55 Z" fill="#881337" />
                 <path d="M25 35 L5 30 L20 45 Z" fill="#881337" />
-                <!-- Centro do rosto -->
                 <circle cx="50" cy="50" r="25" fill="#4c0519" />
-                <!-- Dentes (pontinhos) -->
                 <circle cx="40" cy="45" r="2" fill="white" />
                 <circle cx="60" cy="45" r="2" fill="white" />
                 <path d="M40 60 Q50 70 60 60" stroke="white" stroke-width="2" stroke-linecap="round" />
@@ -335,7 +324,6 @@
             <div class="st-title-container mb-12 text-center" onclick="triggerWaffles(event)">
                 <h1 class="st-font text-6xl md:text-8xl leading-none">PARA<br>MILENA</h1>
                 <div class="st-bar"></div>
-                <!-- Capítulo Animado -->
                 <p id="chapter-text" class="text-white font-bold tracking-[0.5em] text-xs uppercase mt-2 opacity-80 h-4">Capítulo Um: O Início</p>
             </div>
 
@@ -346,7 +334,7 @@
         </div>
     </div>
 
-    <!-- CONTEÚDO PRINCIPAL (Adicionado ID para Glitch) -->
+    <!-- CONTEÚDO PRINCIPAL -->
     <div id="main-content" class="relative z-10 w-full h-full flex flex-col items-center justify-center p-4 opacity-0 transition-opacity duration-1000 hidden">
         
         <div class="glass-panel w-full max-w-md p-6 text-center relative flex flex-col items-center max-h-[92dvh] overflow-y-auto custom-scrollbar">
@@ -355,7 +343,6 @@
             
             <p id="timer-label" class="text-[10px] tracking-[0.25em] uppercase text-gray-400 mb-8 font-bold">Tempo para abertura do portal</p>
             
-            <!-- TIMER -->
             <div class="w-full mb-8 border-b border-gray-500/30 pb-6">
                 <div class="flex justify-center items-start gap-2 w-full text-white">
                     <div class="flex flex-col items-center w-1/4">
@@ -380,7 +367,6 @@
                 </div>
             </div>
 
-            <!-- Timer Passado -->
             <div id="small-timer-box" class="mb-8 w-full bg-black/40 rounded p-4 border-l-4 border-red-600 transition-colors">
                 <p class="text-[9px] tracking-[0.2em] uppercase text-gray-400 mb-2 font-bold">TEMPO DESDE O PRIMEIRO CONTATO</p>
                 <div class="flex items-center justify-center gap-2">
@@ -388,12 +374,10 @@
                 </div>
             </div>
 
-            <!-- Frase -->
             <div class="min-h-[3rem] flex items-center justify-center mb-6 px-1">
                 <h2 id="typewriter-text" class="text-xl font-bold text-center tracking-wider text-white"></h2>
             </div>
 
-            <!-- Botão -->
             <div class="flex flex-col gap-3 w-full items-center pb-2">
                 <button onclick="showLoveReason(event)" class="btn-interact px-6 py-3 rounded text-xs font-bold tracking-[0.2em] uppercase w-full max-w-xs">
                     Decodificar Mensagem
@@ -405,6 +389,15 @@
             <div class="h-8"></div>
         </div>
     </div>
+
+    <!-- Botão Quiz -->
+    <a href="quiz.html" class="quiz-btn hidden" id="quiz-trigger" aria-label="Jogar Quiz">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+    </a>
 
     <!-- Botão Carta -->
     <button onclick="toggleLetter()" class="envelope-btn hidden" id="envelope-trigger" aria-label="Abrir carta">
@@ -434,7 +427,6 @@
         const firstKissDate = new Date("2025-09-07T23:00:00").getTime();
         const mainPhrase = "Eu iria até o Mundo Invertido por você";
         
-        // Segredos Temáticos Stranger Things
         const reasons = [
             "Amigos não mentem, e meu amor também não.",
             "Você é meu 11 em uma escala de 10.",
@@ -454,10 +446,8 @@
             if(startContent) { startContent.classList.add('fonts-loaded-active'); }
         });
 
-        // Configuração do Áudio (Rádio)
         const audio = document.getElementById('bg-music');
         
-        // Verificação básica se o áudio está pronto
         audio.oncanplay = function() {
             if(!isPlayerReady) {
                 isPlayerReady = true;
@@ -465,7 +455,6 @@
             }
         };
         
-        // Timeout de segurança
         setTimeout(() => { if(!isPlayerReady) { isPlayerReady = true; updateStartScreenReady(); } }, 3000);
 
         function updateStartScreenReady() {
@@ -484,7 +473,6 @@
             if(overlay) { overlay.classList.remove('overlay-disabled'); }
         }
 
-        // --- EASTER EGG: CHUVA DE WAFFLES ---
         function triggerWaffles(e) {
             e.stopPropagation();
             for(let i=0; i<15; i++) {
@@ -514,7 +502,6 @@
             setTimeout(() => el.remove(), 4000);
         }
 
-        // --- SISTEMA DE CAPÍTULOS ---
         const chapters = ["Capítulo Um: O Início", "Capítulo Dois: A Saudade", "Capítulo Três: O Reencontro"];
         let currentChapter = 0;
         
@@ -533,7 +520,6 @@
         }
         rotateChapters();
 
-        // Interação de Toque (Corações Neon)
         document.addEventListener('click', (e) => {
             if(e.target.closest('button')) return;
             if(!e.target.closest('.st-title-container')) {
@@ -552,7 +538,6 @@
             setTimeout(() => el.remove(), 1500);
         }
 
-        // --- LUZES COMUNICANTES ---
         const lights = document.querySelectorAll('.light-bulb');
         const milenaSeq = [0, 1, 2, 4, 3, 5];
         const letters = ['M', 'I', 'L', 'E', 'N', 'A'];
@@ -587,14 +572,11 @@
         }
         setInterval(startSpellingSequence, 15000);
 
-        // --- INICIALIZAÇÃO ---
         function startExperience() {
             if(!isPlayerReady) return;
             
-            // Audio Play Logic (Corrigido para evitar erro de volume > 1)
             audio.volume = 0;
             audio.play().then(() => {
-                // Fade In
                 let vol = 0;
                 const fade = setInterval(() => {
                     vol += 0.05;
@@ -610,12 +592,14 @@
             const overlay = document.getElementById('start-overlay');
             const content = document.getElementById('main-content');
             const fab = document.getElementById('envelope-trigger');
+            const quizBtn = document.getElementById('quiz-trigger');
             
             overlay.style.opacity = '0';
             setTimeout(() => {
                 overlay.style.display = 'none';
                 content.classList.remove('hidden');
                 fab.classList.remove('hidden');
+                quizBtn.classList.remove('hidden');
                 void content.offsetWidth;
                 content.classList.remove('opacity-0');
             }, 600);
@@ -694,16 +678,15 @@
             el.classList.remove('opacity-100', 'translate-y-0');
             el.classList.add('opacity-0', 'translate-y-2');
             
-            // Ativa efeito GLITCH e LUZES FRENÉTICAS
             const mainContent = document.getElementById('main-content');
-            const lights = document.getElementById('lights-container');
+            const lightsContainer = document.getElementById('lights-container');
             
             mainContent.classList.add('glitch-active');
-            lights.classList.add('frenetic-lights');
+            lightsContainer.classList.add('frenetic-lights');
             
             setTimeout(() => {
                 mainContent.classList.remove('glitch-active');
-                lights.classList.remove('frenetic-lights');
+                lightsContainer.classList.remove('frenetic-lights');
             }, 800);
             
             setTimeout(() => {
