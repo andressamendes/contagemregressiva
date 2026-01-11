@@ -91,7 +91,6 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            overflow-y: auto;
         }
 
         /* ========== SCREENS ========== */
@@ -107,6 +106,36 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(30px) scale(0.95); }
             to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ========== BACK BUTTON ========== */
+        .btn-back {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(20, 0, 0, 0.5));
+            border: 2px solid var(--st-panel-border);
+            color: var(--st-primary);
+            border-radius: 50%;
+            width: 3.5rem;
+            height: 3.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            z-index: 100;
+        }
+
+        .btn-back:hover {
+            transform: scale(1.15) rotate(-10deg);
+            border-color: var(--st-primary);
+            box-shadow: 0 8px 30px rgba(255, 30, 30, 0.6);
+        }
+
+        .btn-back:active {
+            transform: scale(1.05);
         }
 
         /* ========== TITLE ========== */
@@ -207,10 +236,14 @@
         }
 
         .player-icon {
-            font-size: 5rem;
             margin-bottom: 1.5rem;
-            filter: drop-shadow(0 5px 15px rgba(255, 30, 30, 0.4));
             animation: float 3s ease-in-out infinite;
+        }
+
+        .player-icon img {
+            width: 120px;
+            height: 120px;
+            filter: drop-shadow(0 5px 15px rgba(255, 30, 30, 0.4));
         }
 
         @keyframes float {
@@ -678,6 +711,13 @@
                 flex-direction: column;
                 gap: 1.5rem;
             }
+
+            .btn-back {
+                top: 1rem;
+                left: 1rem;
+                width: 3rem;
+                height: 3rem;
+            }
         }
 
         /* ========== HIDDEN ========== */
@@ -708,6 +748,13 @@
         
         <!-- START SCREEN -->
         <div id="start-screen" class="screen active">
+            <!-- Botão Voltar -->
+            <button class="btn-back" onclick="window.location.href='index.html'" aria-label="Voltar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+            </button>
+
             <div class="title-container">
                 <h1 class="st-title">QUIZ</h1>
                 <div class="st-bar"></div>
@@ -717,13 +764,17 @@
             
             <div class="player-grid">
                 <div class="player-card" onclick="startGame('Andressa')">
-                    <div class="player-icon">👩‍⚕️</div>
+                    <div class="player-icon">
+                        <img src="assets/andressa-avatar.svg" alt="Andressa">
+                    </div>
                     <h3>Andressa</h3>
                     <p>Acadêmica de Medicina</p>
                 </div>
                 
                 <div class="player-card" onclick="startGame('Milena')">
-                    <div class="player-icon">💕</div>
+                    <div class="player-icon">
+                        <img src="assets/milena-avatar.svg" alt="Milena">
+                    </div>
                     <h3>Milena</h3>
                     <p>Namorada Especial</p>
                 </div>
