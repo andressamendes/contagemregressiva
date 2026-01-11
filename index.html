@@ -190,8 +190,8 @@
             transition: all 0.3s;
         }
 
-        .envelope-btn, .quiz-btn {
-            position: absolute; bottom: 1.5rem;
+        .envelope-btn, .quiz-btn, .ranking-btn, .challenge-btn {
+            position: absolute;
             background: var(--st-bg-dark); border: 1px solid var(--st-primary); color: var(--st-primary);
             border-radius: 50%; width: 3.5rem; height: 3.5rem;
             display: flex; align-items: center; justify-content: center;
@@ -201,14 +201,26 @@
         }
 
         .envelope-btn {
+            bottom: 1.5rem;
             right: 1.5rem;
         }
 
         .quiz-btn {
+            bottom: 1.5rem;
             left: 1.5rem;
         }
 
-        .envelope-btn:hover, .quiz-btn:hover {
+        .ranking-btn {
+            top: 1.5rem;
+            right: 1.5rem;
+        }
+
+        .challenge-btn {
+            top: 1.5rem;
+            left: 1.5rem;
+        }
+
+        .envelope-btn:hover, .quiz-btn:hover, .ranking-btn:hover, .challenge-btn:hover {
             transform: scale(1.1);
             box-shadow: 0 0 25px rgba(255, 0, 0, 0.6);
         }
@@ -389,6 +401,21 @@
             <div class="h-8"></div>
         </div>
     </div>
+
+    <!-- Botão Ranking -->
+    <a href="ranking.html" class="ranking-btn hidden" id="ranking-trigger" aria-label="Ver Ranking">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+        </svg>
+    </a>
+
+    <!-- Botão Desafio 15 Dias -->
+    <a href="challenge.html" class="challenge-btn hidden" id="challenge-trigger" aria-label="Desafio 15 Dias">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+    </a>
 
     <!-- Botão Quiz -->
     <a href="quiz.html" class="quiz-btn hidden" id="quiz-trigger" aria-label="Jogar Quiz">
@@ -593,6 +620,8 @@
             const content = document.getElementById('main-content');
             const fab = document.getElementById('envelope-trigger');
             const quizBtn = document.getElementById('quiz-trigger');
+            const rankingBtn = document.getElementById('ranking-trigger');
+            const challengeBtn = document.getElementById('challenge-trigger');
             
             overlay.style.opacity = '0';
             setTimeout(() => {
@@ -600,6 +629,8 @@
                 content.classList.remove('hidden');
                 fab.classList.remove('hidden');
                 quizBtn.classList.remove('hidden');
+                rankingBtn.classList.remove('hidden');
+                challengeBtn.classList.remove('hidden');
                 void content.offsetWidth;
                 content.classList.remove('opacity-0');
             }, 600);

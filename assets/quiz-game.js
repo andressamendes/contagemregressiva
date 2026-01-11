@@ -156,42 +156,72 @@ function initGame() {
 }
 
 // ==================== SHOW QUESTION ====================
-function showQuestion() {
-    if (currentQuestion >= quizData.length) {
-        showResult();
-        return;
+// ==================== RESULT ====================
+function showResult() {
+    showScreen('result-screen');
+    
+    const percentage = (correctAnswers / quizData.length) * 100;
+    
+    // Update stats
+    document.getElementById('final-score').textContent = score;
+    document.getElementById('correct-answers').textContent = `${correctAnswers}/${quizData.length}`;
+    document.getElementById('max-combo').textContent = `x${maxCombo}`;
+    
+    // Determine rank
+    let medal, title, message;
+    
+    if (percentage === 100 && lives === 3) {
+        medal = '🏆';
+        title = 'MASTER DO AMOR!';
+        message = 'PERFEITO! Vocês se conhecem como Eleven conhece os waffles! Conexão total no Upside Down do amor! 💕✨';
+    } else if (percentage >= 90) {
+        medal = '🥇';
+        title = 'EXPERT ROMÂNTICO!';
+        message = 'Incrível! Vocês têm uma conexão fortíssima! O Party ficaria orgulhoso! ❤️🔥';
+    } else if (percentage >= 75) {
+        medal = '🥈';
+        title = 'CASAL CONECTADO!';
+        message = 'Muito bem! Vocês se conhecem bastante! Continuem fortalecendo esse amor! 💖';
+    } else if (percentage >= 60) {
+        medal = '🥉';
+        title = 'BOM COMEÇO!';
+        message = 'Legal! Vocês estão no caminho certo. Cada dia conhecendo mais uma à outra! 💕';
+    } else if (percentage >= 40) {
+        medal = '🎖️';
+        title = 'EXPLORADORES DO AMOR!';
+        message = 'Tá começando! Como os meninos investigando Hawkins, vocês estão descobrindo mais! 💝';
+    } else {
+        medal = '💌';
+        title = 'NOVA AVENTURA!';
+        message = 'Hora de conversar mais e conhecer melhor sua amada! O amor está só começando! 💕';
     }
     
-    const q = quizData[currentQuestion];
+    // Create medal element (using emoji as placeholder)
+    const medalElement = document.getElementById('rank-medal');
+    medalElement.innerHTML = `<div style="font-size: 150px;">${medal}</div>`;
     
-    // Update progress
-    const progress = ((currentQuestion + 1) / quizData.length) * 100;
-    document.getElementById('progress-bar').style.width = progress + '%';
-    document.getElementById('progress-text').textContent = `${currentQuestion + 1}/${quizData.length}`;
+    document.getElementById('rank-title').textContent = title;
+    document.getElementById('result-message-text').textContent = message;
     
-    // Update question
-    document.getElementById('question-number').textContent = `PERGUNTA ${currentQuestion + 1}`;
-    document.getElementById('question-text').textContent = q.question;
-    
-    // Create options
-    const optionsContainer = document.getElementById('options-container');
-    optionsContainer.innerHTML = '';
-    
-    q.options.forEach((option, index) => {
-        const optionDiv = document.createElement('div');
-        optionDiv.classList.add('option', 'animate-in');
-        optionDiv.style.animationDelay = `${index * 0.1}s`;
-        optionDiv.textContent = option;
-        optionDiv.onclick = () => selectAnswer(index);
-        optionsContainer.appendChild(optionDiv);
-    });
-    
-    // Update score
-    document.getElementById('score-value').textContent = score;
-    
-    // Enable hint if not used
-    document.getElementById('hint-btn').disabled = hintUsed;
+    // ==================== INTEGRATE WITH RANKING SYSTEM ====================
+    if (typeof RankingSystem !== 'undefined' && currentPlayer) {
+        // Record quiz game
+        RankingSystem.recordQuizGame(
+            currentPlayer,
+            score,
+            correctAnswers,
+            quizData.length,
+            maxCombo
+        );
+        
+        // Show XP notification
+        setTimeout(() => {
+            const stats = RankingSystem.getPlayerStats(currentPlayer);
+            alert(`🎉 +${score} XP!\n\nXP Total: ${stats.totalXP}\nRank: ${stats.rank.icon} ${stats.rank.name}`);
+        }, 1000);
+    }
 }
+
 
 // ==================== SELECT ANSWER ====================
 function selectAnswer(selectedIndex) {

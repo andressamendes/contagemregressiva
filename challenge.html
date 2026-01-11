@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Desafio dos 15 Dias - Andressa & Milena ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@900&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/challenge-styles.css">
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="scanlines"></div>
+    <div class="vignette"></div>
+    <div class="upside-down-bg"></div>
+    <div class="fog-layer"></div>
+    <div class="lightning-flash"></div>
+    
+    <!-- Particles Container -->
+    <div id="particles-container"></div>
+
+    <!-- Game Container -->
+    <div class="game-container">
+        
+        <!-- TELA DE INÍCIO -->
+        <div id="start-screen" class="screen active">
+            <div class="title-container">
+                <h1 class="st-title">DESAFIO</h1>
+                <div class="st-bar"></div>
+                <h2 class="st-subtitle">15 DIAS DE AMOR</h2>
+                <p class="subtitle">Stranger Things Edition</p>
+            </div>
+            
+            <div class="challenge-intro">
+                <div class="intro-card">
+                    <div class="intro-icon">💌</div>
+                    <h3>15 Missões Românticas</h3>
+                    <p>Uma missão especial por dia para fortalecer nosso amor</p>
+                </div>
+                
+                <div class="intro-card">
+                    <div class="intro-icon">🔥</div>
+                    <h3>Sistema de Streak</h3>
+                    <p>Complete dias consecutivos e ganhe conquistas exclusivas</p>
+                </div>
+                
+                <div class="intro-card">
+                    <div class="intro-icon">🏆</div>
+                    <h3>Recompensas Especiais</h3>
+                    <p>Desbloqueie medalhas e surpresas ao completar o desafio</p>
+                </div>
+            </div>
+
+            <div class="start-info">
+                <p class="info-highlight">💡 Complete uma missão por dia</p>
+                <p class="info-highlight">⏰ Você pode fazer check-in a qualquer hora</p>
+                <p class="info-highlight">❤️ Seu progresso é salvo automaticamente</p>
+            </div>
+
+            <button class="btn-primary pulse" onclick="startChallenge()">
+                INICIAR DESAFIO
+            </button>
+
+            <button class="btn-secondary" onclick="window.location.href='index.html'">
+                Voltar ao Início
+            </button>
+        </div>
+
+        <!-- TELA PRINCIPAL DO DESAFIO -->
+        <div id="challenge-screen" class="screen">
+            
+            <!-- Header com Progresso -->
+            <div class="challenge-header">
+                <button class="btn-back" onclick="window.location.href='index.html'" aria-label="Voltar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                
+                <div class="progress-info">
+                    <h2 class="progress-title">DESAFIO DOS 15 DIAS</h2>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progress-bar"></div>
+                        <span class="progress-text" id="progress-text">0/15</span>
+                    </div>
+                </div>
+
+                <div class="streak-container" id="streak-container">
+                    <div class="streak-icon">🔥</div>
+                    <div class="streak-info">
+                        <span class="streak-label">STREAK</span>
+                        <span class="streak-value" id="streak-value">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Missão Atual -->
+            <div class="current-mission-card" id="current-mission-card">
+                <div class="mission-badge" id="mission-badge">DIA 1</div>
+                <div class="mission-icon" id="mission-icon">💌</div>
+                <h3 class="mission-title" id="mission-title">Carregando missão...</h3>
+                <p class="mission-description" id="mission-description">Aguarde...</p>
+                
+                <button class="btn-complete" id="btn-complete" onclick="showCheckInConfirm()">
+                    ✓ COMPLETEI A MISSÃO
+                </button>
+                
+                <div class="mission-completed hidden" id="mission-completed">
+                    <div class="completed-icon">✓</div>
+                    <p class="completed-text">Missão Completada!</p>
+                    <p class="completed-date" id="completed-date"></p>
+                </div>
+            </div>
+
+            <!-- Timeline das Missões -->
+            <div class="timeline-section">
+                <h3 class="timeline-title">TODAS AS MISSÕES</h3>
+                <div class="timeline" id="timeline"></div>
+            </div>
+
+            <!-- Conquistas -->
+            <div class="achievements-section" id="achievements-section">
+                <h3 class="achievements-title">CONQUISTAS</h3>
+                <div class="achievements-grid" id="achievements-grid"></div>
+            </div>
+
+            <!-- Botão Reset (escondido por padrão) -->
+            <button class="btn-reset" id="btn-reset" onclick="confirmReset()">
+                Resetar Desafio
+            </button>
+        </div>
+
+        <!-- TELA DE CONCLUSÃO -->
+        <div id="completion-screen" class="screen">
+            <div class="completion-container">
+                <div class="completion-fireworks">🎆</div>
+                
+                <div class="completion-medal">🏆</div>
+                
+                <h1 class="completion-title">DESAFIO COMPLETO!</h1>
+                
+                <p class="completion-message">
+                    Vocês completaram os 15 dias de missões românticas! 
+                    O amor de vocês é mais forte que qualquer Demogorgon! 💕
+                </p>
+
+                <div class="completion-stats">
+                    <div class="stat-item">
+                        <span class="stat-icon">✓</span>
+                        <span class="stat-label">15 Missões Completadas</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-icon">🔥</span>
+                        <span class="stat-label" id="final-streak">Streak Máximo: 0 dias</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-icon">🏅</span>
+                        <span class="stat-label" id="final-achievements">0 Conquistas Desbloqueadas</span>
+                    </div>
+                </div>
+
+                <div class="completion-reward">
+                    <h3>🎁 RECOMPENSA ESPECIAL DESBLOQUEADA</h3>
+                    <p class="reward-text">
+                        "Vocês provaram que o amor verdadeiro supera qualquer desafio. 
+                        Assim como Eleven e Mike, vocês são inseparáveis! 
+                        Continuem escrevendo essa história linda juntas. ❤️"
+                    </p>
+                </div>
+
+                <div class="completion-actions">
+                    <button class="btn-primary" onclick="window.location.href='index.html'">
+                        Voltar ao Início
+                    </button>
+                    <button class="btn-secondary" onclick="confirmReset()">
+                        Recomeçar Desafio
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal de Confirmação de Check-In -->
+    <div id="checkin-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3 class="modal-title">Confirmar Missão</h3>
+            <p class="modal-text">Você realmente completou esta missão de hoje?</p>
+            <div class="modal-buttons">
+                <button class="btn-primary" onclick="completeMission()">
+                    SIM, COMPLETEI!
+                </button>
+                <button class="btn-secondary" onclick="closeModal()">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Reset -->
+    <div id="reset-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3 class="modal-title">⚠️ Resetar Desafio</h3>
+            <p class="modal-text">Tem certeza? Todo o progresso será perdido!</p>
+            <div class="modal-buttons">
+                <button class="btn-danger" onclick="resetChallenge()">
+                    SIM, RESETAR
+                </button>
+                <button class="btn-secondary" onclick="closeModal()">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="complete-sound" preload="auto">
+        <source src="data:audio/wav;base64,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" type="audio/wav">
+    </audio>
+    <script src="assets/ranking-system.js"></script>
+    <script src="assets/challenge-game.js"></script>
+</body>
+</html>
