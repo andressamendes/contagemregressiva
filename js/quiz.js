@@ -1,5 +1,5 @@
 // ==========================================
-// STRANGER THINGS COUNTDOWN - QUIZ.JS
+// LOVE COUNTDOWN - QUIZ.JS
 // Lógica específica da página do Quiz
 // ==========================================
 
@@ -146,12 +146,13 @@ function showAvatarSelection() {
                 ${avatarOptions.map(avatar => `
                     <div class="avatar-option" data-avatar-id="${avatar.id}">
                         <img src="${avatar.url}" alt="${avatar.name}" class="avatar-preview">
-                        <p style="margin-top: 10px; color: rgba(255,255,255,0.8); font-size: 1rem;">${avatar.name}</p>
+                        <p style="margin-top: 10px; color: rgba(74, 74, 74, 0.8); font-size: 1rem;">${avatar.name}</p>
                     </div>
                 `).join('')}
             </div>
             <input type="text" id="player-name" placeholder="Digite seu nome" maxlength="20">
             <button id="start-quiz-btn" disabled>Começar Quiz</button>
+            <button class="back-button" onclick="location.href='index.html'" style="margin-top: 15px;">← Voltar ao Início</button>
         </div>
     `;
     
@@ -230,7 +231,7 @@ function showQuestion() {
                 `).join('')}
             </div>
             
-            <button class="back-button" onclick="goBack()">← Voltar</button>
+            <button class="back-button" onclick="goBack()" style="margin-top: 20px;">← Voltar ao Início</button>
         </div>
     `;
     
@@ -340,7 +341,7 @@ function showResult(result) {
                 <img src="${result.avatar.url}" alt="Avatar" class="avatar">
             </div>
             
-            <h3>${result.name}</h3>
+                        <h3>${result.name}</h3>
             
             <div class="result-stats">
                 <div class="stat">
@@ -384,3 +385,4 @@ if (document.readyState === 'loading') {
 } else {
     initQuiz();
 }
+
