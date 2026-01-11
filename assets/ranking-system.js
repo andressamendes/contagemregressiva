@@ -1,353 +1,283 @@
-// ==================== RANKING SYSTEM - CORE ====================
-// Sistema central de pontuação e gamificação
+// ========================================
+// RANKING SYSTEM - Sistema Global de XP
+// ========================================
 
 const RankingSystem = {
+    STORAGE_KEY: 'stRankingData',
     
-    // ==================== CONFIGURAÇÕES ====================
-    RANKS: [
-        { level: 1, name: "Iniciante do Amor", minXP: 0, maxXP: 500, icon: "💕" },
-        { level: 2, name: "Apaixonados", minXP: 500, maxXP: 1000, icon: "💖" },
-        { level: 3, name: "Namorados Conectados", minXP: 1000, maxXP: 1500, icon: "💗" },
-        { level: 4, name: "Casal Inseparável", minXP: 1500, maxXP: 2500, icon: "💝" },
-        { level: 5, name: "Almas Gêmeas", minXP: 2500, maxXP: 3500, icon: "💞" },
-        { level: 6, name: "Amor Lendário", minXP: 3500, maxXP: 4700, icon: "👑" },
-        { level: 7, name: "Amor Eterno", minXP: 4700, maxXP: Infinity, icon: "✨" }
+    // Sistema de níveis e títulos
+    levels: [
+        { level: 1, minXP: 0, title: 'Novato', maxXP: 100 },
+        { level: 2, minXP: 100, title: 'Iniciante', maxXP: 250 },
+        { level: 3, minXP: 250, title: 'Aprendiz', maxXP: 500 },
+        { level: 4, minXP: 500, title: 'Dedicado', maxXP: 800 },
+        { level: 5, minXP: 800, title: 'Competente', maxXP: 1200 },
+        { level: 6, minXP: 1200, title: 'Experiente', maxXP: 1700 },
+        { level: 7, minXP: 1700, title: 'Veterano', maxXP: 2300 },
+        { level: 8, minXP: 2300, title: 'Expert', maxXP: 3000 },
+        { level: 9, minXP: 3000, title: 'Mestre', maxXP: 4000 },
+        { level: 10, minXP: 4000, title: 'Lendário', maxXP: Infinity }
     ],
 
-    ACHIEVEMENTS: {
-        // Quiz Achievements
-        quiz_first_play: { 
-            id: "quiz_first_play", 
-            name: "Primeira Aventura", 
-            description: "Completou o quiz pela primeira vez", 
-            icon: "🎮", 
-            xp: 50 
-        },
-        quiz_perfect: { 
-            id: "quiz_perfect", 
-            name: "Conhecimento Perfeito", 
-            description: "Acertou todas as perguntas do quiz", 
-            icon: "🏆", 
-            xp: 200 
-        },
-        quiz_combo_5: { 
-            id: "quiz_combo_5", 
-            name: "Combo Master", 
-            description: "Atingiu combo de 5 acertos seguidos", 
-            icon: "🔥", 
-            xp: 100 
-        },
-
-        // Challenge Achievements
-        challenge_started: { 
-            id: "challenge_started", 
-            name: "Início da Jornada", 
-            description: "Iniciou o Desafio dos 15 Dias", 
-            icon: "🚀", 
-            xp: 50 
-        },
-        challenge_streak_5: { 
-            id: "challenge_streak_5", 
-            name: "Dedicação Consistente", 
-            description: "Manteve streak de 5 dias", 
-            icon: "⚡", 
-            xp: 100 
-        },
-        challenge_streak_10: { 
-            id: "challenge_streak_10", 
-            name: "Compromisso Forte", 
-            description: "Manteve streak de 10 dias", 
-            icon: "💪", 
-            xp: 150 
-        },
-        challenge_complete: { 
-            id: "challenge_complete", 
-            name: "Desafio Concluído", 
-            description: "Completou os 15 dias de missões", 
-            icon: "🎖️", 
-            xp: 300 
-        },
-
-        // Global Achievements
-        total_1000xp: { 
-            id: "total_1000xp", 
-            name: "Mil Pontos de Amor", 
-            description: "Atingiu 1000 XP total", 
-            icon: "⭐", 
-            xp: 0 
-        },
-        total_2500xp: { 
-            id: "total_2500xp", 
-            name: "Mestria em Amor", 
-            description: "Atingiu 2500 XP total", 
-            icon: "🌟", 
-            xp: 0 
-        },
-        all_games: { 
-            id: "all_games", 
-            name: "Explorador Completo", 
-            description: "Jogou todos os jogos disponíveis", 
-            icon: "🗺️", 
-            xp: 200 
-        }
+    // Valores de XP para diferentes atividades
+    xpValues: {
+        quizCorrect: 50,
+        quizPerfect: 200,
+        quizCombo: 25,
+        challengeDay: 100,
+        challengeStreak: 50,
+        challengeComplete: 500
     },
 
-    // ==================== INICIALIZAÇÃO ====================
+    // Inicializar sistema
     init() {
-        this.loadData();
-    },
-
-    loadData() {
-        const saved = localStorage.getItem('rankingData');
-        if (saved) {
-            this.data = JSON.parse(saved);
-        } else {
-            this.data = this.getDefaultData();
-            this.saveData();
+        const data = this.getData();
+        if (!data.players || data.players.length === 0) {
+            this.createDefaultPlayers();
         }
     },
 
-    getDefaultData() {
-        return {
-            andressa: this.createPlayerData('Andressa'),
-            milena: this.createPlayerData('Milena')
-        };
-    },
-
-    createPlayerData(name) {
-        return {
-            name: name,
-            totalXP: 0,
-            currentRank: this.RANKS[0],
-            achievements: [],
-            games: {
-                quiz: {
-                    played: 0,
-                    bestScore: 0,
+    // Criar jogadores padrão
+    createDefaultPlayers() {
+        const defaultPlayers = [
+            {
+                id: 'andressa',
+                name: 'Andressa',
+                avatar: '👩‍⚕️',
+                totalXP: 0,
+                quizStats: {
+                    gamesPlayed: 0,
                     totalScore: 0,
+                    bestScore: 0,
                     perfectGames: 0,
-                    maxCombo: 0
+                    bestCombo: 0
                 },
-                challenge: {
-                    started: false,
-                    completed: false,
-                    currentDay: 0,
-                    maxStreak: 0,
-                    completedDays: []
-                }
+                challengeStats: {
+                    daysCompleted: 0,
+                    currentStreak: 0,
+                    bestStreak: 0,
+                    completionRate: 0
+                },
+                achievements: []
             },
-            lastActivity: null
-        };
+            {
+                id: 'milena',
+                name: 'Milena',
+                avatar: '💕',
+                totalXP: 0,
+                quizStats: {
+                    gamesPlayed: 0,
+                    totalScore: 0,
+                    bestScore: 0,
+                    perfectGames: 0,
+                    bestCombo: 0
+                },
+                challengeStats: {
+                    daysCompleted: 0,
+                    currentStreak: 0,
+                    bestStreak: 0,
+                    completionRate: 0
+                },
+                achievements: []
+            }
+        ];
+
+        this.setData({ players: defaultPlayers });
     },
 
-    saveData() {
-        localStorage.setItem('rankingData', JSON.stringify(this.data));
+    // Obter dados do localStorage
+    getData() {
+        const data = localStorage.getItem(this.STORAGE_KEY);
+        return data ? JSON.parse(data) : { players: [] };
     },
 
-    // ==================== PLAYER MANAGEMENT ====================
-    getPlayer(playerName) {
-        const key = playerName.toLowerCase();
-        if (!this.data[key]) {
-            this.data[key] = this.createPlayerData(playerName);
-            this.saveData();
+    // Salvar dados no localStorage
+    setData(data) {
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data));
+    },
+
+    // Obter jogador por ID
+    getPlayer(playerId) {
+        const data = this.getData();
+        return data.players.find(p => p.id === playerId);
+    },
+
+    // Atualizar jogador
+    updatePlayer(playerId, updates) {
+        const data = this.getData();
+        const playerIndex = data.players.findIndex(p => p.id === playerId);
+        
+        if (playerIndex !== -1) {
+            data.players[playerIndex] = {
+                ...data.players[playerIndex],
+                ...updates
+            };
+            this.setData(data);
+            return data.players[playerIndex];
         }
-        return this.data[key];
+        return null;
     },
 
-    getAllPlayers() {
-        return [this.data.andressa, this.data.milena];
-    },
+    // Adicionar XP ao jogador
+    addXP(playerId, amount, source = 'generic') {
+        const player = this.getPlayer(playerId);
+        if (!player) return null;
 
-    // ==================== XP E RANK ====================
-    addXP(playerName, amount, source) {
-        const player = this.getPlayer(playerName);
-        player.totalXP += amount;
-        player.lastActivity = new Date().toISOString();
-        
-        // Update rank
-        this.updateRank(player);
-        
-        // Save
-        this.saveData();
-        
-        // Check for level-based achievements
-        this.checkXPAchievements(playerName);
-        
+        const newTotalXP = player.totalXP + amount;
+        const oldLevel = this.getPlayerLevel(player.totalXP);
+        const newLevel = this.getPlayerLevel(newTotalXP);
+
+        const updated = this.updatePlayer(playerId, {
+            totalXP: newTotalXP
+        });
+
+        // Verificar se subiu de nível
+        if (newLevel.level > oldLevel.level) {
+            console.log(`🎉 ${player.name} subiu para nível ${newLevel.level}!`);
+        }
+
         return {
-            newXP: player.totalXP,
-            rank: player.currentRank,
-            levelUp: this.checkLevelUp(player)
+            player: updated,
+            xpGained: amount,
+            leveledUp: newLevel.level > oldLevel.level,
+            oldLevel: oldLevel,
+            newLevel: newLevel,
+            source: source
         };
     },
 
-    updateRank(player) {
-        for (let rank of this.RANKS) {
-            if (player.totalXP >= rank.minXP && player.totalXP < rank.maxXP) {
-                player.currentRank = rank;
-                break;
+    // Obter nível do jogador baseado no XP
+    getPlayerLevel(xp) {
+        for (let i = this.levels.length - 1; i >= 0; i--) {
+            if (xp >= this.levels[i].minXP) {
+                return this.levels[i];
             }
         }
+        return this.levels[0];
     },
 
-    checkLevelUp(player) {
-        // Check if just leveled up
-        return false; // Implement logic if needed
-    },
+    // Calcular progresso para próximo nível
+    getLevelProgress(xp) {
+        const currentLevel = this.getPlayerLevel(xp);
+        const levelIndex = this.levels.findIndex(l => l.level === currentLevel.level);
+        
+        if (levelIndex === this.levels.length - 1) {
+            return { percentage: 100, current: xp, max: xp };
+        }
 
-    // ==================== ACHIEVEMENTS ====================
-    unlockAchievement(playerName, achievementId) {
-        const player = this.getPlayer(playerName);
-        
-        if (player.achievements.includes(achievementId)) {
-            return false; // Already unlocked
-        }
-        
-        const achievement = this.ACHIEVEMENTS[achievementId];
-        if (!achievement) return false;
-        
-        player.achievements.push(achievementId);
-        
-        if (achievement.xp > 0) {
-            this.addXP(playerName, achievement.xp, 'achievement');
-        }
-        
-        this.saveData();
-        return true;
-    },
+        const nextLevel = this.levels[levelIndex + 1];
+        const currentLevelXP = currentLevel.minXP;
+        const nextLevelXP = nextLevel.minXP;
+        const progressXP = xp - currentLevelXP;
+        const requiredXP = nextLevelXP - currentLevelXP;
+        const percentage = Math.min(100, (progressXP / requiredXP) * 100);
 
-    checkXPAchievements(playerName) {
-        const player = this.getPlayer(playerName);
-        
-        if (player.totalXP >= 1000) {
-            this.unlockAchievement(playerName, 'total_1000xp');
-        }
-        if (player.totalXP >= 2500) {
-            this.unlockAchievement(playerName, 'total_2500xp');
-        }
-        
-        // Check if played all games
-        if (player.games.quiz.played > 0 && player.games.challenge.started) {
-            this.unlockAchievement(playerName, 'all_games');
-        }
-    },
-
-    // ==================== QUIZ INTEGRATION ====================
-    recordQuizGame(playerName, score, correctAnswers, totalQuestions, maxCombo) {
-        const player = this.getPlayer(playerName);
-        
-        player.games.quiz.played++;
-        player.games.quiz.totalScore += score;
-        
-        if (score > player.games.quiz.bestScore) {
-            player.games.quiz.bestScore = score;
-        }
-        
-        if (maxCombo > player.games.quiz.maxCombo) {
-            player.games.quiz.maxCombo = maxCombo;
-        }
-        
-        // Check achievements
-        this.unlockAchievement(playerName, 'quiz_first_play');
-        
-        if (correctAnswers === totalQuestions) {
-            player.games.quiz.perfectGames++;
-            this.unlockAchievement(playerName, 'quiz_perfect');
-        }
-        
-        if (maxCombo >= 5) {
-            this.unlockAchievement(playerName, 'quiz_combo_5');
-        }
-        
-        // Add XP
-        this.addXP(playerName, score, 'quiz');
-        
-        this.saveData();
-    },
-
-    // ==================== CHALLENGE INTEGRATION ====================
-    startChallenge(playerName) {
-        const player = this.getPlayer(playerName);
-        
-        if (!player.games.challenge.started) {
-            player.games.challenge.started = true;
-            this.unlockAchievement(playerName, 'challenge_started');
-            this.saveData();
-        }
-    },
-
-    recordChallengeDay(playerName, dayNumber, streak) {
-        const player = this.getPlayer(playerName);
-        
-        if (!player.games.challenge.completedDays.includes(dayNumber)) {
-            player.games.challenge.completedDays.push(dayNumber);
-            player.games.challenge.currentDay = dayNumber;
-            
-            if (streak > player.games.challenge.maxStreak) {
-                player.games.challenge.maxStreak = streak;
-            }
-            
-            // XP por missão + bônus de streak
-            const xp = 100 + (streak * 10);
-            this.addXP(playerName, xp, 'challenge');
-            
-            // Check streak achievements
-            if (streak >= 5) {
-                this.unlockAchievement(playerName, 'challenge_streak_5');
-            }
-            if (streak >= 10) {
-                this.unlockAchievement(playerName, 'challenge_streak_10');
-            }
-            
-            // Check completion
-            if (player.games.challenge.completedDays.length === 15) {
-                player.games.challenge.completed = true;
-                this.unlockAchievement(playerName, 'challenge_complete');
-                this.addXP(playerName, 100, 'challenge_complete'); // Bonus
-            }
-            
-            this.saveData();
-        }
-    },
-
-    // ==================== LEADERBOARD ====================
-    getLeaderboard() {
-        const players = this.getAllPlayers();
-        return players.sort((a, b) => b.totalXP - a.totalXP);
-    },
-
-    // ==================== STATS ====================
-    getPlayerStats(playerName) {
-        const player = this.getPlayer(playerName);
-        
         return {
-            totalXP: player.totalXP,
-            rank: player.currentRank,
-            achievementsCount: player.achievements.length,
-            totalAchievements: Object.keys(this.ACHIEVEMENTS).length,
-            quizPlayed: player.games.quiz.played,
-            quizBestScore: player.games.quiz.bestScore,
-            challengeProgress: player.games.challenge.completedDays.length,
-            challengeStreak: player.games.challenge.maxStreak
+            percentage: percentage,
+            current: progressXP,
+            max: requiredXP,
+            currentLevel: currentLevel,
+            nextLevel: nextLevel
         };
     },
 
-    // ==================== RESET ====================
-    resetPlayer(playerName) {
-        const key = playerName.toLowerCase();
-        this.data[key] = this.createPlayerData(playerName);
-        this.saveData();
+    // Atualizar estatísticas do quiz
+    updateQuizStats(playerId, stats) {
+        const player = this.getPlayer(playerId);
+        if (!player) return null;
+
+        const quizStats = {
+            gamesPlayed: player.quizStats.gamesPlayed + 1,
+            totalScore: player.quizStats.totalScore + stats.score,
+            bestScore: Math.max(player.quizStats.bestScore, stats.score),
+            perfectGames: player.quizStats.perfectGames + (stats.perfect ? 1 : 0),
+            bestCombo: Math.max(player.quizStats.bestCombo, stats.maxCombo)
+        };
+
+        return this.updatePlayer(playerId, { quizStats });
     },
 
+    // Atualizar estatísticas do desafio
+    updateChallengeStats(playerId, stats) {
+        const player = this.getPlayer(playerId);
+        if (!player) return null;
+
+        const challengeStats = {
+            daysCompleted: stats.daysCompleted || player.challengeStats.daysCompleted,
+            currentStreak: stats.currentStreak || player.challengeStats.currentStreak,
+            bestStreak: Math.max(
+                player.challengeStats.bestStreak,
+                stats.currentStreak || 0
+            ),
+            completionRate: ((stats.daysCompleted || 0) / 15) * 100
+        };
+
+        return this.updatePlayer(playerId, { challengeStats });
+    },
+
+    // Adicionar conquista
+    addAchievement(playerId, achievementId) {
+        const player = this.getPlayer(playerId);
+        if (!player) return null;
+
+        if (!player.achievements.includes(achievementId)) {
+            const achievements = [...player.achievements, achievementId];
+            return this.updatePlayer(playerId, { achievements });
+        }
+
+        return player;
+    },
+
+    // Obter ranking ordenado
+    getRanking() {
+        const data = this.getData();
+        return data.players
+            .map(player => ({
+                ...player,
+                level: this.getPlayerLevel(player.totalXP)
+            }))
+            .sort((a, b) => b.totalXP - a.totalXP);
+    },
+
+    // Obter posição do jogador no ranking
+    getPlayerRank(playerId) {
+        const ranking = this.getRanking();
+        return ranking.findIndex(p => p.id === playerId) + 1;
+    },
+
+    // Resetar dados de um jogador específico
+    resetPlayer(playerId) {
+        const player = this.getPlayer(playerId);
+        if (!player) return null;
+
+        return this.updatePlayer(playerId, {
+            totalXP: 0,
+            quizStats: {
+                gamesPlayed: 0,
+                totalScore: 0,
+                bestScore: 0,
+                perfectGames: 0,
+                bestCombo: 0
+            },
+            challengeStats: {
+                daysCompleted: 0,
+                currentStreak: 0,
+                bestStreak: 0,
+                completionRate: 0
+            },
+            achievements: []
+        });
+    },
+
+    // Resetar todos os dados
     resetAll() {
-        this.data = this.getDefaultData();
-        this.saveData();
+        localStorage.removeItem(this.STORAGE_KEY);
+        this.createDefaultPlayers();
     }
 };
 
-// Initialize on load
-RankingSystem.init();
-
-// Export for use in other scripts
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = RankingSystem;
+// Inicializar sistema ao carregar
+if (typeof window !== 'undefined') {
+    window.RankingSystem = RankingSystem;
+    RankingSystem.init();
 }

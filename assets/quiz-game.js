@@ -112,7 +112,6 @@ let lives = 3;
 let correctAnswers = 0;
 let combo = 0;
 let maxCombo = 0;
-let hintUsed = false;
 
 // ==================== AUDIO ====================
 const correctSound = document.getElementById('correct-sound');
@@ -127,266 +126,214 @@ function showScreen(screenId) {
 }
 
 // ==================== START GAME ====================
-function showPlayerSelection() {
-    showScreen('player-selection-screen');
-}
-
-function selectPlayer(player) {
-    currentPlayer = player;
-    initGame();
-}
-
-function initGame() {
+function startGame(playerName) {
+    currentPlayer = playerName;
     currentQuestion = 0;
     score = 0;
     lives = 3;
     correctAnswers = 0;
     combo = 0;
     maxCombo = 0;
-    hintUsed = false;
     
-    // Set player avatar
-    const avatarPath = `assets/${currentPlayer}-avatar.svg`;
-    document.getElementById('player-avatar').src = avatarPath;
-    document.getElementById('player-name-hud').textContent = currentPlayer.charAt(0).toUpperCase() + currentPlayer.slice(1);
-    
-    showScreen('game-screen');
+    showScreen('question-screen');
+    updateUI();
     showQuestion();
     createParticles();
 }
 
 // ==================== SHOW QUESTION ====================
-// ==================== RESULT ====================
-function showResult() {
-    showScreen('result-screen');
-    
-    const percentage = (correctAnswers / quizData.length) * 100;
-    
-    // Update stats
-    document.getElementById('final-score').textContent = score;
-    document.getElementById('correct-answers').textContent = `${correctAnswers}/${quizData.length}`;
-    document.getElementById('max-combo').textContent = `x${maxCombo}`;
-    
-    // Determine rank
-    let medal, title, message;
-    
-    if (percentage === 100 && lives === 3) {
-        medal = '🏆';
-        title = 'MASTER DO AMOR!';
-        message = 'PERFEITO! Vocês se conhecem como Eleven conhece os waffles! Conexão total no Upside Down do amor! 💕✨';
-    } else if (percentage >= 90) {
-        medal = '🥇';
-        title = 'EXPERT ROMÂNTICO!';
-        message = 'Incrível! Vocês têm uma conexão fortíssima! O Party ficaria orgulhoso! ❤️🔥';
-    } else if (percentage >= 75) {
-        medal = '🥈';
-        title = 'CASAL CONECTADO!';
-        message = 'Muito bem! Vocês se conhecem bastante! Continuem fortalecendo esse amor! 💖';
-    } else if (percentage >= 60) {
-        medal = '🥉';
-        title = 'BOM COMEÇO!';
-        message = 'Legal! Vocês estão no caminho certo. Cada dia conhecendo mais uma à outra! 💕';
-    } else if (percentage >= 40) {
-        medal = '🎖️';
-        title = 'EXPLORADORES DO AMOR!';
-        message = 'Tá começando! Como os meninos investigando Hawkins, vocês estão descobrindo mais! 💝';
-    } else {
-        medal = '💌';
-        title = 'NOVA AVENTURA!';
-        message = 'Hora de conversar mais e conhecer melhor sua amada! O amor está só começando! 💕';
+function showQuestion() {
+    if (currentQuestion >= quizData.length) {
+        showResult();
+        return;
     }
-    
-    // Create medal element (using emoji as placeholder)
-    const medalElement = document.getElementById('rank-medal');
-    medalElement.innerHTML = `<div style="font-size: 150px;">${medal}</div>`;
-    
-    document.getElementById('rank-title').textContent = title;
-    document.getElementById('result-message-text').textContent = message;
-    
-    // ==================== INTEGRATE WITH RANKING SYSTEM ====================
-    if (typeof RankingSystem !== 'undefined' && currentPlayer) {
-        // Record quiz game
-        RankingSystem.recordQuizGame(
-            currentPlayer,
-            score,
-            correctAnswers,
-            quizData.length,
-            maxCombo
-        );
-        
-        // Show XP notification
-        setTimeout(() => {
-            const stats = RankingSystem.getPlayerStats(currentPlayer);
-            alert(`🎉 +${score} XP!\n\nXP Total: ${stats.totalXP}\nRank: ${stats.rank.icon} ${stats.rank.name}`);
-        }, 1000);
-    }
-}
 
+    const q = quizData[currentQuestion];
+    const progress = ((currentQuestion + 1) / quizData.length) * 100;
+
+    document.getElementById('question-number').textContent = `QUESTÃO ${currentQuestion + 1}`;
+    document.getElementById('question-text').textContent = q.question;
+    document.getElementById('current-question').textContent = currentQuestion + 1;
+    document.getElementById('progress-bar').style.width = `${progress}%`;
+
+    const optionsContainer = document.getElementById('options-container');
+    optionsContainer.innerHTML = '';
+
+    q.options.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.className = 'option-btn';
+        button.textContent = option;
+        button.onclick = () => selectAnswer(index);
+        optionsContainer.appendChild(button);
+    });
+}
 
 // ==================== SELECT ANSWER ====================
 function selectAnswer(selectedIndex) {
     const q = quizData[currentQuestion];
-    const options = document.querySelectorAll('.option');
+    const buttons = document.querySelectorAll('.option-btn');
     
-    // Disable all options
-    options.forEach(opt => opt.style.pointerEvents = 'none');
-    
+    buttons.forEach(btn => btn.disabled = true);
+
     if (selectedIndex === q.correct) {
         // CORRECT ANSWER
-        options[selectedIndex].classList.add('correct');
-        correctSound.play();
+        buttons[selectedIndex].classList.add('correct');
+        if (correctSound) correctSound.play();
         
         correctAnswers++;
         combo++;
         if (combo > maxCombo) maxCombo = combo;
         
-        // Calculate score with combo multiplier
         const basePoints = 100;
         const comboBonus = combo > 1 ? (combo - 1) * 50 : 0;
         score += basePoints + comboBonus;
         
-        // Show combo
-        if (combo > 1) {
-            showCombo(combo);
+        if (combo >= 3) {
+            showComboIndicator();
         }
         
-        // Particles
         createSuccessParticles();
         
     } else {
         // WRONG ANSWER
-        options[selectedIndex].classList.add('wrong');
-        options[q.correct].classList.add('correct');
-        wrongSound.play();
+        buttons[selectedIndex].classList.add('wrong');
+        buttons[q.correct].classList.add('correct');
+        if (wrongSound) wrongSound.play();
         
         combo = 0;
         lives--;
-        updateLives();
         
-        // Check game over
-        if (lives === 0) {
-            setTimeout(() => showResult(), 2000);
-            return;
-        }
-        
-        // Particles
         createErrorParticles();
     }
     
-    // Next question after delay
+    updateUI();
+    
+    if (lives === 0) {
+        setTimeout(() => showResult(), 1500);
+        return;
+    }
+    
     setTimeout(() => {
         currentQuestion++;
         showQuestion();
-    }, 2000);
+    }, 1500);
 }
 
-// ==================== LIVES ====================
-function updateLives() {
-    const livesElements = document.querySelectorAll('.life');
-    livesElements.forEach((life, index) => {
+// ==================== UPDATE UI ====================
+function updateUI() {
+    document.getElementById('score').textContent = score;
+    document.getElementById('combo').textContent = combo;
+
+    const livesContainer = document.getElementById('lives-container');
+    const hearts = livesContainer.querySelectorAll('.heart');
+    hearts.forEach((heart, index) => {
         if (index >= lives) {
-            life.classList.add('lost');
+            heart.classList.add('lost');
+        } else {
+            heart.classList.remove('lost');
         }
     });
 }
 
-// ==================== HINT ====================
-function useHint() {
-    if (hintUsed) return;
-    
-    hintUsed = true;
-    document.getElementById('hint-btn').disabled = true;
-    
-    const q = quizData[currentQuestion];
-    alert(`💡 Dica: ${q.hint}`);
-}
+// ==================== COMBO INDICATOR ====================
+function showComboIndicator() {
+    const indicator = document.createElement('div');
+    indicator.className = 'combo-indicator';
+    indicator.textContent = `${combo}x COMBO!`;
+    document.body.appendChild(indicator);
 
-// ==================== COMBO ====================
-function showCombo(comboValue) {
-    const comboDisplay = document.getElementById('combo-display');
-    document.getElementById('combo-value').textContent = comboValue;
-    
-    comboDisplay.classList.remove('hidden');
-    comboDisplay.classList.add('show');
-    
     setTimeout(() => {
-        comboDisplay.classList.remove('show');
-        setTimeout(() => {
-            comboDisplay.classList.add('hidden');
-        }, 500);
+        indicator.remove();
     }, 1000);
 }
 
 // ==================== PARTICLES ====================
 function createParticles() {
     const container = document.getElementById('particles-container');
+    if (!container) return;
     
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 30; i++) {
         const particle = document.createElement('div');
-        particle.style.position = 'absolute';
-        particle.style.width = '3px';
-        particle.style.height = '3px';
-        particle.style.background = 'rgba(255, 30, 30, 0.5)';
-        particle.style.borderRadius = '50%';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.top = Math.random() * 100 + '%';
-        particle.style.animation = `floatParticle ${Math.random() * 10 + 5}s linear infinite`;
-        particle.style.animationDelay = Math.random() * 5 + 's';
+        particle.style.cssText = `
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(255, 30, 30, 0.6);
+            border-radius: 50%;
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            animation: float ${5 + Math.random() * 10}s linear infinite;
+            animation-delay: ${Math.random() * 5}s;
+            pointer-events: none;
+        `;
         container.appendChild(particle);
     }
 }
 
 function createSuccessParticles() {
     const container = document.getElementById('particles-container');
+    if (!container) return;
+    
     const emojis = ['❤️', '💖', '✨', '⭐', '💕'];
     
     for (let i = 0; i < 10; i++) {
         const particle = document.createElement('div');
-        particle.classList.add('particle');
+        particle.style.cssText = `
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            font-size: 2rem;
+            pointer-events: none;
+            z-index: 1000;
+            animation: explode 1.5s ease-out forwards;
+        `;
         particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-        particle.style.left = '50%';
-        particle.style.top = '50%';
-        particle.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
-        particle.style.setProperty('--ty', (Math.random() - 0.5) * 200 + 'px');
+        particle.style.setProperty('--tx', (Math.random() - 0.5) * 300 + 'px');
+        particle.style.setProperty('--ty', (Math.random() - 0.5) * 300 + 'px');
         container.appendChild(particle);
         
-        setTimeout(() => particle.remove(), 2000);
+        setTimeout(() => particle.remove(), 1500);
     }
 }
 
 function createErrorParticles() {
     const container = document.getElementById('particles-container');
+    if (!container) return;
+    
     const emojis = ['💔', '😢', '⚡'];
     
     for (let i = 0; i < 5; i++) {
         const particle = document.createElement('div');
-        particle.classList.add('particle');
+        particle.style.cssText = `
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            font-size: 2rem;
+            pointer-events: none;
+            z-index: 1000;
+            animation: explode 1.5s ease-out forwards;
+        `;
         particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-        particle.style.left = '50%';
-        particle.style.top = '50%';
-        particle.style.setProperty('--tx', (Math.random() - 0.5) * 150 + 'px');
-        particle.style.setProperty('--ty', (Math.random() - 0.5) * 150 + 'px');
+        particle.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+        particle.style.setProperty('--ty', (Math.random() - 0.5) * 200 + 'px');
         container.appendChild(particle);
         
-        setTimeout(() => particle.remove(), 2000);
+        setTimeout(() => particle.remove(), 1500);
     }
 }
 
-// Add particle animation to CSS dynamically
+// Add animations
 const style = document.createElement('style');
 style.innerHTML = `
-@keyframes floatParticle {
-    0% { transform: translateY(0) translateX(0); opacity: 0; }
-    50% { opacity: 1; }
-    100% { transform: translateY(-100vh) translateX(${Math.random() * 100 - 50}px); opacity: 0; }
+@keyframes explode {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+    100% { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1); opacity: 0; }
 }
 `;
 document.head.appendChild(style);
 
 // ==================== RESULT ====================
 function showResult() {
-    showScreen('result-screen');
-    
     const percentage = (correctAnswers / quizData.length) * 100;
     
     // Update stats
@@ -423,21 +370,38 @@ function showResult() {
         message = 'Hora de conversar mais e conhecer melhor sua amada! O amor está só começando! 💕';
     }
     
-    // Create medal element (using emoji as placeholder)
-    const medalElement = document.getElementById('rank-medal');
-    medalElement.innerHTML = `<div style="font-size: 150px;">${medal}</div>`;
-    
+    document.getElementById('rank-medal').textContent = medal;
     document.getElementById('rank-title').textContent = title;
     document.getElementById('result-message-text').textContent = message;
-}
-
-// ==================== RESTART ====================
-function restartGame() {
-    currentPlayer = null;
-    showScreen('start-screen');
+    
+    // ==================== INTEGRATE WITH RANKING SYSTEM ====================
+    if (typeof RankingSystem !== 'undefined' && currentPlayer) {
+        const playerId = currentPlayer.toLowerCase();
+        const isPerfect = percentage === 100 && lives === 3;
+        
+        // Add XP
+        RankingSystem.addXP(playerId, score, 'quiz');
+        
+        // Update stats
+        RankingSystem.updateQuizStats(playerId, {
+            score: score,
+            perfect: isPerfect,
+            maxCombo: maxCombo
+        });
+        
+        // Check achievements
+        if (isPerfect) {
+            RankingSystem.addAchievement(playerId, 'quiz_perfect');
+        }
+        if (maxCombo >= 10) {
+            RankingSystem.addAchievement(playerId, 'quiz_combo_master');
+        }
+    }
+    
+    showScreen('result-screen');
 }
 
 // ==================== INITIALIZATION ====================
-document.addEventListener('DOMContentLoaded', () => {
-    createParticles();
-});
+if (typeof window !== 'undefined') {
+    window.startGame = startGame;
+}

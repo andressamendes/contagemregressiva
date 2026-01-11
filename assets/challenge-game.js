@@ -1,148 +1,296 @@
-// ==================== CHALLENGE DATA ====================
-const missionsData = [
-    {
-        day: 1,
-        icon: "💌",
-        title: "Mensagem Especial",
-        description: "Envie uma mensagem de bom dia com um motivo pelo qual você ama ela hoje"
-    },
-    {
-        day: 2,
-        icon: "📸",
-        title: "Memória Fotográfica",
-        description: "Tire uma foto de algo que te lembra ela e compartilhe"
-    },
-    {
-        day: 3,
-        icon: "🎵",
-        title: "Trilha Sonora do Amor",
-        description: "Envie uma música que representa o que você sente por ela"
-    },
-    {
-        day: 4,
-        icon: "💝",
-        title: "Lista de Gratidão",
-        description: "Liste 5 coisas que você mais ama nela"
-    },
-    {
-        day: 5,
-        icon: "🌟",
-        title: "Elogio Sincero",
-        description: "Faça um elogio genuíno que você nunca disse antes"
-    },
-    {
-        day: 6,
-        icon: "📝",
-        title: "Carta Curta",
-        description: "Escreva uma mini carta contando seu momento favorito juntas"
-    },
-    {
-        day: 7,
-        icon: "🎁",
-        title: "Promessa",
-        description: "Faça uma promessa de algo especial que farão juntas em breve"
-    },
-    {
-        day: 8,
-        icon: "☕",
-        title: "Café Virtual",
-        description: "Marque um horário para conversarem por vídeo tomando algo juntas"
-    },
-    {
-        day: 9,
-        icon: "🌹",
-        title: "Poesia do Coração",
-        description: "Crie ou compartilhe um verso que representa o amor de vocês"
-    },
-    {
-        day: 10,
-        icon: "🎬",
-        title: "Indicação Especial",
-        description: "Indique um filme ou série para assistirem juntas (ou separadas mas ao mesmo tempo)"
-    },
-    {
-        day: 11,
-        icon: "🍕",
-        title: "Plano Gourmet",
-        description: "Planeje uma refeição especial que farão juntas (pode ser simples, mas com amor)"
-    },
-    {
-        day: 12,
-        icon: "💭",
-        title: "Sonho Compartilhado",
-        description: "Conte um sonho ou plano futuro que você tem com ela"
-    },
-    {
-        day: 13,
-        icon: "🎨",
-        title: "Criatividade em Ação",
-        description: "Crie algo criativo para ela (desenho, montagem, edit, meme romântico...)"
-    },
-    {
-        day: 14,
-        icon: "🌙",
-        title: "Boa Noite Especial",
-        description: "Envie uma mensagem de boa noite explicando por que ela é tão importante"
-    },
-    {
-        day: 15,
-        icon: "💖",
-        title: "Declaração Final",
-        description: "Faça uma declaração de amor resumindo esses 15 dias e o futuro juntas"
-    }
-];
+// ========================================
+// CHALLENGE GAME - Sistema de Desafio 15 Dias
+// ========================================
 
-// ==================== CHALLENGE STATE ====================
-let currentPlayer = null;
-let challengeData = {
-    startDate: null,
-    completedDays: [],
-    currentStreak: 0,
-    maxStreak: 0,
-    lastCompletionDate: null
+const ChallengeGame = {
+    STORAGE_KEY: 'stChallengeProgress',
+    currentPlayer: null,
+    
+    missions: [
+        { day: 1, icon: '💌', title: 'Mensagem Especial', description: 'Envie uma mensagem de bom dia com um motivo pelo qual você ama ela hoje' },
+        { day: 2, icon: '🎵', title: 'Playlist do Amor', description: 'Crie uma playlist com 5 músicas que lembram vocês duas' },
+        { day: 3, icon: '📸', title: 'Foto Surpresa', description: 'Tire uma foto criativa e envie com uma legenda romântica' },
+        { day: 4, icon: '🍰', title: 'Surpresa Doce', description: 'Prepare ou compre a sobremesa favorita dela' },
+        { day: 5, icon: '💭', title: 'Memória Especial', description: 'Conte uma lembrança favorita de vocês juntas' },
+        { day: 6, icon: '🎁', title: 'Presente Surpresa', description: 'Dê um presente simples mas significativo (pode ser feito à mão)' },
+        { day: 7, icon: '🌟', title: 'Lista de Qualidades', description: 'Escreva 7 qualidades que você ama nela' },
+        { day: 8, icon: '🎬', title: 'Cinema em Casa', description: 'Organize uma sessão de cinema com o filme favorito dela' },
+        { day: 9, icon: '💐', title: 'Flores Virtuais', description: 'Envie fotos de flores com mensagens carinhosas' },
+        { day: 10, icon: '🍕', title: 'Jantar Especial', description: 'Prepare ou peça a comida favorita dela' },
+        { day: 11, icon: '✉️', title: 'Carta de Amor', description: 'Escreva uma carta de amor à mão ou digital' },
+        { day: 12, icon: '🎨', title: 'Arte do Coração', description: 'Crie algo artístico para ela (desenho, colagem, edição)' },
+        { day: 13, icon: '🌙', title: 'Boa Noite Especial', description: 'Envie uma mensagem de boa noite extra carinhosa' },
+        { day: 14, icon: '🎉', title: 'Dia da Surpresa', description: 'Planeje uma surpresa completa para ela' },
+        { day: 15, icon: '💕', title: 'Declaração Final', description: 'Faça uma declaração de amor épica resumindo esses 15 dias' }
+    ],
+
+    achievements: [
+        { id: 'first_step', icon: '🌱', name: 'Primeiro Passo', description: 'Complete a primeira missão', requirement: 1 },
+        { id: 'week_warrior', icon: '⚔️', name: 'Guerreiro de Uma Semana', description: 'Complete 7 missões', requirement: 7 },
+        { id: 'streak_master', icon: '🔥', name: 'Mestre do Streak', description: 'Mantenha 5 dias consecutivos', requirement: 5 },
+        { id: 'almost_there', icon: '🎯', name: 'Quase Lá', description: 'Complete 10 missões', requirement: 10 },
+        { id: 'dedication', icon: '💪', name: 'Dedicação Total', description: 'Complete 12 missões', requirement: 12 },
+        { id: 'champion', icon: '👑', name: 'Campeão do Amor', description: 'Complete todas as 15 missões', requirement: 15 }
+    ],
+
+    init() {
+        this.loadProgress();
+    },
+
+    loadProgress() {
+        const saved = localStorage.getItem(this.STORAGE_KEY);
+        return saved ? JSON.parse(saved) : this.createNewProgress();
+    },
+
+    createNewProgress() {
+        const progress = {
+            andressa: { completed: [], streak: 0, lastCompletedDate: null },
+            milena: { completed: [], streak: 0, lastCompletedDate: null }
+        };
+        this.saveProgress(progress);
+        return progress;
+    },
+
+    saveProgress(progress) {
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(progress));
+    },
+
+    getPlayerProgress(playerId) {
+        const progress = this.loadProgress();
+        return progress[playerId] || { completed: [], streak: 0, lastCompletedDate: null };
+    },
+
+    startChallenge() {
+        showScreen('challenge-screen');
+        this.updateUI();
+        this.renderTimeline();
+        this.renderAchievements();
+    },
+
+    updateUI() {
+        const playerProgress = this.getPlayerProgress('andressa');
+        const completedCount = playerProgress.completed.length;
+        const progressPercent = (completedCount / 15) * 100;
+
+        document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+        document.getElementById('progress-text').textContent = `${completedCount}/15`;
+        document.getElementById('streak-value').textContent = playerProgress.streak;
+
+        this.updateCurrentMission();
+    },
+
+    updateCurrentMission() {
+        const playerProgress = this.getPlayerProgress('andressa');
+        const nextDay = playerProgress.completed.length + 1;
+
+        if (nextDay > 15) {
+            showScreen('completion-screen');
+            this.showCompletionStats();
+            return;
+        }
+
+        const mission = this.missions[nextDay - 1];
+        const isCompleted = playerProgress.completed.includes(nextDay);
+
+        document.getElementById('mission-badge').textContent = `DIA ${mission.day}`;
+        document.getElementById('mission-icon').textContent = mission.icon;
+        document.getElementById('mission-title').textContent = mission.title;
+        document.getElementById('mission-description').textContent = mission.description;
+
+        const btnComplete = document.getElementById('btn-complete');
+        const missionCompleted = document.getElementById('mission-completed');
+
+        if (isCompleted) {
+            btnComplete.classList.add('hidden');
+            missionCompleted.classList.remove('hidden');
+            const completedDate = this.getCompletedDate(nextDay);
+            document.getElementById('completed-date').textContent = `Completada em ${completedDate}`;
+        } else {
+            btnComplete.classList.remove('hidden');
+            missionCompleted.classList.add('hidden');
+        }
+    },
+
+    getCompletedDate(day) {
+        const playerProgress = this.getPlayerProgress('andressa');
+        return playerProgress.lastCompletedDate || new Date().toLocaleDateString('pt-BR');
+    },
+
+    renderTimeline() {
+        const timeline = document.getElementById('timeline');
+        timeline.innerHTML = '';
+
+        const playerProgress = this.getPlayerProgress('andressa');
+        const currentDay = playerProgress.completed.length + 1;
+
+        this.missions.forEach(mission => {
+            const isCompleted = playerProgress.completed.includes(mission.day);
+            const isCurrent = mission.day === currentDay;
+            const isLocked = mission.day > currentDay;
+
+            const item = document.createElement('div');
+            item.className = `timeline-item ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''} ${isLocked ? 'locked' : ''}`;
+
+            item.innerHTML = `
+                <div class="timeline-day">DIA ${mission.day}</div>
+                <div class="timeline-icon">${mission.icon}</div>
+                <div class="timeline-content">
+                    <div class="timeline-title-text">${mission.title}</div>
+                    <div class="timeline-description">${mission.description}</div>
+                </div>
+                <div class="timeline-status">
+                    ${isCompleted ? '✅' : isLocked ? '🔒' : '⏳'}
+                </div>
+            `;
+
+            timeline.appendChild(item);
+        });
+    },
+
+    renderAchievements() {
+        const grid = document.getElementById('achievements-grid');
+        grid.innerHTML = '';
+
+        const playerProgress = this.getPlayerProgress('andressa');
+        const completedCount = playerProgress.completed.length;
+
+        this.achievements.forEach(achievement => {
+            const isUnlocked = completedCount >= achievement.requirement;
+
+            const card = document.createElement('div');
+            card.className = `achievement-card ${isUnlocked ? '' : 'locked'}`;
+
+            card.innerHTML = `
+                <div class="achievement-icon">${achievement.icon}</div>
+                <div class="achievement-name">${achievement.name}</div>
+                <div class="achievement-description">${achievement.description}</div>
+            `;
+
+            grid.appendChild(card);
+        });
+    },
+
+    completeMission() {
+        const playerProgress = this.getPlayerProgress('andressa');
+        const nextDay = playerProgress.completed.length + 1;
+
+        if (nextDay > 15) return;
+
+        // Update progress
+        const progress = this.loadProgress();
+        progress.andressa.completed.push(nextDay);
+        
+        // Update streak
+        const today = new Date().toDateString();
+        const lastDate = progress.andressa.lastCompletedDate;
+        
+        if (lastDate) {
+            const lastDateObj = new Date(lastDate);
+            const diffTime = Math.abs(new Date(today) - lastDateObj);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 1) {
+                progress.andressa.streak++;
+            } else if (diffDays > 1) {
+                progress.andressa.streak = 1;
+            }
+        } else {
+            progress.andressa.streak = 1;
+        }
+        
+        progress.andressa.lastCompletedDate = today;
+        this.saveProgress(progress);
+
+        // Add XP
+        if (typeof RankingSystem !== 'undefined') {
+            const baseXP = RankingSystem.xpValues.challengeDay;
+            const streakXP = progress.andressa.streak > 1 ? 
+                RankingSystem.xpValues.challengeStreak * (progress.andressa.streak - 1) : 0;
+            const totalXP = baseXP + streakXP;
+
+            RankingSystem.addXP('andressa', totalXP, 'challenge');
+            RankingSystem.updateChallengeStats('andressa', {
+                daysCompleted: progress.andressa.completed.length,
+                currentStreak: progress.andressa.streak
+            });
+
+            // Check for achievements
+            this.achievements.forEach(achievement => {
+                if (progress.andressa.completed.length === achievement.requirement) {
+                    RankingSystem.addAchievement('andressa', achievement.id);
+                }
+            });
+
+            // Complete challenge bonus
+            if (progress.andressa.completed.length === 15) {
+                RankingSystem.addXP('andressa', RankingSystem.xpValues.challengeComplete, 'challenge_complete');
+            }
+        }
+
+        // Play sound
+        const sound = document.getElementById('complete-sound');
+        if (sound) {
+            sound.play().catch(() => {});
+        }
+
+        // Update UI
+        this.updateUI();
+        this.renderTimeline();
+        this.renderAchievements();
+
+        closeModal();
+    },
+
+    showCompletionStats() {
+        const playerProgress = this.getPlayerProgress('andressa');
+        
+        document.getElementById('final-streak').textContent = `Streak Máximo: ${playerProgress.streak} dias`;
+        
+        const unlockedAchievements = this.achievements.filter(a => 
+            playerProgress.completed.length >= a.requirement
+        ).length;
+        
+        document.getElementById('final-achievements').textContent = 
+            `${unlockedAchievements} Conquistas Desbloqueadas`;
+    },
+
+    reset() {
+        const progress = this.loadProgress();
+        progress.andressa = { completed: [], streak: 0, lastCompletedDate: null };
+        this.saveProgress(progress);
+        
+        showScreen('start-screen');
+    }
 };
 
-// ==================== AUDIO ====================
-const completeSound = document.getElementById('complete-sound');
-
-// ==================== LOCAL STORAGE MANAGEMENT ====================
-function loadChallengeData() {
-    const saved = localStorage.getItem('challengeData');
-    if (saved) {
-        challengeData = JSON.parse(saved);
-    }
+// ==================== GLOBAL FUNCTIONS ====================
+function startChallenge() {
+    ChallengeGame.startChallenge();
 }
 
-function saveChallengeData() {
-    localStorage.setItem('challengeData', JSON.stringify(challengeData));
+function showCheckInConfirm() {
+    document.getElementById('checkin-modal').classList.remove('hidden');
 }
 
-// ==================== PLAYER SELECTION ====================
-function getCurrentPlayer() {
-    // Try to get from URL parameter first
-    const urlParams = new URLSearchParams(window.location.search);
-    const playerParam = urlParams.get('player');
-    
-    if (playerParam) {
-        return playerParam.charAt(0).toUpperCase() + playerParam.slice(1);
-    }
-    
-    // Try to get from localStorage
-    const saved = localStorage.getItem('currentChallengePlayer');
-    if (saved) {
-        return saved;
-    }
-    
-    // Show player selection
-    return null;
+function completeMission() {
+    ChallengeGame.completeMission();
 }
 
-function setCurrentPlayer(player) {
-    currentPlayer = player;
-    localStorage.setItem('currentChallengePlayer', player);
+function confirmReset() {
+    document.getElementById('reset-modal').classList.remove('hidden');
 }
 
-// ==================== SCREEN MANAGEMENT ====================
+function resetChallenge() {
+    ChallengeGame.reset();
+    closeModal();
+}
+
+function closeModal() {
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.classList.add('hidden');
+    });
+}
+
 function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(screen => {
         screen.classList.remove('active');
@@ -150,372 +298,15 @@ function showScreen(screenId) {
     document.getElementById(screenId).classList.add('active');
 }
 
-// ==================== START CHALLENGE ====================
-function startChallenge() {
-    // Check if player is already set
-    currentPlayer = getCurrentPlayer();
-    
-    if (!currentPlayer) {
-        // Prompt for player selection
-        const player = prompt("Quem está jogando? Digite 'Andressa' ou 'Milena':");
-        if (!player || (player.toLowerCase() !== 'andressa' && player.toLowerCase() !== 'milena')) {
-            alert("Nome inválido! Digite 'Andressa' ou 'Milena'");
-            return;
-        }
-        setCurrentPlayer(player.charAt(0).toUpperCase() + player.slice(1).toLowerCase());
-        currentPlayer = player.charAt(0).toUpperCase() + player.slice(1).toLowerCase();
-    }
-    
-    // Load data
-    loadChallengeData();
-    
-    // Register start with ranking system
-    if (typeof RankingSystem !== 'undefined') {
-        RankingSystem.startChallenge(currentPlayer);
-    }
-    
-    // Initialize if first time
-    if (!challengeData.startDate) {
-        challengeData.startDate = new Date().toISOString();
-        saveChallengeData();
-    }
-    
-    showScreen('challenge-screen');
-    updateUI();
-    createParticles();
-}
-
-// ==================== UPDATE UI ====================
-function updateUI() {
-    updateProgress();
-    updateStreak();
-    updateCurrentMission();
-    renderTimeline();
-    renderAchievements();
-}
-
-function updateProgress() {
-    const completed = challengeData.completedDays.length;
-    const total = 15;
-    const percentage = (completed / total) * 100;
-    
-    document.getElementById('progress-bar').style.width = percentage + '%';
-    document.getElementById('progress-text').textContent = `${completed}/${total}`;
-}
-
-function updateStreak() {
-    document.getElementById('streak-value').textContent = challengeData.currentStreak;
-}
-
-function updateCurrentMission() {
-    const nextDay = getNextMissionDay();
-    
-    if (nextDay === null) {
-        // All missions completed
-        showScreen('completion-screen');
-        showCompletionStats();
-        return;
-    }
-    
-    const mission = missionsData[nextDay - 1];
-    
-    document.getElementById('mission-badge').textContent = `DIA ${mission.day}`;
-    document.getElementById('mission-icon').textContent = mission.icon;
-    document.getElementById('mission-title').textContent = mission.title;
-    document.getElementById('mission-description').textContent = mission.description;
-    
-    // Check if already completed today
-    const today = new Date().toDateString();
-    const lastCompletion = challengeData.lastCompletionDate ? new Date(challengeData.lastCompletionDate).toDateString() : null;
-    
-    if (challengeData.completedDays.includes(nextDay)) {
-        // Mission already completed
-        document.getElementById('btn-complete').style.display = 'none';
-        document.getElementById('mission-completed').classList.remove('hidden');
-        document.getElementById('completed-date').textContent = `Completado em ${new Date(challengeData.lastCompletionDate).toLocaleDateString('pt-BR')}`;
-    } else {
-        document.getElementById('btn-complete').style.display = 'block';
-        document.getElementById('mission-completed').classList.add('hidden');
-    }
-}
-
-function getNextMissionDay() {
-    for (let i = 1; i <= 15; i++) {
-        if (!challengeData.completedDays.includes(i)) {
-            return i;
-        }
-    }
-    return null; // All completed
-}
-
-// ==================== COMPLETE MISSION ====================
-function showCheckInConfirm() {
-    document.getElementById('checkin-modal').classList.remove('hidden');
-}
-
-function closeModal() {
-    document.getElementById('checkin-modal').classList.add('hidden');
-    document.getElementById('reset-modal').classList.add('hidden');
-}
-
-function completeMission() {
-    const nextDay = getNextMissionDay();
-    if (nextDay === null) return;
-    
-    // Add to completed days
-    challengeData.completedDays.push(nextDay);
-    challengeData.completedDays.sort((a, b) => a - b);
-    
-    // Update streak
-    const today = new Date().toDateString();
-    const yesterday = new Date(Date.now() - 86400000).toDateString();
-    const lastCompletion = challengeData.lastCompletionDate ? new Date(challengeData.lastCompletionDate).toDateString() : null;
-    
-    if (lastCompletion === yesterday) {
-        // Consecutive day
-        challengeData.currentStreak++;
-    } else if (lastCompletion !== today) {
-        // New streak or reset
-        challengeData.currentStreak = 1;
-    }
-    
-    if (challengeData.currentStreak > challengeData.maxStreak) {
-        challengeData.maxStreak = challengeData.currentStreak;
-    }
-    
-    challengeData.lastCompletionDate = new Date().toISOString();
-    
-    // Save
-    saveChallengeData();
-    
-    // Register with ranking system
-    if (typeof RankingSystem !== 'undefined') {
-        RankingSystem.recordChallengeDay(currentPlayer, nextDay, challengeData.currentStreak);
-    }
-    
-    // Close modal
-    closeModal();
-    
-    // Play sound
-    if (completeSound) {
-        completeSound.play();
-    }
-    
-    // Create celebration particles
-    createCelebrationParticles();
-    
-    // Update UI
-    updateUI();
-    
-    // Show success message
-    setTimeout(() => {
-        alert(`🎉 Missão do Dia ${nextDay} completada! Continue assim! 💕`);
-    }, 500);
-}
-
-// ==================== TIMELINE ====================
-function renderTimeline() {
-    const timeline = document.getElementById('timeline');
-    if (!timeline) return;
-    
-    const nextDay = getNextMissionDay();
-    
-    timeline.innerHTML = missionsData.map(mission => {
-        const isCompleted = challengeData.completedDays.includes(mission.day);
-        const isCurrent = mission.day === nextDay;
-        const isLocked = mission.day > (nextDay || 16);
-        
-        let statusIcon = '🔒';
-        let statusClass = 'locked';
-        
-        if (isCompleted) {
-            statusIcon = '✓';
-            statusClass = 'completed';
-        } else if (isCurrent) {
-            statusIcon = '▶';
-            statusClass = 'current';
-        }
-        
-        return `
-            <div class="timeline-item ${statusClass}">
-                <div class="timeline-day">DIA ${mission.day}</div>
-                <div class="timeline-icon">${mission.icon}</div>
-                <div class="timeline-content">
-                    <h4 class="timeline-title-text">${mission.title}</h4>
-                    <p class="timeline-description">${mission.description}</p>
-                </div>
-                <div class="timeline-status">${statusIcon}</div>
-            </div>
-        `;
-    }).join('');
-}
-
-// ==================== ACHIEVEMENTS ====================
-function renderAchievements() {
-    const container = document.getElementById('achievements-grid');
-    if (!container) return;
-    
-    const achievements = [
-        {
-            icon: "🚀",
-            name: "Início da Jornada",
-            description: "Completou o primeiro dia",
-            unlocked: challengeData.completedDays.length >= 1
-        },
-        {
-            icon: "🔥",
-            name: "Aquecendo",
-            description: "Streak de 3 dias",
-            unlocked: challengeData.maxStreak >= 3
-        },
-        {
-            icon: "💪",
-            name: "Meio Caminho",
-            description: "Completou 7 dias",
-            unlocked: challengeData.completedDays.length >= 7
-        },
-        {
-            icon: "⚡",
-            name: "Imparável",
-            description: "Streak de 7 dias",
-            unlocked: challengeData.maxStreak >= 7
-        },
-        {
-            icon: "🌟",
-            name: "Quase Lá",
-            description: "Completou 10 dias",
-            unlocked: challengeData.completedDays.length >= 10
-        },
-        {
-            icon: "👑",
-            name: "Mestre do Desafio",
-            description: "Completou todos os 15 dias",
-            unlocked: challengeData.completedDays.length === 15
-        }
-    ];
-    
-    container.innerHTML = achievements.map(achievement => `
-        <div class="achievement-card ${achievement.unlocked ? '' : 'locked'}">
-            <div class="achievement-icon">${achievement.icon}</div>
-            <h4 class="achievement-name">${achievement.name}</h4>
-            <p class="achievement-description">${achievement.description}</p>
-        </div>
-    `).join('');
-}
-
-// ==================== COMPLETION SCREEN ====================
-function showCompletionStats() {
-    document.getElementById('final-streak').textContent = `Streak Máximo: ${challengeData.maxStreak} dias`;
-    
-    // Count unlocked achievements
-    let unlockedCount = 0;
-    if (challengeData.completedDays.length >= 1) unlockedCount++;
-    if (challengeData.maxStreak >= 3) unlockedCount++;
-    if (challengeData.completedDays.length >= 7) unlockedCount++;
-    if (challengeData.maxStreak >= 7) unlockedCount++;
-    if (challengeData.completedDays.length >= 10) unlockedCount++;
-    if (challengeData.completedDays.length === 15) unlockedCount++;
-    
-    document.getElementById('final-achievements').textContent = `${unlockedCount} Conquistas Desbloqueadas`;
-}
-
-// ==================== RESET ====================
-function confirmReset() {
-    document.getElementById('reset-modal').classList.remove('hidden');
-}
-
-function resetChallenge() {
-    if (confirm('ÚLTIMA CONFIRMAÇÃO: Apagar todo o progresso do desafio?')) {
-        challengeData = {
-            startDate: null,
-            completedDays: [],
-            currentStreak: 0,
-            maxStreak: 0,
-            lastCompletionDate: null
-        };
-        saveChallengeData();
-        closeModal();
-        location.reload();
-    }
-}
-
-// ==================== PARTICLES ====================
-function createParticles() {
-    const container = document.getElementById('particles-container');
-    
-    for (let i = 0; i < 20; i++) {
-        const particle = document.createElement('div');
-        particle.style.position = 'absolute';
-        particle.style.width = '3px';
-        particle.style.height = '3px';
-        particle.style.background = 'rgba(255, 30, 30, 0.5)';
-        particle.style.borderRadius = '50%';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.top = Math.random() * 100 + '%';
-        particle.style.animation = `floatParticle ${Math.random() * 10 + 5}s linear infinite`;
-        particle.style.animationDelay = Math.random() * 5 + 's';
-        container.appendChild(particle);
-    }
-}
-
-function createCelebrationParticles() {
-    const container = document.getElementById('particles-container');
-    const emojis = ['❤️', '💖', '✨', '⭐', '💕', '🎉', '🎊'];
-    
-    for (let i = 0; i < 30; i++) {
-        const particle = document.createElement('div');
-        particle.classList.add('particle');
-        particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-        particle.style.position = 'fixed';
-        particle.style.left = '50%';
-        particle.style.top = '50%';
-        particle.style.fontSize = '2rem';
-        particle.style.pointerEvents = 'none';
-        particle.style.zIndex = '1000';
-        
-        const tx = (Math.random() - 0.5) * 400 + 'px';
-        const ty = (Math.random() - 0.5) * 400 + 'px';
-        particle.style.setProperty('--tx', tx);
-        particle.style.setProperty('--ty', ty);
-        
-        particle.style.animation = 'particleFloat 2s ease-out forwards';
-        
-        container.appendChild(particle);
-        
-        setTimeout(() => particle.remove(), 2000);
-    }
-}
-
-// Add particle animations
-const style = document.createElement('style');
-style.innerHTML = `
-@keyframes floatParticle {
-    0% { transform: translateY(0) translateX(0); opacity: 0; }
-    50% { opacity: 1; }
-    100% { transform: translateY(-100vh) translateX(${Math.random() * 100 - 50}px); opacity: 0; }
-}
-
-@keyframes particleFloat {
-    0% {
-        opacity: 1;
-        transform: translate(0, 0) scale(0.5) rotate(0deg);
-    }
-    100% {
-        opacity: 0;
-        transform: translate(var(--tx), var(--ty)) scale(1.5) rotate(720deg);
-    }
-}
-`;
-document.head.appendChild(style);
-
 // ==================== INITIALIZATION ====================
-document.addEventListener('DOMContentLoaded', () => {
-    loadChallengeData();
-    createParticles();
+if (typeof window !== 'undefined') {
+    window.ChallengeGame = ChallengeGame;
+    window.startChallenge = startChallenge;
+    window.showCheckInConfirm = showCheckInConfirm;
+    window.completeMission = completeMission;
+    window.confirmReset = confirmReset;
+    window.resetChallenge = resetChallenge;
+    window.closeModal = closeModal;
     
-    // Auto-start if player is set
-    const player = getCurrentPlayer();
-    if (player && window.location.pathname.includes('challenge.html')) {
-        // Don't auto-start, let user click button
-    }
-});
+    ChallengeGame.init();
+}

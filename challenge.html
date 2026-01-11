@@ -3,9 +3,1051 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Desafio dos 15 Dias - Andressa & Milena ❤️</title>
+    <title>Desafio 15 Dias - Stranger Things</title>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@900&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/challenge-styles.css">
+    <style>
+        :root {
+            --st-primary: #ff1e1e;
+            --st-primary-light: #ff4444;
+            --st-primary-dark: #cc0000;
+            --st-secondary: #8b0000;
+            --st-text: #e5e7eb;
+            --st-text-dim: #9ca3af;
+            --st-bg-dark: #050505;
+            --st-panel: rgba(15, 15, 20, 0.9);
+            --st-panel-light: rgba(20, 20, 30, 0.85);
+            --st-panel-border: rgba(255, 30, 30, 0.35);
+            --st-success: #22c55e;
+            --st-success-dark: #16a34a;
+            --font-display: 'Merriweather', serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Courier Prime', monospace;
+            overflow-x: hidden;
+            background-color: var(--st-bg-dark);
+            min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            color: var(--st-text);
+        }
+
+        /* ========== BACKGROUNDS ========== */
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15), rgba(0,0,0,0.15) 1px, transparent 1px, transparent 2px);
+            z-index: 999; pointer-events: none; opacity: 0.4;
+        }
+
+        .vignette {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.75) 100%);
+            z-index: 998; pointer-events: none;
+        }
+
+        .upside-down-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, #1a0b0b 0%, #0d0505 50%, #000000 100%);
+            z-index: -2;
+        }
+
+        .fog-layer {
+            position: fixed; top: 0; left: 0; width: 200%; height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(30, 0, 0, 0.3) 25%, transparent 50%, rgba(40, 0, 0, 0.3) 75%, transparent 100%);
+            z-index: -1; opacity: 0.7;
+            animation: driftFog 50s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes driftFog { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        .lightning-flash {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 0%, rgba(255, 30, 30, 0.2) 0%, transparent 70%);
+            opacity: 0; z-index: -1;
+            animation: flash 13s infinite;
+            pointer-events: none;
+        }
+        @keyframes flash {
+            0%, 93%, 100% { opacity: 0; }
+            94% { opacity: 0.7; }
+            95% { opacity: 0; }
+            96% { opacity: 0.4; }
+        }
+
+        #particles-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1;
+        }
+
+        /* ========== GAME CONTAINER ========== */
+        .game-container {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* ========== SCREENS ========== */
+        .screen {
+            display: none;
+            width: 100%;
+            max-width: 900px;
+            animation: fadeIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .screen.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ========== TITLE ========== */
+        .title-container {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .st-title {
+            font-family: var(--font-display);
+            font-weight: 900;
+            font-size: clamp(2.5rem, 10vw, 5rem);
+            color: transparent;
+            -webkit-text-stroke: 2.5px var(--st-primary);
+            text-shadow: 
+                0 0 15px rgba(255, 30, 30, 0.9),
+                0 0 30px rgba(255, 30, 30, 0.6),
+                0 0 45px rgba(255, 30, 30, 0.4);
+            letter-spacing: -3px;
+            margin-bottom: 0.75rem;
+            animation: titlePulse 3s ease-in-out infinite;
+            filter: drop-shadow(0 5px 20px rgba(255, 30, 30, 0.5));
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { 
+                text-shadow: 0 0 15px rgba(255, 30, 30, 0.9), 0 0 30px rgba(255, 30, 30, 0.6);
+            }
+            50% { 
+                text-shadow: 0 0 25px rgba(255, 30, 30, 1), 0 0 50px rgba(255, 30, 30, 0.8), 0 0 75px rgba(255, 30, 30, 0.6);
+            }
+        }
+
+        .st-bar {
+            height: 4px;
+            background: linear-gradient(90deg, transparent 0%, var(--st-primary) 20%, var(--st-primary-light) 50%, var(--st-primary) 80%, transparent 100%);
+            width: 60%;
+            margin: 0 auto 1rem;
+            box-shadow: 0 0 20px var(--st-primary), 0 2px 15px rgba(255, 30, 30, 0.6);
+        }
+
+        .st-subtitle {
+            font-family: var(--font-display);
+            font-weight: 900;
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            color: var(--st-primary);
+            text-shadow: 0 0 20px var(--st-primary), 0 0 40px var(--st-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .subtitle {
+            font-size: clamp(0.875rem, 3vw, 1.25rem);
+            color: var(--st-text-dim);
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            opacity: 0.85;
+        }
+
+        /* ========== CHALLENGE INTRO ========== */
+        .challenge-intro {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .intro-card {
+            background: var(--st-panel);
+            border: 3px solid var(--st-panel-border);
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .intro-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .intro-card:hover::before { left: 100%; }
+
+        .intro-card:hover {
+            transform: translateY(-15px) scale(1.05);
+            border-color: var(--st-primary);
+            box-shadow: 
+                0 15px 60px rgba(0, 0, 0, 0.6),
+                0 0 50px rgba(255, 30, 30, 0.4);
+        }
+
+        .intro-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 5px 15px rgba(255, 30, 30, 0.4));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .intro-card h3 {
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 0.75rem;
+            font-weight: bold;
+        }
+
+        .intro-card p {
+            font-size: 0.875rem;
+            color: var(--st-text-dim);
+            line-height: 1.6;
+        }
+
+        /* ========== START INFO ========== */
+        .start-info {
+            background: var(--st-panel);
+            border: 3px solid var(--st-panel-border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .info-highlight {
+            font-size: 1.125rem;
+            color: var(--st-text);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-highlight:last-child { margin-bottom: 0; }
+
+        /* ========== HEADER ========== */
+        .challenge-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--st-panel);
+            border: 3px solid var(--st-panel-border);
+            border-radius: 20px;
+            padding: 1.75rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .challenge-header:hover {
+            border-color: rgba(255, 30, 30, 0.5);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 30, 30, 0.2);
+        }
+
+        .btn-back {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(20, 0, 0, 0.5));
+            border: 2px solid var(--st-panel-border);
+            color: var(--st-primary);
+            border-radius: 50%;
+            width: 3.5rem;
+            height: 3.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-back:hover {
+            transform: scale(1.15) rotate(-10deg);
+            border-color: var(--st-primary);
+            box-shadow: 0 8px 30px rgba(255, 30, 30, 0.6);
+        }
+
+        .progress-info {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .progress-title {
+            font-size: clamp(1rem, 3vw, 1.25rem);
+            color: var(--st-primary);
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px var(--st-primary);
+        }
+
+        .progress-container {
+            position: relative;
+            width: 100%;
+            height: 14px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid rgba(255, 30, 30, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) inset;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--st-secondary), var(--st-primary), var(--st-primary-light));
+            border-radius: 15px;
+            transition: width 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 0 25px var(--st-primary);
+            position: relative;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmer 2.5s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.75rem;
+            color: white;
+            font-weight: bold;
+            text-shadow: 0 0 8px black, 0 0 15px black;
+            z-index: 1;
+        }
+
+        /* ========== STREAK ========== */
+        .streak-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: linear-gradient(135deg, rgba(255, 100, 0, 0.15), rgba(255, 50, 0, 0.1));
+            border: 3px solid rgba(255, 100, 0, 0.5);
+            border-radius: 20px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 5px 25px rgba(255, 100, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .streak-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 35px rgba(255, 100, 0, 0.5);
+        }
+
+        .streak-icon {
+            font-size: 2.5rem;
+            animation: flicker 2s infinite;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; filter: brightness(1); }
+            50% { opacity: 0.8; filter: brightness(1.3); }
+        }
+
+        .streak-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .streak-label {
+            font-size: 0.7rem;
+            color: var(--st-text-dim);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .streak-value {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: #ff6400;
+            font-weight: bold;
+            text-shadow: 0 0 20px #ff6400, 0 0 40px #ff6400;
+        }
+
+        /* ========== CURRENT MISSION ========== */
+        .current-mission-card {
+            background: var(--st-panel);
+            border: 4px solid var(--st-panel-border);
+            border-radius: 30px;
+            padding: 3.5rem 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            box-shadow: 
+                0 15px 60px rgba(0, 0, 0, 0.7),
+                0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            overflow: hidden;
+        }
+
+        .current-mission-card::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255, 30, 30, 0.08) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .mission-badge {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--st-primary), var(--st-secondary));
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 30px;
+            font-size: 0.875rem;
+            font-weight: bold;
+            letter-spacing: 3px;
+            box-shadow: 0 5px 30px rgba(255, 30, 30, 0.7);
+            z-index: 1;
+        }
+
+        .mission-icon {
+            font-size: 6rem;
+            margin: 2rem 0;
+            filter: drop-shadow(0 10px 30px rgba(255, 30, 30, 0.5));
+            animation: float 3s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        .mission-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.75rem, 5vw, 2.5rem);
+            color: white;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+            position: relative;
+            z-index: 1;
+        }
+
+        .mission-description {
+            font-size: clamp(1rem, 3vw, 1.25rem);
+            color: var(--st-text);
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-complete {
+            background: linear-gradient(135deg, var(--st-primary), var(--st-secondary));
+            border: 3px solid var(--st-primary);
+            color: white;
+            padding: 1.5rem 3.5rem;
+            border-radius: 18px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            font-family: 'Courier Prime', monospace;
+            box-shadow: 0 8px 35px rgba(255, 30, 30, 0.5);
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .btn-complete::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 0; height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .btn-complete:hover::before {
+            width: 400px; height: 400px;
+        }
+
+        .btn-complete:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 15px 60px rgba(255, 30, 30, 0.8);
+        }
+
+        .btn-complete:active {
+            transform: scale(0.98);
+        }
+
+        .btn-complete:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .mission-completed {
+            margin-top: 2.5rem;
+            padding: 2.5rem;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(22, 163, 74, 0.1));
+            border: 3px solid rgba(34, 197, 94, 0.5);
+            border-radius: 20px;
+            box-shadow: 0 8px 35px rgba(34, 197, 94, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .mission-completed.hidden { display: none; }
+
+        .completed-icon {
+            font-size: 5rem;
+            color: var(--st-success);
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 5px 20px rgba(34, 197, 94, 0.6));
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .completed-text {
+            font-size: 2rem;
+            color: var(--st-success);
+            font-weight: bold;
+            margin-bottom: 0.75rem;
+            text-shadow: 0 0 20px var(--st-success);
+        }
+
+        .completed-date {
+            font-size: 1rem;
+            color: var(--st-text-dim);
+        }
+
+        /* ========== TIMELINE ========== */
+        .timeline-section {
+            margin-bottom: 3rem;
+        }
+
+        .timeline-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            color: var(--st-primary);
+            text-align: center;
+            margin-bottom: 2.5rem;
+            text-shadow: 0 0 20px var(--st-primary), 0 0 40px var(--st-primary);
+        }
+
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            max-height: 550px;
+            overflow-y: auto;
+            padding-right: 12px;
+        }
+
+        /* Custom Scrollbar */
+        .timeline::-webkit-scrollbar { width: 8px; }
+        .timeline::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+        .timeline::-webkit-scrollbar-thumb {
+            background: var(--st-primary);
+            border-radius: 10px;
+            box-shadow: 0 0 10px var(--st-primary);
+        }
+        .timeline::-webkit-scrollbar-thumb:hover {
+            background: var(--st-primary-light);
+        }
+
+        .timeline-item {
+            background: var(--st-panel);
+            border: 3px solid var(--st-panel-border);
+            border-radius: 20px;
+            padding: 1.75rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0;
+            width: 0; height: 100%;
+            background: linear-gradient(90deg, rgba(255, 30, 30, 0.1), transparent);
+            transition: width 0.4s ease;
+        }
+
+        .timeline-item:hover::before { width: 100%; }
+
+        .timeline-item:hover {
+            transform: translateX(15px);
+            border-color: var(--st-primary);
+            box-shadow: 0 8px 40px rgba(255, 30, 30, 0.4);
+        }
+
+        .timeline-item.completed {
+            border-color: var(--st-success);
+            background: linear-gradient(135deg, var(--st-panel), rgba(34, 197, 94, 0.05));
+        }
+
+        .timeline-item.completed:hover {
+            box-shadow: 0 8px 40px rgba(34, 197, 94, 0.3);
+        }
+
+        .timeline-item.current {
+            border-color: var(--st-primary);
+            box-shadow: 0 0 30px rgba(255, 30, 30, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(255, 30, 30, 0.4); }
+            50% { box-shadow: 0 0 50px rgba(255, 30, 30, 0.7); }
+        }
+
+        .timeline-item.locked {
+            opacity: 0.4;
+        }
+
+        .timeline-day {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            color: var(--st-primary);
+            font-weight: bold;
+            min-width: 90px;
+            text-shadow: 0 0 15px var(--st-primary);
+        }
+
+        .timeline-icon {
+            font-size: 2.5rem;
+            filter: drop-shadow(0 3px 10px rgba(255, 30, 30, 0.3));
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-title-text {
+            font-size: 1.125rem;
+            color: white;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-description {
+            font-size: 0.875rem;
+            color: var(--st-text-dim);
+            line-height: 1.5;
+        }
+
+        .timeline-status {
+            font-size: 2.5rem;
+        }
+
+        /* ========== ACHIEVEMENTS ========== */
+        .achievements-section {
+            margin-bottom: 3rem;
+        }
+
+        .achievements-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            color: var(--st-primary);
+            text-align: center;
+            margin-bottom: 2.5rem;
+            text-shadow: 0 0 20px var(--st-primary), 0 0 40px var(--st-primary);
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1.75rem;
+        }
+
+        .achievement-card {
+            background: var(--st-panel);
+            border: 3px solid var(--st-panel-border);
+            border-radius: 20px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 50px rgba(255, 30, 30, 0.4);
+        }
+
+        .achievement-card.locked {
+            opacity: 0.3;
+            filter: grayscale(100%);
+        }
+
+        .achievement-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 5px 15px rgba(255, 30, 30, 0.4));
+        }
+
+        .achievement-name {
+            font-size: 1rem;
+            color: white;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .achievement-description {
+            font-size: 0.75rem;
+            color: var(--st-text-dim);
+            line-height: 1.5;
+        }
+
+        /* ========== BUTTONS ========== */
+        .btn-primary,
+        .btn-secondary,
+        .btn-danger {
+            padding: 1.25rem 3rem;
+            font-size: clamp(0.875rem, 3vw, 1.125rem);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            border: 3px solid;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            font-family: 'Courier Prime', monospace;
+            display: inline-block;
+            margin: 0.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--st-primary), var(--st-secondary));
+            border-color: var(--st-primary);
+            color: white;
+            box-shadow: 0 8px 30px rgba(255, 30, 30, 0.5);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 50px rgba(255, 30, 30, 0.7);
+        }
+
+        .btn-secondary {
+            color: var(--st-primary);
+            border-color: var(--st-panel-border);
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 30, 30, 0.15);
+            border-color: var(--st-primary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 35px rgba(255, 30, 30, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #8b0000, #5c0000);
+            border-color: #8b0000;
+            color: white;
+            box-shadow: 0 8px 30px rgba(139, 0, 0, 0.5);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 50px rgba(139, 0, 0, 0.7);
+        }
+
+        .btn-reset {
+            display: block;
+            margin: 2.5rem auto;
+            padding: 0.875rem 2rem;
+            background: rgba(139, 0, 0, 0.3);
+            border: 2px solid #8b0000;
+            color: #ff6b6b;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Courier Prime', monospace;
+        }
+
+        .btn-reset:hover {
+            background: rgba(139, 0, 0, 0.5);
+            transform: scale(1.05);
+            box-shadow: 0 5px 25px rgba(139, 0, 0, 0.5);
+        }
+
+        /* ========== MODAL ========== */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.96);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal.hidden { display: none; }
+
+        .modal-content {
+            background: var(--st-panel);
+            border: 3px solid var(--st-panel-border);
+            border-radius: 25px;
+            padding: 3rem 2.5rem;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            color: var(--st-primary);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 20px var(--st-primary);
+        }
+
+        .modal-text {
+            color: var(--st-text);
+            margin-bottom: 2.5rem;
+            line-height: 1.7;
+            font-size: 1.125rem;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ========== COMPLETION SCREEN ========== */
+        .completion-container {
+            background: var(--st-panel);
+            border: 4px solid var(--st-success);
+            border-radius: 35px;
+            padding: 4rem 3rem;
+            text-align: center;
+            box-shadow: 0 25px 90px rgba(34, 197, 94, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .completion-container::before {
+            content: '';
+            position: absolute;
+            top: -100%; left: -100%;
+            width: 300%; height: 300%;
+            background: radial-gradient(circle, rgba(34, 197, 94, 0.1) 0%, transparent 60%);
+            animation: rotate 30s linear infinite;
+        }
+
+        .completion-fireworks {
+            font-size: 6rem;
+            margin-bottom: 1.5rem;
+            animation: spin 3s linear infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .completion-medal {
+            font-size: 10rem;
+            margin: 2rem 0;
+            animation: bounce 2s ease-in-out infinite;
+            filter: drop-shadow(0 15px 50px rgba(255, 215, 0, 0.6));
+            position: relative;
+            z-index: 1;
+        }
+
+        .completion-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 7vw, 4.5rem);
+            color: var(--st-success);
+            text-shadow: 
+                0 0 30px var(--st-success),
+                0 0 60px var(--st-success),
+                0 0 90px var(--st-success);
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .completion-message {
+            font-size: clamp(1.125rem, 3vw, 1.5rem);
+            color: var(--st-text);
+            line-height: 1.7;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .completion-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            margin: 3rem 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-item {
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(34, 197, 94, 0.3);
+            border-radius: 15px;
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateX(10px);
+            border-color: var(--st-success);
+            box-shadow: 0 5px 25px rgba(34, 197, 94, 0.3);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+        }
+
+        .stat-label {
+            flex: 1;
+            text-align: left;
+            color: var(--st-text);
+            font-size: 1.125rem;
+        }
+
+        .completion-reward {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 215, 0, 0.05));
+            border: 3px solid rgba(255, 215, 0, 0.5);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 3rem 0;
+            box-shadow: 0 10px 40px rgba(255, 215, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .completion-reward h3 {
+            color: #ffd700;
+            margin-bottom: 1.5rem;
+            font-size: 1.75rem;
+            text-shadow: 0 0 25px #ffd700;
+        }
+
+        .reward-text {
+            color: var(--st-text);
+            line-height: 1.7;
+            font-style: italic;
+            font-size: 1.125rem;
+        }
+
+        .completion-actions {
+            display: flex;
+            gap: 1.25rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .challenge-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .challenge-intro {
+                grid-template-columns: 1fr;
+            }
+
+            .achievements-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+
+            .timeline {
+                max-height: 450px;
+            }
+
+            .timeline-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .modal-buttons {
+                flex-direction: column;
+            }
+
+            .modal-buttons button {
+                width: 100%;
+            }
+        }
+
+        /* ========== HIDDEN ========== */
+        .hidden { display: none !important; }
+    </style>
 </head>
 <body>
     <!-- Background Effects -->
@@ -18,173 +1060,167 @@
     <!-- Particles Container -->
     <div id="particles-container"></div>
 
-    <!-- Game Container -->
+    <!-- Audio -->
+    <audio id="complete-sound" preload="auto">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Main Container -->
     <div class="game-container">
         
-        <!-- TELA DE INÍCIO -->
+        <!-- START SCREEN -->
         <div id="start-screen" class="screen active">
             <div class="title-container">
                 <h1 class="st-title">DESAFIO</h1>
                 <div class="st-bar"></div>
-                <h2 class="st-subtitle">15 DIAS DE AMOR</h2>
-                <p class="subtitle">Stranger Things Edition</p>
+                <h2 class="st-subtitle">15 DIAS</h2>
+                <p class="subtitle">Missões do Amor</p>
             </div>
             
             <div class="challenge-intro">
                 <div class="intro-card">
-                    <div class="intro-icon">💌</div>
-                    <h3>15 Missões Românticas</h3>
-                    <p>Uma missão especial por dia para fortalecer nosso amor</p>
+                    <div class="intro-icon">📅</div>
+                    <h3>15 Missões</h3>
+                    <p>Uma missão especial para cada dia. Complete todas e mostre seu amor!</p>
                 </div>
                 
                 <div class="intro-card">
                     <div class="intro-icon">🔥</div>
-                    <h3>Sistema de Streak</h3>
-                    <p>Complete dias consecutivos e ganhe conquistas exclusivas</p>
+                    <h3>Streak System</h3>
+                    <p>Complete missões consecutivas para aumentar seu streak e ganhar mais XP!</p>
                 </div>
                 
                 <div class="intro-card">
                     <div class="intro-icon">🏆</div>
-                    <h3>Recompensas Especiais</h3>
-                    <p>Desbloqueie medalhas e surpresas ao completar o desafio</p>
+                    <h3>Conquistas</h3>
+                    <p>Desbloqueie badges especiais ao atingir marcos importantes!</p>
                 </div>
             </div>
 
             <div class="start-info">
-                <p class="info-highlight">💡 Complete uma missão por dia</p>
-                <p class="info-highlight">⏰ Você pode fazer check-in a qualquer hora</p>
-                <p class="info-highlight">❤️ Seu progresso é salvo automaticamente</p>
+                <div class="info-highlight">
+                    <span>💡</span>
+                    <span>Complete uma missão por dia para manter o streak</span>
+                </div>
+                <div class="info-highlight">
+                    <span>⭐</span>
+                    <span>Cada missão vale XP para o ranking global</span>
+                </div>
+                <div class="info-highlight">
+                    <span>💖</span>
+                    <span>Demonstre seu amor de formas criativas e especiais</span>
+                </div>
             </div>
 
-            <button class="btn-primary pulse" onclick="startChallenge()">
-                INICIAR DESAFIO
-            </button>
-
-            <button class="btn-secondary" onclick="window.location.href='index.html'">
-                Voltar ao Início
-            </button>
+            <button class="btn-primary pulse" onclick="startChallenge()">COMEÇAR DESAFIO</button>
         </div>
 
-        <!-- TELA PRINCIPAL DO DESAFIO -->
+        <!-- CHALLENGE SCREEN -->
         <div id="challenge-screen" class="screen">
-            
-            <!-- Header com Progresso -->
+            <!-- Header -->
             <div class="challenge-header">
                 <button class="btn-back" onclick="window.location.href='index.html'" aria-label="Voltar">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                         <path d="M19 12H5M12 19l-7-7 7-7"/>
                     </svg>
                 </button>
                 
                 <div class="progress-info">
-                    <h2 class="progress-title">DESAFIO DOS 15 DIAS</h2>
+                    <div class="progress-title">PROGRESSO TOTAL</div>
                     <div class="progress-container">
-                        <div class="progress-bar" id="progress-bar"></div>
-                        <span class="progress-text" id="progress-text">0/15</span>
+                        <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
+                        <div class="progress-text" id="progress-text">0/15</div>
                     </div>
                 </div>
 
-                <div class="streak-container" id="streak-container">
+                <div class="streak-container">
                     <div class="streak-icon">🔥</div>
                     <div class="streak-info">
-                        <span class="streak-label">STREAK</span>
-                        <span class="streak-value" id="streak-value">0</span>
+                        <div class="streak-label">STREAK</div>
+                        <div class="streak-value" id="streak-value">0</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Missão Atual -->
-            <div class="current-mission-card" id="current-mission-card">
+            <!-- Current Mission -->
+            <div class="current-mission-card">
                 <div class="mission-badge" id="mission-badge">DIA 1</div>
                 <div class="mission-icon" id="mission-icon">💌</div>
-                <h3 class="mission-title" id="mission-title">Carregando missão...</h3>
-                <p class="mission-description" id="mission-description">Aguarde...</p>
+                <h2 class="mission-title" id="mission-title">Mensagem Especial</h2>
+                <p class="mission-description" id="mission-description">Envie uma mensagem de bom dia com um motivo pelo qual você ama ela hoje</p>
                 
                 <button class="btn-complete" id="btn-complete" onclick="showCheckInConfirm()">
-                    ✓ COMPLETEI A MISSÃO
+                    COMPLETAR MISSÃO
                 </button>
-                
+
                 <div class="mission-completed hidden" id="mission-completed">
-                    <div class="completed-icon">✓</div>
-                    <p class="completed-text">Missão Completada!</p>
-                    <p class="completed-date" id="completed-date"></p>
+                    <div class="completed-icon">✅</div>
+                    <div class="completed-text">Missão Completa!</div>
+                    <div class="completed-date" id="completed-date"></div>
                 </div>
             </div>
 
-            <!-- Timeline das Missões -->
+            <!-- Timeline -->
             <div class="timeline-section">
-                <h3 class="timeline-title">TODAS AS MISSÕES</h3>
+                <h3 class="timeline-title">📋 LINHA DO TEMPO</h3>
                 <div class="timeline" id="timeline"></div>
             </div>
 
-            <!-- Conquistas -->
-            <div class="achievements-section" id="achievements-section">
-                <h3 class="achievements-title">CONQUISTAS</h3>
+            <!-- Achievements -->
+            <div class="achievements-section">
+                <h3 class="achievements-title">🏅 CONQUISTAS</h3>
                 <div class="achievements-grid" id="achievements-grid"></div>
             </div>
 
-            <!-- Botão Reset (escondido por padrão) -->
-            <button class="btn-reset" id="btn-reset" onclick="confirmReset()">
-                Resetar Desafio
+            <!-- Reset Button -->
+            <button class="btn-reset" onclick="confirmReset()">
+                Resetar Progresso (Dev Only)
             </button>
         </div>
 
-        <!-- TELA DE CONCLUSÃO -->
+        <!-- COMPLETION SCREEN -->
         <div id="completion-screen" class="screen">
             <div class="completion-container">
                 <div class="completion-fireworks">🎆</div>
-                
                 <div class="completion-medal">🏆</div>
-                
-                <h1 class="completion-title">DESAFIO COMPLETO!</h1>
-                
+                <h2 class="completion-title">PARABÉNS!</h2>
                 <p class="completion-message">
-                    Vocês completaram os 15 dias de missões românticas! 
-                    O amor de vocês é mais forte que qualquer Demogorgon! 💕
+                    Você completou o Desafio 15 Dias! Seu amor e dedicação foram incríveis! 💕✨
                 </p>
 
                 <div class="completion-stats">
                     <div class="stat-item">
-                        <span class="stat-icon">✓</span>
-                        <span class="stat-label">15 Missões Completadas</span>
-                    </div>
-                    <div class="stat-item">
                         <span class="stat-icon">🔥</span>
-                        <span class="stat-label" id="final-streak">Streak Máximo: 0 dias</span>
+                        <span class="stat-label" id="final-streak">Streak Máximo: 15 dias</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-icon">🏅</span>
-                        <span class="stat-label" id="final-achievements">0 Conquistas Desbloqueadas</span>
+                        <span class="stat-label" id="final-achievements">6 Conquistas Desbloqueadas</span>
                     </div>
                 </div>
 
                 <div class="completion-reward">
-                    <h3>🎁 RECOMPENSA ESPECIAL DESBLOQUEADA</h3>
+                    <h3>🎁 Recompensa Especial</h3>
                     <p class="reward-text">
-                        "Vocês provaram que o amor verdadeiro supera qualquer desafio. 
-                        Assim como Eleven e Mike, vocês são inseparáveis! 
-                        Continuem escrevendo essa história linda juntas. ❤️"
+                        Você provou que o amor verdadeiro está nos pequenos gestos diários. 
+                        Continue assim e nosso amor só vai crescer! ❤️
                     </p>
                 </div>
 
                 <div class="completion-actions">
-                    <button class="btn-primary" onclick="window.location.href='index.html'">
-                        Voltar ao Início
-                    </button>
-                    <button class="btn-secondary" onclick="confirmReset()">
-                        Recomeçar Desafio
-                    </button>
+                    <button class="btn-primary" onclick="location.href='ranking.html'">Ver Ranking</button>
+                    <button class="btn-secondary" onclick="location.href='index.html'">Voltar ao Início</button>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <!-- Modal de Confirmação de Check-In -->
+    <!-- Check-in Modal -->
     <div id="checkin-modal" class="modal hidden">
         <div class="modal-content">
-            <h3 class="modal-title">Confirmar Missão</h3>
-            <p class="modal-text">Você realmente completou esta missão de hoje?</p>
+            <h3 class="modal-title">✅ Confirmar Missão</h3>
+            <p class="modal-text">Você realmente completou esta missão? Seja honesta! 💕</p>
             <div class="modal-buttons">
                 <button class="btn-primary" onclick="completeMission()">
                     SIM, COMPLETEI!
@@ -196,14 +1232,14 @@
         </div>
     </div>
 
-    <!-- Modal de Reset -->
+    <!-- Reset Modal -->
     <div id="reset-modal" class="modal hidden">
         <div class="modal-content">
             <h3 class="modal-title">⚠️ Resetar Desafio</h3>
             <p class="modal-text">Tem certeza? Todo o progresso será perdido!</p>
             <div class="modal-buttons">
                 <button class="btn-danger" onclick="resetChallenge()">
-                    SIM, RESETAR
+                    SIM, APAGAR TUDO
                 </button>
                 <button class="btn-secondary" onclick="closeModal()">
                     Cancelar
@@ -212,10 +1248,6 @@
         </div>
     </div>
 
-    <!-- Audio Elements -->
-    <audio id="complete-sound" preload="auto">
-        <source src="data:audio/wav;base64,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" type="audio/wav">
-    </audio>
     <script src="assets/ranking-system.js"></script>
     <script src="assets/challenge-game.js"></script>
 </body>
