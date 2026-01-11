@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta name="description" content="Desafio 15 Dias de Amor - Atividades especiais para o casal">
-    <meta name="theme-color" content="#000000">
+    <meta name="description" content="Desafio 26 Dias de Amor - Atividades especiais para o casal">
+    <meta name="theme-color" content="#d4558c">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     
-    <title>Desafio 15 Dias - Stranger Things</title>
+    <title>Desafio 26 Dias - Milena & Andressa</title>
     
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
     
     <!-- CSS Externo -->
     <link rel="stylesheet" href="css/styles.css">
@@ -22,6 +21,11 @@
         .challenge-header {
             text-align: center;
             margin-bottom: 40px;
+        }
+        
+        .challenge-header h2 {
+            font-family: 'Playfair Display', serif;
+            color: #d4558c;
         }
         
         .challenge-stats {
@@ -40,41 +44,40 @@
         
         .stat-card {
             padding: 25px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 0, 0, 0.2);
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(212, 85, 140, 0.1);
+            border-radius: 20px;
             text-align: center;
             transition: all 0.3s ease;
         }
         
         .stat-card:hover {
             transform: translateY(-5px);
-            border-color: rgba(255, 0, 0, 0.5);
+            border-color: rgba(212, 85, 140, 0.3);
+            box-shadow: 0 8px 25px rgba(212, 85, 140, 0.15);
         }
         
         .stat-value {
             display: block;
             font-size: 3rem;
-            font-weight: bold;
-            color: #ff0000;
-            font-family: 'Orbitron', monospace;
-            text-shadow: 0 0 20px #ff0000;
+            font-weight: 700;
+            color: #d4558c;
+            font-family: 'Playfair Display', serif;
         }
         
         .stat-label {
             display: block;
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.8);
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            font-size: 0.95rem;
+            color: #999;
+            text-transform: lowercase;
+            letter-spacing: 1px;
             margin-top: 10px;
         }
         
         .progress-text {
             text-align: center;
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            color: #999;
             margin-top: 10px;
         }
         
@@ -88,9 +91,9 @@
             gap: 20px;
             padding: 20px;
             margin: 15px 0;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            border-left: 4px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            border-left: 4px solid rgba(212, 85, 140, 0.3);
             transition: all 0.3s ease;
         }
         
@@ -103,14 +106,14 @@
         }
         
         .challenge-task.completed {
-            border-color: #00ff00;
-            background: rgba(0, 255, 0, 0.05);
+            border-color: #81c784;
+            background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f4 100%);
         }
         
         .challenge-task.current {
-            border-color: #ff0000;
-            background: rgba(255, 0, 0, 0.1);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            border-color: #d4558c;
+            background: linear-gradient(135deg, #ffeef8 0%, #fff5f7 100%);
+            box-shadow: 0 4px 15px rgba(212, 85, 140, 0.2);
         }
         
         .challenge-task.locked {
@@ -120,7 +123,6 @@
         
         .task-emoji {
             font-size: 3rem;
-            filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.5));
         }
         
         .task-content {
@@ -128,16 +130,17 @@
         }
         
         .task-title {
-            font-size: 1.2rem;
-            color: white;
+            font-size: 1.15rem;
+            color: #4a4a4a;
             margin-bottom: 10px;
+            font-weight: 500;
         }
         
         .task-meta {
             display: flex;
             gap: 15px;
             font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.6);
+            color: #999;
         }
         
         @media (max-width: 768px) {
@@ -148,8 +151,8 @@
         }
         
         .task-points {
-            color: #ffcc00;
-            font-weight: bold;
+            color: #f093b3;
+            font-weight: 600;
         }
         
         .task-complete-btn {
@@ -174,6 +177,11 @@
             margin: 0 auto;
         }
         
+        .challenge-completed h2 {
+            font-family: 'Playfair Display', serif;
+            color: #d4558c;
+        }
+        
         .completion-stats {
             margin: 40px 0;
         }
@@ -181,7 +189,6 @@
         .completion-emoji {
             font-size: 6rem;
             margin: 30px 0;
-            filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.5));
         }
         
         .final-stats {
@@ -200,32 +207,33 @@
         .final-stat {
             flex: 1;
             padding: 30px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            border: 2px solid rgba(255, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            border: 2px solid rgba(212, 85, 140, 0.2);
         }
         
         .final-stat-value {
             display: block;
             font-size: 3rem;
-            font-weight: bold;
-            color: #ff0000;
-            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            color: #d4558c;
+            font-family: 'Playfair Display', serif;
         }
         
         .final-stat-label {
             display: block;
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.7);
-            text-transform: uppercase;
+            font-size: 0.95rem;
+            color: #999;
+            text-transform: lowercase;
             margin-top: 10px;
         }
         
         .completion-message {
-            font-size: 1.3rem;
-            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            color: #666;
             line-height: 1.8;
             margin: 30px 0;
+            font-style: italic;
         }
         
         .completion-actions {
@@ -242,11 +250,11 @@
             <!-- O conteúdo será gerado dinamicamente pelo JavaScript -->
             <div style="text-align: center; padding: 60px 20px;">
                 <div class="loading"></div>
-                <p style="margin-top: 20px; color: rgba(255,255,255,0.7);">Carregando desafio...</p>
+                <p style="margin-top: 20px; color: #999;">Carregando desafio...</p>
             </div>
         </div>
         
-        <div id="next-day-countdown" style="text-align: center; margin-top: 30px; font-size: 1.2rem; color: rgba(255,255,255,0.7);"></div>
+        <div id="next-day-countdown" style="text-align: center; margin-top: 30px; font-size: 1.1rem; color: #999;"></div>
     </div>
     
     <!-- JavaScript Externo -->

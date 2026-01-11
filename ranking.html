@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta name="description" content="Ranking Global - Melhores pontuações do Quiz do Amor">
-    <meta name="theme-color" content="#000000">
+    <meta name="description" content="Ranking - Melhores pontuações do Quiz do Amor">
+    <meta name="theme-color" content="#d4558c">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     
-    <title>Ranking Global - Stranger Things</title>
+    <title>Ranking - Milena & Andressa</title>
     
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
     
     <!-- CSS Externo -->
     <link rel="stylesheet" href="css/styles.css">
@@ -22,6 +21,11 @@
         .ranking-header {
             text-align: center;
             margin-bottom: 40px;
+        }
+        
+        .ranking-header h2 {
+            font-family: 'Playfair Display', serif;
+            color: #d4558c;
         }
         
         .ranking-stats {
@@ -40,34 +44,33 @@
         
         .stat-card {
             padding: 25px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 0, 0, 0.2);
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(212, 85, 140, 0.1);
+            border-radius: 20px;
             text-align: center;
             transition: all 0.3s ease;
         }
         
         .stat-card:hover {
             transform: translateY(-5px);
-            border-color: rgba(255, 0, 0, 0.5);
+            border-color: rgba(212, 85, 140, 0.3);
+            box-shadow: 0 8px 25px rgba(212, 85, 140, 0.15);
         }
         
         .stat-value {
             display: block;
             font-size: 3rem;
-            font-weight: bold;
-            color: #ff0000;
-            font-family: 'Orbitron', monospace;
-            text-shadow: 0 0 20px #ff0000;
+            font-weight: 700;
+            color: #d4558c;
+            font-family: 'Playfair Display', serif;
         }
         
         .stat-label {
             display: block;
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.8);
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            font-size: 0.95rem;
+            color: #999;
+            text-transform: lowercase;
+            letter-spacing: 1px;
             margin-top: 10px;
         }
         
@@ -94,19 +97,19 @@
         
         .filter-group label {
             font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            text-transform: uppercase;
+            color: #999;
+            text-transform: lowercase;
             letter-spacing: 1px;
         }
         
         .filter-group select {
             padding: 12px 20px;
             font-size: 1rem;
-            font-family: 'Benguiat', cursive;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            color: white;
+            font-family: 'Poppins', sans-serif;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(212, 85, 140, 0.2);
+            border-radius: 15px;
+            color: #4a4a4a;
             cursor: pointer;
             transition: all 0.3s ease;
             min-width: 200px;
@@ -114,13 +117,13 @@
         
         .filter-group select:focus {
             outline: none;
-            border-color: #ff0000;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            border-color: #d4558c;
+            box-shadow: 0 0 20px rgba(212, 85, 140, 0.2);
         }
         
         .filter-group select option {
-            background: #1a0000;
-            color: white;
+            background: #fff;
+            color: #4a4a4a;
         }
         
         @media (max-width: 768px) {
@@ -140,22 +143,23 @@
             gap: 20px;
             padding: 20px;
             margin: 15px 0;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            border-left: 4px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            border-left: 4px solid rgba(212, 85, 140, 0.3);
             transition: all 0.3s ease;
             position: relative;
         }
         
         .leaderboard-item:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 1);
             transform: translateX(5px);
-            border-color: rgba(255, 0, 0, 0.5);
+            border-color: #d4558c;
+            box-shadow: 0 4px 15px rgba(212, 85, 140, 0.2);
         }
         
         .leaderboard-item.top-3 {
             border-left-width: 6px;
-            background: rgba(255, 215, 0, 0.05);
+            background: linear-gradient(135deg, #ffeef8 0%, #fff5f7 100%);
         }
         
         .leaderboard-item.top-3:nth-child(1) {
@@ -180,11 +184,11 @@
         
         .ranking-position {
             font-size: 2rem;
-            font-weight: bold;
-            color: #ff0000;
+            font-weight: 700;
+            color: #d4558c;
             min-width: 60px;
             text-align: center;
-            font-family: 'Orbitron', monospace;
+            font-family: 'Playfair Display', serif;
         }
         
         @media (max-width: 768px) {
@@ -198,8 +202,8 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            border: 3px solid #ff0000;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+            border: 3px solid #d4558c;
+            box-shadow: 0 4px 15px rgba(212, 85, 140, 0.3);
         }
         
         @media (max-width: 768px) {
@@ -216,14 +220,14 @@
         
         .ranking-name {
             font-size: 1.3rem;
-            font-weight: bold;
-            color: white;
+            font-weight: 600;
+            color: #4a4a4a;
             margin-bottom: 5px;
         }
         
         .ranking-meta {
             font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.6);
+            color: #999;
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
@@ -242,9 +246,9 @@
         
         .ranking-score {
             font-size: 1.8rem;
-            font-weight: bold;
-            color: #ffcc00;
-            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            color: #f093b3;
+            font-family: 'Playfair Display', serif;
             min-width: 100px;
             text-align: right;
         }
@@ -267,10 +271,10 @@
             padding: 0;
             min-width: auto;
             min-height: auto;
-            background: rgba(255, 0, 0, 0.2);
-            border: 2px solid rgba(255, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(212, 85, 140, 0.3);
             border-radius: 50%;
-            color: white;
+            color: #d4558c;
             font-size: 1.2rem;
             cursor: pointer;
             display: flex;
@@ -280,15 +284,16 @@
         }
         
         .ranking-delete:hover {
-            background: rgba(255, 0, 0, 0.5);
+            background: #d4558c;
+            color: white;
             transform: scale(1.1);
         }
         
         .no-rankings {
             text-align: center;
             padding: 60px 20px;
-            font-size: 1.3rem;
-            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.2rem;
+            color: #999;
         }
         
         .ranking-actions {
@@ -308,7 +313,7 @@
             <!-- O conteúdo será gerado dinamicamente pelo JavaScript -->
             <div style="text-align: center; padding: 60px 20px;">
                 <div class="loading"></div>
-                <p style="margin-top: 20px; color: rgba(255,255,255,0.7);">Carregando ranking...</p>
+                <p style="margin-top: 20px; color: #999;">Carregando ranking...</p>
             </div>
         </div>
     </div>

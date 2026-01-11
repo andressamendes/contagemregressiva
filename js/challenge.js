@@ -1,28 +1,39 @@
 // ==========================================
 // STRANGER THINGS COUNTDOWN - CHALLENGE.JS
-// Lógica específica da página do Desafio 15 Dias
+// Lógica específica da página do Desafio 26 Dias
 // ==========================================
 
 // Configuração do Desafio
 const CHALLENGE_CONFIG = {
     startDate: new Date('2026-01-01T00:00:00'),
-    totalDays: 15,
+    totalDays: 26,
     tasks: [
-        { day: 1, title: 'Dia 1: Assistir 1 episódio de Stranger Things juntos', emoji: '📺', points: 10 },
-        { day: 2, title: 'Dia 2: Cozinhar a receita favorita da Milena', emoji: '🍳', points: 15 },
-        { day: 3, title: 'Dia 3: Escrever uma carta de amor', emoji: '💌', points: 20 },
-        { day: 4, title: 'Dia 4: Tirar 10 fotos juntos', emoji: '📸', points: 10 },
-        { day: 5, title: 'Dia 5: Fazer um piquenique', emoji: '🧺', points: 25 },
-        { day: 6, title: 'Dia 6: Assistir o pôr do sol juntos', emoji: '🌅', points: 15 },
-        { day: 7, title: 'Dia 7: Dançar nossa música favorita', emoji: '💃', points: 20 },
-        { day: 8, title: 'Dia 8: Criar uma playlist especial', emoji: '🎵', points: 15 },
-        { day: 9, title: 'Dia 9: Fazer uma maratona de filmes', emoji: '🎬', points: 20 },
-        { day: 10, title: 'Dia 10: Preparar café da manhã na cama', emoji: '☕', points: 25 },
-        { day: 11, title: 'Dia 11: Escrever 10 motivos do meu amor', emoji: '❤️', points: 30 },
-        { day: 12, title: 'Dia 12: Fazer uma ligação surpresa', emoji: '📞', points: 15 },
-        { day: 13, title: 'Dia 13: Planejar nossa próxima viagem', emoji: '✈️', points: 25 },
-        { day: 14, title: 'Dia 14: Jantar romântico em casa', emoji: '🍷', points: 30 },
-        { day: 15, title: 'Dia 15: Surpresa final especial!', emoji: '🎁', points: 50 }
+        { day: 1, title: 'Dia 1: Assistir um filme juntas', emoji: '🎬', points: 10 },
+        { day: 2, title: 'Dia 2: Tomar sorvete na sorveteria favorita', emoji: '🍦', points: 10 },
+        { day: 3, title: 'Dia 3: Correr no parque', emoji: '🏃‍♀️', points: 15 },
+        { day: 4, title: 'Dia 4: Ir na cafeteria estudar juntas', emoji: '☕', points: 10 },
+        { day: 5, title: 'Dia 5: Cozinhar uma receita nova', emoji: '🍳', points: 15 },
+        { day: 6, title: 'Dia 6: Alinhar as metas para 2026', emoji: '📝', points: 20 },
+        { day: 7, title: 'Dia 7: Começar uma série juntas', emoji: '📺', points: 10 },
+        { day: 8, title: 'Dia 8: Ir à igreja', emoji: '⛪', points: 15 },
+        { day: 9, title: 'Dia 9: Sair com os amigos', emoji: '👥', points: 15 },
+        { day: 10, title: 'Dia 10: Tomar água de coco na praia/parque', emoji: '🥥', points: 10 },
+        { day: 11, title: 'Dia 11: Fazer um piquenique no parque', emoji: '🧺', points: 20 },
+        { day: 12, title: 'Dia 12: Maratona de estudos com lanches', emoji: '📚', points: 15 },
+        { day: 13, title: 'Dia 13: Café da manhã especial em casa', emoji: '☕', points: 15 },
+        { day: 14, title: 'Dia 14: Caminhada ao pôr do sol', emoji: '🌅', points: 15 },
+        { day: 15, title: 'Dia 15: Jogar um jogo de tabuleiro', emoji: '🎲', points: 10 },
+        { day: 16, title: 'Dia 16: Fazer exercícios juntas', emoji: '💪', points: 15 },
+        { day: 17, title: 'Dia 17: Trocar cartas de amor escritas à mão', emoji: '💌', points: 25 },
+        { day: 18, title: 'Dia 18: Assistir o nascer do sol', emoji: '🌄', points: 20 },
+        { day: 19, title: 'Dia 19: Fazer uma playlist especial juntas', emoji: '🎵', points: 15 },
+        { day: 20, title: 'Dia 20: Sessão de skincare juntas', emoji: '🧴', points: 15 },
+        { day: 21, title: 'Dia 21: Jantar romântico em casa', emoji: '🍝', points: 25 },
+        { day: 22, title: 'Dia 22: Escrever 10 motivos do amor uma pela outra', emoji: '❤️', points: 30 },
+        { day: 23, title: 'Dia 23: Planejar a próxima viagem juntas', emoji: '✈️', points: 20 },
+        { day: 24, title: 'Dia 24: Fazer massagem uma na outra', emoji: '💆‍♀️', points: 20 },
+        { day: 25, title: 'Dia 25: Escrever uma carta para o futuro', emoji: '📜', points: 25 },
+        { day: 26, title: 'Dia 26: Celebração especial - surpresa final!', emoji: '🎁', points: 50 }
     ]
 };
 
@@ -35,7 +46,7 @@ const ChallengeState = {
 
 // Inicializar Desafio
 function initChallenge() {
-    console.log('🎯 Inicializando Desafio 15 Dias...');
+    console.log('🎯 Inicializando Desafio 26 Dias...');
     
     // Carregar progresso salvo
     loadChallengeProgress();
@@ -89,7 +100,7 @@ function renderChallenge() {
     
     container.innerHTML = `
         <div class="challenge-header">
-            <h2>Desafio 15 Dias de Amor</h2>
+            <h2>Desafio 26 Dias de Amor</h2>
             <div class="challenge-stats">
                 <div class="stat-card">
                     <span class="stat-value">${completedCount}</span>
@@ -217,7 +228,7 @@ function showChallengeCompleted() {
             <div class="completion-stats">
                 <div class="completion-emoji">🏆</div>
                 <h3>Parabéns!</h3>
-                <p>Você completou todos os 15 dias do desafio!</p>
+                <p>Você completou todos os 26 dias do desafio!</p>
                 
                 <div class="final-stats">
                     <div class="final-stat">
@@ -231,7 +242,7 @@ function showChallengeCompleted() {
                 </div>
                 
                 <p class="completion-message">
-                    Nosso amor cresceu ainda mais nesses 15 dias especiais! ❤️
+                    Nosso amor cresceu ainda mais nesses 26 dias especiais! ❤️
                 </p>
             </div>
             
@@ -260,11 +271,11 @@ function resetChallenge() {
 
 // Compartilhar desafio
 function shareChallenge() {
-    const text = `Completei o Desafio 15 Dias de Amor! 💕\n${ChallengeState.totalPoints} pontos conquistados!\n\n#StrangerThings #DesafioDeAmor`;
+    const text = `Completei o Desafio 26 Dias de Amor! 💕\n${ChallengeState.totalPoints} pontos conquistados!\n\n#StrangerThings #DesafioDeAmor`;
     
     if (navigator.share) {
         navigator.share({
-            title: 'Desafio 15 Dias de Amor',
+            title: 'Desafio 26 Dias de Amor',
             text: text,
             url: window.location.href
         }).then(() => {

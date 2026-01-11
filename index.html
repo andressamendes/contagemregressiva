@@ -3,22 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta name="description" content="Contagem regressiva especial para Milena - Stranger Things Theme">
-    <meta name="theme-color" content="#000000">
+    <meta name="description" content="Contagem regressiva especial para Milena - Uma história de amor">
+    <meta name="theme-color" content="#d4558c">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     
     <!-- Open Graph Tags -->
-    <meta property="og:title" content="Stranger Things: Milena ❤️">
+    <meta property="og:title" content="Milena & Andressa ❤️">
     <meta property="og:description" content="Uma contagem regressiva especial com amor">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="https://andressamendes.github.io/contagemregressiva/assets/og-image.jpg">
     
-    <title>Stranger Things: Milena ❤️</title>
+    <title>Milena & Andressa ❤️</title>
     
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
     
     <!-- CSS Externo -->
     <link rel="stylesheet" href="css/styles.css">
@@ -27,12 +25,30 @@
         /* Estilos específicos da página inicial */
         .hero-section {
             text-align: center;
-            padding: 40px 20px;
+            padding: 60px 20px 40px;
             min-height: 50vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+        }
+        
+        .hero-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            background: linear-gradient(135deg, #d4558c 0%, #f093b3 50%, #ff8fb1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        
+        .hero-subtitle {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            color: #888;
+            font-weight: 300;
+            margin-bottom: 40px;
         }
         
         .countdown-display {
@@ -51,35 +67,98 @@
         }
         
         .countdown-item {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 0, 0, 0.3);
-            border-radius: 15px;
-            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(212, 85, 140, 0.15);
+            border-radius: 20px;
+            padding: 25px 20px;
             transition: all 0.3s ease;
         }
         
         .countdown-item:hover {
-            transform: scale(1.05);
-            border-color: rgba(255, 0, 0, 0.6);
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+            transform: translateY(-5px);
+            border-color: rgba(212, 85, 140, 0.4);
+            box-shadow: 0 8px 25px rgba(212, 85, 140, 0.2);
         }
         
         .countdown-number {
-            font-size: clamp(2rem, 6vw, 3.5rem);
-            font-weight: bold;
-            color: #ff0000;
-            font-family: 'Orbitron', monospace;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #d4558c 0%, #f093b3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'Playfair Display', serif;
             display: block;
-            text-shadow: 0 0 20px #ff0000;
         }
         
         .countdown-label {
-            font-size: clamp(0.9rem, 2vw, 1.2rem);
-            color: rgba(255, 255, 255, 0.8);
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            color: #888;
+            text-transform: lowercase;
+            letter-spacing: 1px;
             margin-top: 10px;
+            display: block;
+            font-weight: 400;
+        }
+        
+        /* Cronômetro Tempo Juntas */
+        .time-together-section {
+            margin: 60px 0;
+            text-align: center;
+        }
+        
+        .time-together-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(212, 85, 140, 0.15);
+            border-radius: 25px;
+            padding: 40px;
+            max-width: 700px;
+            margin: 0 auto;
+            box-shadow: 0 8px 30px rgba(212, 85, 140, 0.1);
+        }
+        
+        .time-together-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            color: #d4558c;
+            margin-bottom: 10px;
+        }
+        
+        .time-together-subtitle {
+            font-size: clamp(0.95rem, 2vw, 1.2rem);
+            color: #999;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+        
+        .time-together-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .time-together-item {
+            background: linear-gradient(135deg, #ffeef8 0%, #fff5f7 100%);
+            border-radius: 15px;
+            padding: 20px 15px;
+            border: 1px solid rgba(212, 85, 140, 0.1);
+        }
+        
+        .time-together-number {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 700;
+            color: #d4558c;
+            font-family: 'Playfair Display', serif;
+            display: block;
+        }
+        
+        .time-together-label {
+            font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+            color: #999;
+            text-transform: lowercase;
+            letter-spacing: 0.5px;
+            margin-top: 5px;
             display: block;
         }
         
@@ -98,61 +177,71 @@
         }
         
         .feature-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 0, 0, 0.2);
-            border-radius: 20px;
-            padding: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(212, 85, 140, 0.1);
+            border-radius: 25px;
+            padding: 35px 30px;
             text-align: center;
             transition: all 0.3s ease;
             cursor: pointer;
         }
         
         .feature-card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(255, 0, 0, 0.5);
-            box-shadow: 0 15px 40px rgba(255, 0, 0, 0.3);
+            transform: translateY(-8px);
+            border-color: rgba(212, 85, 140, 0.3);
+            box-shadow: 0 12px 35px rgba(212, 85, 140, 0.2);
         }
         
         .feature-icon {
-            font-size: 4rem;
+            font-size: 3.5rem;
             margin-bottom: 20px;
-            filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.5));
         }
         
         .feature-title {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             margin-bottom: 15px;
-            color: #ff0000;
-            text-shadow: 0 0 10px #ff0000;
+            color: #d4558c;
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
         }
         
         .feature-description {
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.8);
-            line-height: 1.6;
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.7;
+            font-weight: 300;
         }
         
         .message-section {
-            margin: 60px 0;
+            margin: 60px 0 40px;
             text-align: center;
         }
         
         .love-message {
-            font-size: clamp(1.2rem, 3vw, 1.8rem);
-            line-height: 1.8;
-            color: rgba(255, 255, 255, 0.9);
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            line-height: 1.9;
+            color: #666;
             max-width: 700px;
             margin: 0 auto;
             padding: 40px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 25px;
+            border: 2px solid rgba(212, 85, 140, 0.1);
+            font-weight: 300;
+            font-style: italic;
         }
         
         @media (max-width: 768px) {
             .love-message {
                 padding: 25px;
+            }
+            
+            .time-together-card {
+                padding: 25px;
+            }
+            
+            .hero-section {
+                padding: 40px 20px 30px;
             }
         }
     </style>
@@ -161,28 +250,53 @@
     <div class="container">
         <!-- Seção Hero -->
         <section class="hero-section">
-            <h1>Stranger Things: Milena ❤️</h1>
-            <p style="font-size: clamp(1.2rem, 3vw, 1.8rem); color: rgba(255,255,255,0.8); margin-bottom: 30px;">
-                Uma jornada especial do nosso amor
-            </p>
+            <h1 class="hero-title">Milena & Andressa</h1>
+            <p class="hero-subtitle">Uma história de amor que começa aqui ❤️</p>
             
             <!-- Contagem Regressiva -->
             <div class="countdown-display" id="countdown">
                 <div class="countdown-item">
                     <span class="countdown-number" id="days">00</span>
-                    <span class="countdown-label">Dias</span>
+                    <span class="countdown-label">dias</span>
                 </div>
                 <div class="countdown-item">
                     <span class="countdown-number" id="hours">00</span>
-                    <span class="countdown-label">Horas</span>
+                    <span class="countdown-label">horas</span>
                 </div>
                 <div class="countdown-item">
                     <span class="countdown-number" id="minutes">00</span>
-                    <span class="countdown-label">Minutos</span>
+                    <span class="countdown-label">minutos</span>
                 </div>
                 <div class="countdown-item">
                     <span class="countdown-number" id="seconds">00</span>
-                    <span class="countdown-label">Segundos</span>
+                    <span class="countdown-label">segundos</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Cronômetro Tempo Juntas -->
+        <section class="time-together-section">
+            <div class="time-together-card">
+                <h2 class="time-together-title">Nosso Tempo Juntas 💕</h2>
+                <p class="time-together-subtitle">Desde o primeiro beijo em 07/09/2025 às 23h</p>
+                
+                <div class="time-together-display" id="time-together">
+                    <div class="time-together-item">
+                        <span class="time-together-number" id="together-months">0</span>
+                        <span class="time-together-label">meses</span>
+                    </div>
+                    <div class="time-together-item">
+                        <span class="time-together-number" id="together-days">0</span>
+                        <span class="time-together-label">dias</span>
+                    </div>
+                    <div class="time-together-item">
+                        <span class="time-together-number" id="together-hours">0</span>
+                        <span class="time-together-label">horas</span>
+                    </div>
+                    <div class="time-together-item">
+                        <span class="time-together-number" id="together-minutes">0</span>
+                        <span class="time-together-label">minutos</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -193,26 +307,26 @@
             
             <div class="features-grid">
                 <div class="feature-card" onclick="location.href='quiz.html'">
-                    <div class="feature-icon">🎮</div>
+                    <div class="feature-icon">💖</div>
                     <h3 class="feature-title">Quiz do Amor</h3>
                     <p class="feature-description">
-                        Teste seus conhecimentos sobre nossa relação em um quiz divertido e interativo!
+                        Teste seus conhecimentos sobre nossa relação em um quiz divertido e carinhoso
                     </p>
                 </div>
                 
                 <div class="feature-card" onclick="location.href='challenge.html'">
-                    <div class="feature-icon">🎯</div>
-                    <h3 class="feature-title">Desafio 15 Dias</h3>
+                    <div class="feature-icon">🌸</div>
+                    <h3 class="feature-title">Desafio 26 Dias</h3>
                     <p class="feature-description">
-                        Participe do desafio especial com atividades românticas para cada dia!
+                        Participe do desafio especial com atividades românticas para cada dia
                     </p>
                 </div>
                 
                 <div class="feature-card" onclick="location.href='ranking.html'">
-                    <div class="feature-icon">🏆</div>
-                    <h3 class="feature-title">Ranking Global</h3>
+                    <div class="feature-icon">✨</div>
+                    <h3 class="feature-title">Ranking</h3>
                     <p class="feature-description">
-                        Veja as melhores pontuações e compare seus resultados no ranking!
+                        Veja as melhores pontuações e compare seus resultados
                     </p>
                 </div>
             </div>
@@ -223,8 +337,8 @@
             <div class="love-message">
                 <p>
                     "Em cada segundo que passa, nosso amor fica mais forte. 
-                    Esta contagem regressiva é apenas o começo de uma vida inteira juntos. 
-                    Te amo mais do que as palavras podem expressar, Milena. ❤️"
+                    Esta contagem regressiva é apenas o começo de uma vida inteira juntas. 
+                    Te amo mais do que as palavras podem expressar, Milena."
                 </p>
             </div>
         </section>
@@ -233,8 +347,8 @@
     <!-- JavaScript Externo -->
     <script src="js/app.js"></script>
     <script>
-        // Código específico da página inicial
-        const targetDate = new Date('2025-12-31T23:59:59').getTime();
+        // Contagem regressiva até 26/01/2026 12h
+        const targetDate = new Date('2026-01-26T12:00:00').getTime();
         
         function updateCountdown() {
             const now = new Date().getTime();
@@ -243,7 +357,7 @@
             if (distance < 0) {
                 document.getElementById('countdown').innerHTML = `
                     <div style="grid-column: 1 / -1;">
-                        <h2 style="color: #ff0000; font-size: 2rem;">🎉 O dia chegou! 🎉</h2>
+                        <h2 style="color: #d4558c; font-size: 2rem;">💕 O dia chegou! 💕</h2>
                     </div>
                 `;
                 return;
@@ -260,12 +374,39 @@
             document.getElementById('seconds').textContent = Utils.padZero(seconds);
         }
         
+        // Cronômetro desde o primeiro beijo (07/09/2025 23h)
+        const firstKissDate = new Date('2025-09-07T23:00:00').getTime();
+        
+        function updateTimeTogether() {
+            const now = new Date().getTime();
+            const timeTogether = now - firstKissDate;
+            
+            const totalMinutes = Math.floor(timeTogether / (1000 * 60));
+            const totalHours = Math.floor(timeTogether / (1000 * 60 * 60));
+            const totalDays = Math.floor(timeTogether / (1000 * 60 * 60 * 24));
+            const totalMonths = Math.floor(totalDays / 30);
+            
+            const months = totalMonths;
+            const days = totalDays % 30;
+            const hours = totalHours % 24;
+            const minutes = totalMinutes % 60;
+            
+            document.getElementById('together-months').textContent = months;
+            document.getElementById('together-days').textContent = days;
+            document.getElementById('together-hours').textContent = Utils.padZero(hours);
+            document.getElementById('together-minutes').textContent = Utils.padZero(minutes);
+        }
+        
         // Atualizar a cada segundo
         updateCountdown();
-        setInterval(updateCountdown, 1000);
+        updateTimeTogether();
+        setInterval(() => {
+            updateCountdown();
+            updateTimeTogether();
+        }, 1000);
         
         // Log de boas-vindas
-        console.log('💕 Bem-vindo à página inicial!');
+        console.log('💕 Bem-vindo à nossa história de amor!');
     </script>
 </body>
 </html>

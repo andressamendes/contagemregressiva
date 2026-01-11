@@ -5,7 +5,7 @@
 
 // Configuração Global
 const APP_CONFIG = {
-    targetDate: new Date('2025-12-31T23:59:59').getTime(),
+    targetDate: new Date('2026-01-26T12:00:00').getTime(),
     theme: {
         primaryColor: '#ff0000',
         backgroundColor: '#000000'

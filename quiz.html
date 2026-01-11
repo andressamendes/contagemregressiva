@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <meta name="description" content="Quiz do Amor - Teste seus conhecimentos sobre nossa relação">
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#d4558c">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     
-    <title>Quiz do Amor - Stranger Things</title>
+    <title>Quiz do Amor - Milena & Andressa</title>
     
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
     
     <!-- CSS Externo -->
     <link rel="stylesheet" href="css/styles.css">
@@ -24,12 +23,18 @@
             padding: 40px 20px;
         }
         
+        .avatar-selection h2 {
+            font-family: 'Playfair Display', serif;
+            color: #d4558c;
+            margin-bottom: 30px;
+        }
+        
         .avatar-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 25px;
             margin: 30px 0;
-            max-width: 600px;
+            max-width: 500px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -37,28 +42,29 @@
         @media (max-width: 768px) {
             .avatar-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
+                gap: 20px;
             }
         }
         
         .avatar-option {
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 3px solid rgba(212, 85, 140, 0.2);
+            border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
         
         .avatar-option:hover {
             transform: scale(1.05);
-            border-color: rgba(255, 0, 0, 0.3);
+            border-color: rgba(212, 85, 140, 0.4);
+            box-shadow: 0 8px 25px rgba(212, 85, 140, 0.2);
         }
         
         .avatar-option.selected {
-            border-color: #ff0000;
-            background: rgba(255, 0, 0, 0.1);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            border-color: #d4558c;
+            background: linear-gradient(135deg, #ffeef8 0%, #fff5f7 100%);
+            box-shadow: 0 8px 25px rgba(212, 85, 140, 0.3);
         }
         
         .avatar-preview {
@@ -72,24 +78,24 @@
             max-width: 400px;
             padding: 15px 20px;
             font-size: 1.1rem;
-            font-family: 'Benguiat', cursive;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            color: white;
+            font-family: 'Poppins', sans-serif;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(212, 85, 140, 0.2);
+            border-radius: 15px;
+            color: #4a4a4a;
             text-align: center;
             margin: 20px auto;
             display: block;
         }
         
         #player-name::placeholder {
-            color: rgba(255, 255, 255, 0.5);
+            color: #999;
         }
         
         #player-name:focus {
             outline: none;
-            border-color: #ff0000;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            border-color: #d4558c;
+            box-shadow: 0 0 20px rgba(212, 85, 140, 0.2);
         }
         
         .quiz-question-container {
@@ -103,9 +109,10 @@
             align-items: center;
             gap: 20px;
             margin-bottom: 30px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            border: 2px solid rgba(212, 85, 140, 0.1);
         }
         
         @media (max-width: 768px) {
@@ -113,6 +120,7 @@
                 flex-direction: column;
                 text-align: center;
                 gap: 15px;
+                padding: 20px;
             }
         }
         
@@ -122,31 +130,34 @@
         
         .player-name {
             font-size: 1.5rem;
-            font-weight: bold;
-            color: #ff0000;
+            font-weight: 600;
+            color: #d4558c;
             margin-bottom: 5px;
+            font-family: 'Playfair Display', serif;
         }
         
         .quiz-score {
             font-size: 1.2rem;
-            color: #ffcc00;
+            color: #f093b3;
+            font-weight: 500;
         }
         
         .question-number {
             text-align: center;
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            color: #999;
             margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            text-transform: lowercase;
+            letter-spacing: 1px;
         }
         
         .question-text {
             text-align: center;
             font-size: clamp(1.3rem, 3vw, 1.8rem);
             margin-bottom: 30px;
-            color: white;
-            line-height: 1.5;
+            color: #4a4a4a;
+            line-height: 1.6;
+            font-weight: 500;
         }
         
         .quiz-result {
@@ -154,6 +165,12 @@
             padding: 40px 20px;
             max-width: 600px;
             margin: 0 auto;
+        }
+        
+        .quiz-result h2 {
+            font-family: 'Playfair Display', serif;
+            color: #d4558c;
+            margin-bottom: 30px;
         }
         
         .result-avatar {
@@ -171,37 +188,38 @@
         .stat {
             flex: 1;
             min-width: 100px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            border: 2px solid rgba(255, 0, 0, 0.2);
+            padding: 25px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            border: 2px solid rgba(212, 85, 140, 0.1);
         }
         
         .stat-value {
             display: block;
             font-size: 2.5rem;
-            font-weight: bold;
-            color: #ff0000;
-            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            color: #d4558c;
+            font-family: 'Playfair Display', serif;
         }
         
         .stat-label {
             display: block;
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.7);
-            text-transform: uppercase;
+            font-size: 0.95rem;
+            color: #999;
+            text-transform: lowercase;
             letter-spacing: 1px;
             margin-top: 10px;
         }
         
         .result-message {
-            font-size: 1.5rem;
-            color: #ffcc00;
+            font-size: 1.4rem;
+            color: #d4558c;
             margin: 30px 0;
-            padding: 20px;
-            background: rgba(255, 204, 0, 0.1);
-            border-radius: 15px;
-            border: 2px solid rgba(255, 204, 0, 0.3);
+            padding: 25px;
+            background: linear-gradient(135deg, #ffeef8 0%, #fff5f7 100%);
+            border-radius: 20px;
+            border: 2px solid rgba(212, 85, 140, 0.2);
+            font-family: 'Playfair Display', serif;
         }
         
         .result-actions {
@@ -228,7 +246,7 @@
             <!-- O conteúdo será gerado dinamicamente pelo JavaScript -->
             <div style="text-align: center; padding: 60px 20px;">
                 <div class="loading"></div>
-                <p style="margin-top: 20px; color: rgba(255,255,255,0.7);">Carregando quiz...</p>
+                <p style="margin-top: 20px; color: #999;">Carregando quiz...</p>
             </div>
         </div>
     </div>

@@ -14,106 +14,99 @@ const QuizState = {
     selectedAvatar: null
 };
 
-// Perguntas do Quiz (17 perguntas originais)
+// Perguntas do Quiz (17 perguntas reais sobre Milena e Andressa)
 const quizQuestions = [
     {
-        question: "Qual é a nossa série favorita?",
-        options: ["Stranger Things", "Breaking Bad", "Game of Thrones", "The Office"],
+        question: "Quem mandou mensagem primeiro?",
+        options: ["Milena", "Andressa", "Foi ao mesmo tempo", "Não lembro"],
         correct: 0
     },
     {
-        question: "Onde nos conhecemos?",
-        options: ["Faculdade", "Trabalho", "Festa", "Online"],
+        question: "Quem curtiu foto primeiro?",
+        options: ["Andressa", "Milena", "Foi ao mesmo tempo", "Não lembro"],
+        correct: 1
+    },
+    {
+        question: "Quem chamou pra sair primeiro?",
+        options: ["Andressa", "Milena", "Foi ao mesmo tempo", "Não lembro"],
+        correct: 1
+    },
+    {
+        question: "Quem deu o beijo primeiro?",
+        options: ["Milena", "Andressa", "Foi ao mesmo tempo", "Não lembro"],
+        correct: 1
+    },
+    {
+        question: "Quem disse 'eu te amo' primeiro?",
+        options: ["Andressa", "Milena", "Foi ao mesmo tempo", "Ainda não dissemos"],
+        correct: 1
+    },
+    {
+        question: "Quem é mais ciumenta?",
+        options: ["Andressa", "Milena", "As duas igual", "Nenhuma"],
+        correct: 1
+    },
+    {
+        question: "Qual o primeiro filme que assistiram juntas?",
+        options: ["O Céu É de Verdade", "Stranger Things", "La La Land", "Vingadores"],
         correct: 0
     },
     {
-        question: "Qual é o nosso restaurante preferido?",
-        options: ["Japonês", "Italiano", "Mexicano", "Brasileiro"],
+        question: "Qual a primeira refeição juntas?",
+        options: ["Hambúrguer", "Pizza", "Sushi", "Lasanha"],
         correct: 1
     },
     {
-        question: "Qual foi nosso primeiro filme juntos?",
-        options: ["Vingadores", "Stranger Things (série)", "Interestelar", "La La Land"],
+        question: "O que mais gostam de fazer juntas?",
+        options: ["Viajar", "Refeição livre e dormir agarradinhas", "Assistir séries", "Jogar videogame"],
         correct: 1
     },
     {
-        question: "Qual é a comida favorita da Milena?",
-        options: ["Pizza", "Sushi", "Lasanha", "Hambúrguer"],
-        correct: 0
-    },
-    {
-        question: "Qual é o hobby favorito que fazemos juntos?",
-        options: ["Cozinhar", "Assistir séries", "Viajar", "Jogar videogame"],
-        correct: 1
-    },
-    {
-        question: "Qual é a nossa música especial?",
-        options: ["Perfect - Ed Sheeran", "Shallow - Lady Gaga", "All of Me - John Legend", "Photograph - Ed Sheeran"],
-        correct: 0
-    },
-    {
-        question: "Qual é o apelido carinhoso que eu te dou?",
-        options: ["Amor", "Princesa", "Meu bem", "Vida"],
-        correct: 1
-    },
-    {
-        question: "Qual é o nosso plano para o futuro?",
-        options: ["Viajar o mundo", "Ter filhos", "Comprar uma casa", "Todas as anteriores"],
-        correct: 3
-    },
-    {
-        question: "Qual é a cor favorita da Milena?",
-        options: ["Azul", "Rosa", "Roxo", "Vermelho"],
+        question: "Quem é o mais romântico?",
+        options: ["Milena", "Andressa", "As duas", "Depende do dia"],
         correct: 2
     },
     {
-        question: "Qual é o personagem favorito de Stranger Things da Milena?",
-        options: ["Eleven", "Mike", "Dustin", "Steve"],
-        correct: 0
+        question: "Quem chora mais?",
+        options: ["Milena", "Andressa", "As duas", "Nenhuma"],
+        correct: 2
     },
     {
-        question: "Qual é o nosso destino de viagem dos sonhos?",
-        options: ["Paris", "Japão", "Nova York", "Grécia"],
+        question: "Quem dorme mais?",
+        options: ["Andressa", "Milena", "As duas igual", "Depende do dia"],
         correct: 1
     },
     {
-        question: "Qual é a nossa sobremesa favorita?",
-        options: ["Sorvete", "Bolo de chocolate", "Pudim", "Brownie"],
-        correct: 3
+        question: "Quem briga mais?",
+        options: ["Milena", "Andressa", "As duas", "Nenhuma"],
+        correct: 2
     },
     {
-        question: "Qual é o dia mais especial para nós?",
-        options: ["Aniversário de namoro", "Natal", "Ano Novo", "Dia dos Namorados"],
-        correct: 0
+        question: "Quem reclama mais?",
+        options: ["Milena", "Andressa", "As duas igual", "Nenhuma"],
+        correct: 1
     },
     {
-        question: "Qual é o animal de estimação que queremos ter?",
-        options: ["Cachorro", "Gato", "Coelho", "Papagaio"],
-        correct: 0
+        question: "Quem bagunça mais?",
+        options: ["Andressa", "Milena", "As duas igual", "Nenhuma"],
+        correct: 1
     },
     {
-        question: "Qual é a nossa bebida favorita para compartilhar?",
-        options: ["Vinho", "Cerveja", "Refrigerante", "Suco"],
-        correct: 0
+        question: "Quem é mais carinhosa?",
+        options: ["Andressa", "Milena", "As duas igual", "Depende do momento"],
+        correct: 1
     },
     {
-        question: "Qual é a frase que mais representa nosso relacionamento?",
-        options: [
-            "Amor verdadeiro nunca morre",
-            "Juntos somos mais fortes",
-            "Você é meu mundo",
-            "Para sempre ao seu lado"
-        ],
+        question: "Quem se apaixonou primeiro?",
+        options: ["Andressa", "Milena", "Foi ao mesmo tempo", "Ainda estamos descobrindo"],
         correct: 1
     }
 ];
 
-// Avatares disponíveis (SVG API)
+// Avatares disponíveis (arquivos locais)
 const avatarOptions = [
-    { id: 1, name: "Beam", url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Milena1" },
-    { id: 2, name: "Pixel", url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Milena2" },
-    { id: 3, name: "Adventurer", url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Milena3" },
-    { id: 4, name: "Bottts", url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Milena4" }
+    { id: 1, name: "Milena", url: "assets/milena-avatar.svg" },
+    { id: 2, name: "Andressa", url: "assets/andressa-avatar.svg" }
 ];
 
 // Inicializar Quiz
@@ -153,6 +146,7 @@ function showAvatarSelection() {
                 ${avatarOptions.map(avatar => `
                     <div class="avatar-option" data-avatar-id="${avatar.id}">
                         <img src="${avatar.url}" alt="${avatar.name}" class="avatar-preview">
+                        <p style="margin-top: 10px; color: rgba(255,255,255,0.8); font-size: 1rem;">${avatar.name}</p>
                     </div>
                 `).join('')}
             </div>
